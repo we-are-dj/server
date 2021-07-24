@@ -1,8 +1,9 @@
 version: 0.0
 os: linux
+
 files:
   - source: /
-    estination: /home/ec2-user/app # 경로
+    destination: /home/ec2-user/app # 경로
     overwrite: yes
 permissions:
   - object: /home/ec2-user/app
