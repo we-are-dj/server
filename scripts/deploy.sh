@@ -9,7 +9,8 @@ cp $REPOSITORY/build/libs/*.jar $START_REPOSITORY
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(ls START_REPOSITORY/ | grep '.jar' | tail -n 1)
+APP_NAME=we-are-dj
+CURRENT_PID=$(pgrep -f $APP_NAME)
 
 echo "현재 구동중인 어플리케이션 pid: $CURRENT_PID"
 
@@ -23,7 +24,7 @@ fi
 
 echo "> 새 어플리케이션 배포"
 
-JAR_NAME=$(ls -tr START_REPOSITORY/*.jar | tail -n 1)
+JAR_NAME=$(ls -tr $START_REPOSITORY/*.jar | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
@@ -37,7 +38,7 @@ echo "> $JAR_NAME 실행"
 
 
 sudo nohup java -jar \
-    -Dspring.config.location=classpath:/application.yml,/home/ec2-user/app/application-db.yml \
+    -Dspring.config.location=classpath:/application.yml,/home/ec2-user/properties/application-db.yml \
     -Dspring.profiles.active=real \
-    $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
+    $JAR_NAME > $START_REPOSITORY/nohup.out 2>&1 &
 #    $JAR_NAME 2>&1> $REPOSITORY/nohup.log &
