@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "실행완료"
+echo "실행완료2"
