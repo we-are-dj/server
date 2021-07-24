@@ -55,6 +55,13 @@ dependencies {
 
 }
 
+// jar plain 파일 생성안되게
+// 참고 https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives
+jar {
+    enabled = false
+}
+
 test {
     useJUnitPlatform()
 }
+
