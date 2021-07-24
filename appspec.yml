@@ -5,7 +5,7 @@ files:
     estination: /home/ec2-user/dj-app # 경로
     overwrite: yes
 permissions:
-  - object: /
+  - object: /home/ec2-user/dj-app
     pattern: "**"
     owner: ec2-user
     group: ec2-user
