@@ -4,8 +4,6 @@
 name: Develop Pull_request and Push Build Test
 
 on:
-  push:
-    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
