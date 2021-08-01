@@ -15,6 +15,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@Table(name = "music_list")
 @Entity
 public class MusicList {
 

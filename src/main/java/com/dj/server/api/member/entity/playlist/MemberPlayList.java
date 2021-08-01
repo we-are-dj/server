@@ -20,6 +20,7 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
+@Table(name = "member_play_list")
 @Entity
 public class MemberPlayList {
 

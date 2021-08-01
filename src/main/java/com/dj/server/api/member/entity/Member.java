@@ -11,6 +11,7 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
+@Table(name = "member")
 @Entity
 public class Member {
 
@@ -45,8 +46,9 @@ public class Member {
     private Date updateAt;
 
     @Builder
-    public Member(String memberSnsId, String memberNickName) {
+    public Member(String memberSnsId, String memberNickName, MemberRole memberRole) {
         this.memberSnsId = memberSnsId;
         this.memberNickName = memberNickName;
+        this.memberRole = memberRole;
     }
 }
