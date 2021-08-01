@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -29,20 +30,20 @@ public class MemberPlayList {
     private Long playListId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", columnDefinition = "회원 ID를 FK로 받습니다.")
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(length = 45, columnDefinition = "플레이 리스트 이름입니다, ex) 팝송, 발라드")
+    @Column(length = 45)
     private String playListName;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(insertable = false, updatable = false , columnDefinition = "생성 날짜 입니다.")
+    @Column(name = "create_at", insertable = false, updatable = false)
     private Date creatAt;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(insertable = false , columnDefinition = "업데이트 날짜 입니다.") // default 생성이기에 insertable 설정
+    @Column(name = "update_at", insertable = false) // default 생성이기에 insertable 설정
     private Date updateAt;
 
     //private boolean use;

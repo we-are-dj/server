@@ -11,20 +11,21 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "member")
+@Table(name = "members")
 @Entity
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long memberId;
 
     @NotNull
-    @Column(length = 100, columnDefinition = "sns 고유아이디입니다.")
+    @Column(name = "member_sns_id", length = 100)
     private String memberSnsId;
 
     @NotNull
-    @Column(length = 45, unique = true, columnDefinition = "서비스에서 사용되는 닉네임 고유값이기에 유니크")
+    @Column(name = "member_nickname", length = 45, unique = true)
     private String memberNickName;
 
 
@@ -32,17 +33,17 @@ public class Member {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "회원의 권한 컬럼 입니다.")
+    @Column(name = "member_role")
     private MemberRole memberRole;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(insertable = false, updatable = false , columnDefinition = "가입 날짜 default 로 NOW() 를 주고 update 시 변경이 안되게 설정")
+    @Column(name = "create_at", insertable = false, updatable = false)
     private Date creatAt;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(insertable = false , columnDefinition = "닉네임이나 회원 정보가 변경되면 업데이트 될 값 default NOW() db 설정 insert false") // default 생성이기에 insertable 설정
+    @Column(name = "update_at", insertable = false) // default 생성이기에 insertable 설정
     private Date updateAt;
 
     @Builder

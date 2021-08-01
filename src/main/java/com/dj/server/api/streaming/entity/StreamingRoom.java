@@ -17,14 +17,15 @@ public class StreamingRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "streaming_room_id")
     private Long id;
 
     @NotNull
-    @Column(length = 100 , columnDefinition = "스트리밍 방 제목입니다.")
+    @Column(name = "room_name", length = 100)
     private String roomName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", columnDefinition = "회원 아이디 FK")
+    @JoinColumn(name = "member_id")
     private Member roomMaster;
 
 }

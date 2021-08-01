@@ -24,13 +24,13 @@ public class MusicList {
     private Long musicId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_list_id", columnDefinition = "플레이 리스트를 FK로 받습니다.")
+    @JoinColumn(name = "play_list_id")
     private MemberPlayList memberPlayList;
     
-    @Column(columnDefinition = "노래 순서입니다.")
+    @Column(name = "music_no")
     private Long musicNo;
     
-    @Column(length = 100, columnDefinition = "유튜브 링크 주소")
+    @Column(name = "music_url", length = 100)
     private String musicUrl;
 
 }

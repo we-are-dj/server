@@ -33,7 +33,7 @@ public class MemberEntityTests {
         assertThat(member.getMemberId()).isEqualTo(memberId);
         assertThat(member.getMemberSnsId()).isEqualTo(kakaoId);
         assertThat(member.getMemberNickName()).isEqualTo(nickName);
-
+        System.out.println("member.getMemberId()" + member.getMemberId());
     }
 
 }
