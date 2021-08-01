@@ -3,10 +3,13 @@ package com.dj.server.api.member.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -28,22 +31,23 @@ public class Member {
     private String memberNickName;
 
 
-//    private boolean memberSts;
+    @NotNull
+    @ColumnDefault("0")
+    @Column
+    private boolean memberSts;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column
     private MemberRole memberRole;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @ColumnDefault("NOW()")
-    @Column(insertable = false, updatable = false)
-    private Date creatAt;
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @ColumnDefault("NOW()")
-    @Column(insertable = false) // default 생성이기에 insertable 설정
-    private Date updateAt;
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 
     @Builder
     public Member(String memberSnsId, String memberNickName, MemberRole memberRole) {
@@ -51,4 +55,9 @@ public class Member {
         this.memberNickName = memberNickName;
         this.memberRole = memberRole;
     }
+
+    public void updateNickName(String nickName) {
+        this.memberNickName = nickName;
+    }
+
 }

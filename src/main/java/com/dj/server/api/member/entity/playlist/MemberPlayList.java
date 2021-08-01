@@ -2,9 +2,12 @@ package com.dj.server.api.member.entity.playlist;
 
 
 import com.dj.server.api.member.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,17 +39,23 @@ public class MemberPlayList {
     @Column(length = 45)
     private String playListName;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @ColumnDefault("NOW()")
-    @Column(insertable = false, updatable = false)
-    private Date creatAt;
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
 
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @ColumnDefault("NOW()")
-    @Column(insertable = false) // default 생성이기에 insertable 설정
-    private Date updateAt;
+    @Column
+    @UpdateTimestamp
+    private LocalDateTime updateAt;
 
     //private boolean use;
+    @Builder
+    public MemberPlayList(Member member, String playListName) {
+        this.member = member;
+        this.playListName = playListName;
+    }
 
+    public void updatePlayListName(String playListName) {
+        this.playListName = playListName;
+    }
 
 }
