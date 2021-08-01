@@ -1,18 +1,32 @@
 package com.dj.server.api.common.controller;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class TestController {
 
-    @PostMapping(value = {"/test-cors"})
+    @PostMapping(value = {"/test-cors/post"})
     @ResponseStatus(HttpStatus.OK)
-    public String testCors() {
-        System.out.println("----------- testCors 실행 ----------");
-        return "cors passed!";
+    public String testCorsPost() {
+        return "cors post passed!";
+    }
+
+    @GetMapping(value = {"/test-cors/get"})
+    @ResponseStatus(HttpStatus.OK)
+    public String testCorsGet() {
+        return "cors get passed!";
+    }
+
+    @PutMapping(value = {"/test-cors/put"})
+    @ResponseStatus(HttpStatus.OK)
+    public String testCorsPut() {
+        return "cors put passed!";
+    }
+
+    @DeleteMapping(value = {"/test-cors/delete"})
+    @ResponseStatus(HttpStatus.OK)
+    public String testCorsDelete() {
+        return "cors delete passed!";
     }
 }
