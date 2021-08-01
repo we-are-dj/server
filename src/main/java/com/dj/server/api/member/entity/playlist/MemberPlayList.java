@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "member_play_list")
+@Table
 @Entity
 public class MemberPlayList {
 
@@ -30,7 +30,7 @@ public class MemberPlayList {
     private Long playListId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn
     private Member member;
 
     @Column(length = 45)
@@ -38,12 +38,12 @@ public class MemberPlayList {
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(name = "create_at", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private Date creatAt;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(name = "update_at", insertable = false) // default 생성이기에 insertable 설정
+    @Column(insertable = false) // default 생성이기에 insertable 설정
     private Date updateAt;
 
     //private boolean use;

@@ -11,21 +11,20 @@ import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "members")
+@Table
 @Entity
 public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     private Long memberId;
 
     @NotNull
-    @Column(name = "member_sns_id", length = 100)
+    @Column(length = 100)
     private String memberSnsId;
 
     @NotNull
-    @Column(name = "member_nickname", length = 45, unique = true)
+    @Column(length = 45, unique = true)
     private String memberNickName;
 
 
@@ -33,17 +32,17 @@ public class Member {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "member_role")
+    @Column
     private MemberRole memberRole;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(name = "create_at", insertable = false, updatable = false)
+    @Column(insertable = false, updatable = false)
     private Date creatAt;
 
     @Temporal(value = TemporalType.TIMESTAMP)
     @ColumnDefault("NOW()")
-    @Column(name = "update_at", insertable = false) // default 생성이기에 insertable 설정
+    @Column(insertable = false) // default 생성이기에 insertable 설정
     private Date updateAt;
 
     @Builder

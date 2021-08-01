@@ -11,21 +11,20 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "streaming_room")
+@Table
 @Entity
 public class StreamingRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "streaming_room_id")
     private Long id;
 
     @NotNull
-    @Column(name = "room_name", length = 100)
+    @Column(length = 100)
     private String roomName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn
     private Member roomMaster;
 
 }

@@ -15,7 +15,7 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Table(name = "music_list")
+@Table
 @Entity
 public class MusicList {
 
@@ -24,13 +24,13 @@ public class MusicList {
     private Long musicId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "play_list_id")
+    @JoinColumn
     private MemberPlayList memberPlayList;
     
-    @Column(name = "music_no")
+    @Column
     private Long musicNo;
     
-    @Column(name = "music_url", length = 100)
+    @Column(length = 100)
     private String musicUrl;
 
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +19,7 @@ public class MemberEntityTests {
     @Test
     @Order(1)
     @DisplayName("회원의 데이터를 생성합니다. 첫번째로 실행됩니다.")
+    @Transactional(readOnly = true)
     public void createMemberEntity() {
 
         String kakaoId = "kakaoId123";
@@ -34,6 +36,16 @@ public class MemberEntityTests {
         assertThat(member.getMemberSnsId()).isEqualTo(kakaoId);
         assertThat(member.getMemberNickName()).isEqualTo(nickName);
         System.out.println("member.getMemberId()" + member.getMemberId());
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("회원의 닉네임을 변경합니다.")
+    @Transactional
+    public void updateMemberNickName() {
+
+
+
     }
 
 }
