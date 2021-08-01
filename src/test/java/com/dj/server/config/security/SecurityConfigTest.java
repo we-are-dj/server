@@ -48,7 +48,7 @@ public class SecurityConfigTest {
                         .header("Access-Control-Request-Method", "GET")
                         .header("Origin", "localhost:8080/"))
                 .andDo(print())
-                .andExpect(content().string("cors passed! ^a^ :-) "));
+                .andExpect(content().string("cors passed!"));
     }
     @SpringBootApplication(scanBasePackages = {"com.dj.server"})
     @Controller
@@ -60,7 +60,7 @@ public class SecurityConfigTest {
         @ResponseStatus(HttpStatus.OK)
         public @ResponseBody
         String testCors() {
-            return "cors passed! ^a^ :-) ";
+            return "cors passed!";
         }
     }
 }
