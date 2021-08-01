@@ -20,10 +20,10 @@ public class MusicList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long musicId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", columnDefinition = "플레이 리스트를 FK로 받습니다.")
+    @JoinColumn(name = "play_list_id", columnDefinition = "플레이 리스트를 FK로 받습니다.")
     private MemberPlayList memberPlayList;
     
     @Column(columnDefinition = "노래 순서입니다.")
