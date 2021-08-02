@@ -15,27 +15,21 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@SpringBootTest
-@ContextConfiguration(classes = WeAreDjApplication.class)
+@WebMvcTest(controllers = TestController.class)
 public class ResponseDTOTests {
 
-    @Autowired
-    private WebApplicationContext wac;
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
-        DefaultMockMvcBuilder builder = MockMvcBuilders
-                .webAppContextSetup(this.wac)
-                .apply(SecurityMockMvcConfigurers.springSecurity())
-                .dispatchOptions(true);
-        this.mockMvc = builder.build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new TestController()).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
     }
 
     @Test
