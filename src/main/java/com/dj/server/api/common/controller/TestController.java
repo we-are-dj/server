@@ -1,6 +1,9 @@
 package com.dj.server.api.common.controller;
 
+import com.dj.server.api.common.response.ResponseDTO;
+import com.dj.server.api.member.dto.MemberResponseDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,4 +32,15 @@ public class TestController {
     public String testCorsDelete() {
         return "cors delete passed!";
     }
+
+    @GetMapping("/test-response")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ResponseDTO<MemberResponseDTO>> testResponseDTO() {
+        MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
+                .memberSnsId("kakao123")
+                .nickName("홍길동").build();
+        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO= new ResponseDTO<>(memberResponseDTO,"Ok");
+        return new ResponseEntity<>(responseDTOResponseDTO, HttpStatus.OK);
+    }
+
 }
