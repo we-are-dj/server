@@ -1,0 +1,3 @@
+# Test Application properties
+server:
+  port: 8080

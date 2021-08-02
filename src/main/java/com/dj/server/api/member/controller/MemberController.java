@@ -1,4 +1,4 @@
-package com.dj.server.api.member;
+package com.dj.server.api.member.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
