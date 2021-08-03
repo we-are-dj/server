@@ -215,3 +215,6 @@ gradle-app.setting
 
 ### properties ###
 application-db.yml
+
+### QueryDsl ###
+src/main/generated
