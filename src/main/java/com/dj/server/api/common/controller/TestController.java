@@ -2,6 +2,9 @@ package com.dj.server.api.common.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.member.dto.MemberResponseDTO;
+import com.dj.server.exception.member.MemberCrudErrorCode;
+import com.dj.server.exception.member.MemberException;
+import com.dj.server.exception.member.MemberPermitErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +49,17 @@ public class TestController {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
                 .memberSnsId("kakao123")
                 .nickName("홍길동").build();
-        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO= new ResponseDTO<>(memberResponseDTO,"Ok");
+        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO,"Ok");
         return new ResponseEntity<>(responseDTOResponseDTO, HttpStatus.OK);
     }
 
+    @GetMapping("/test-permit-exception")
+    public String sendAuthorityError() {
+        throw new MemberException(MemberPermitErrorCode.INVALID_MEMBER);
+    }
+
+    @GetMapping("/test-crud-exception")
+    public String sendCrudError() {
+        throw new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER);
+    }
 }
