@@ -9,6 +9,8 @@ group = 'com.dj.server'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+def querydslVersion = '4.3.1'
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -38,8 +40,15 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     //querydsl
-    implementation 'com.querydsl:querydsl-jpa'
-    implementation 'com.querydsl:querydsl-apt'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
+    implementation group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
+    implementation group: 'com.querydsl', name: 'querydsl-core', version: querydslVersion
+
+
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api' // java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api' // java.lang.NoClassDefFoundError (javax.annotation.Generated) 발생 대응
 
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -57,6 +66,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'com.h2database:h2:1.4.200'
+//    testImplementation 'com.querydsl:querydsl-jpa'
+//    testImplementation 'com.querydsl:querydsl-apt'
 
 }
 
@@ -70,20 +81,6 @@ test {
     useJUnitPlatform()
 }
 
-def querydslSrcDir = 'src/main/generated'
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslSrcDir
-}
-
-sourceSets {
-    main.java.srcDir querydslSrcDir
-}
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-
-configurations {
-    querydsl.extendsFrom compileClasspath
+clean {
+    delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성위치
 }
