@@ -10,6 +10,19 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ *
+ * 스웨거 관련 설정을하는 클래스 입니다
+ * 스웨거 관련 설정과 어노테이션은
+ *
+ * https://github.com/swagger-api/swagger-core/wiki/Swagger-2.X---Annotations
+ * 를 참고하세요.
+ *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
+ */
+
 @EnableSwagger2
 @Configuration
 public class SwaggerConfig {

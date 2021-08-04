@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
  *
  * 여러곳에서 사용하는 회원 데이터를 매번 코드를 작성하기에 불편함이 있어 더미 클래스를 생성하였습니다.
  *
+ * 싱글톤 패턴을 활용하여 생성하였습니다.
+ *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
  */
 public class MemberDummy {
 

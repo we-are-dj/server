@@ -12,6 +12,17 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ *
+ *
+ * 회원 Entity 클래스
+ *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
+ *
+ */
+
 @Getter
 @NoArgsConstructor
 @Table
