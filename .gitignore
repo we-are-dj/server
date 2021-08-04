@@ -218,3 +218,10 @@ application-db.yml
 
 ### QueryDsl ###
 src/main/generated
+
+### eclipse ###
+.settings/
+.loadpath
+.classpath
+.project
+.metadata
