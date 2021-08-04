@@ -1,6 +1,5 @@
 package com.dj.server.exception.playlist;
 
-import com.dj.server.exception.member.MemberErrorCode;
 
 /**
  * 서버 실행중 발생하는 PlayList Entity와 관련된 에러를 예외처리하기 위한 클래스.

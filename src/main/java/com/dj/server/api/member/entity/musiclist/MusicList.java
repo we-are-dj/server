@@ -5,6 +5,7 @@ import com.dj.server.api.member.entity.playlist.MemberPlayList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 

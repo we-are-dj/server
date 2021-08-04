@@ -52,8 +52,8 @@ public class Member {
     @Column
     private MemberRole memberRole;
 
-    @CreationTimestamp
     @Column
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column

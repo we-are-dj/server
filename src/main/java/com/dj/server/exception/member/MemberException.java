@@ -15,13 +15,13 @@ public class MemberException extends RuntimeException {
      *              MemberException class의 정확한 errorCode를 가져올 수 있게 사용할 수 있다.
      */
     private static final long serialVersionUID = 1L;
-    private final MemberErrorCode errorCode;
+    private final MemberError errorCode;
 
     /**
      * super(errorCode의 상세설명 메시지, http 통신 중 에러가 발생한 원인)
      * @param errorCode Member Entity와 관련된 에러정보를 저장
      */
-    public MemberException(MemberErrorCode errorCode) {
+    public MemberException(MemberError errorCode) {
         super(errorCode.getMsg(), new Throwable(errorCode.getHttpStatus().toString()));
         this.errorCode = errorCode;
     }
@@ -29,7 +29,7 @@ public class MemberException extends RuntimeException {
     /**
      * @return Member Entity와 관련된 에러 정보
      */
-    public MemberErrorCode getErrorCode() {
+    public MemberError getErrorCode() {
         return errorCode;
     }
 }
