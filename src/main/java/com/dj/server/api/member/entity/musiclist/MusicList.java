@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 import javax.persistence.*;
 
 /**
- * 플레이 리스트에 대한 노래 수록
+ * 재생목록에 대한 노래를 수록하는 Entity
+ *
+ *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
  */
 
 @Getter

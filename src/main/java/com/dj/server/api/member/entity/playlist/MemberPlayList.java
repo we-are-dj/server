@@ -16,10 +16,12 @@ import java.util.Date;
 
 /**
  *
- * 회원의 플레이 리스트 Entity
+ * 회원의 재생목록 리스트 Entity
  *
  * ex) 발라드, 팝송 , ETC
- *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
  */
 
 @Getter
