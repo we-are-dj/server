@@ -41,7 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf()
+        httpSecurity.cors()
+                    .configurationSource(corsConfigurationSource())
+                    .and()
+                    .csrf()
                     .disable()
                     .authorizeRequests()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
@@ -84,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedOrigin("*"); // set http://localhost:3000 etc
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(false);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
