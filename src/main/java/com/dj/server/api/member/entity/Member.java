@@ -41,11 +41,19 @@ public class Member {
     @Column(length = 45, unique = true)
     private String memberNickName;
 
-
     @NotNull
     @ColumnDefault("0")
     @Column
     private boolean memberSts;
+
+    @Column
+    private String token;
+
+    @Column
+    private String memberEmail;
+
+    @Column
+    private String memberPassword;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -60,11 +68,19 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @Builder
     public Member(String memberSnsId, String memberNickName, MemberRole memberRole) {
         this.memberSnsId = memberSnsId;
         this.memberNickName = memberNickName;
         this.memberRole = memberRole;
+    }
+
+    @Builder
+    public Member(String memberEmail, String memberNickName, String memberPassword, MemberRole memberRole, String token) {
+        this.memberEmail = memberEmail;
+        this.memberNickName = memberNickName;
+        this.memberPassword = memberPassword;
+        this.memberRole = memberRole;
+        this.token = token;
     }
 
     public void updateNickName(String nickName) {

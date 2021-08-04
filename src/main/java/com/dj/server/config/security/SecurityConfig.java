@@ -58,17 +58,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * configuration.addAllowedOrigin("*")
-     * 모든 요청 출처(origion)에 대해 승인
+     * 모든 요청 출처(origin)에 대해 승인
      *
      * configuration.addAllowedMethod("*")
      * 모든 http method 승인 (get, post, put, delete, options etc)
      *
      * configuration.addAllowedHeader("*")
      * 모든 헤더 허용 (어떠한 인증 헤더도 필요치 않음)
-     *
-     * configuration.setAllowCredentials(true)
-     * 다른 origin에 대한 쿠키 저장을 허용함
-     * (같은 origin에 대해서는 자동으로 reqeust header에 저장되므로, 이 옵션은 다른 origin에 대한 쿠키를 설정할지 말지 여부에 사용됨)
      *
      * configuration.setMaxAge(3600L)
      * 쿠키를 클라이언트에게 보내기 전에 쿠키의 생존기간을 설정함. 매개변수는 second 단위.
@@ -77,17 +73,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * source.registerCorsConfiguration("/**", configuration)
      * 특성 URL에 대하여 configration을 적용하여 등록
      *
-     * @return configuration가 적용된, 특정 URL 정보
+     * @return configuration가 적용된 특정 URL 정보
      *
      * @since 0.0.1
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // set http://localhost:3000 etc
+        configuration.addAllowedOrigin("*");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(false);
         configuration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

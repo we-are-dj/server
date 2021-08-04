@@ -1,12 +1,18 @@
 package com.dj.server.api.member.controller;
 
+import com.dj.server.api.member.service.MemberService;
+import com.dj.server.api.member.service.req_res.SignInRequest;
+import com.dj.server.api.member.service.req_res.SignInResponse;
+import com.dj.server.api.member.service.req_res.SignUpRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +33,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class MemberController {
 
+    @Autowired
+    private MemberService memberService;
 
     @ApiOperation(value = "test", notes = "테스트!")
     @ApiResponses({
@@ -36,6 +44,17 @@ public class MemberController {
     @GetMapping("/api/test")
     public String test() {
         return "123";
+    }
+
+    @PostMapping("/signUp")
+    public String signUp(SignUpRequest signUpRequest) {
+        memberService.signUp(signUpRequest);
+        return "Sign Up OK";
+    }
+
+    @PostMapping("/signIn")
+    public SignInResponse signIn(SignInRequest signInRequest) {
+        return memberService.signIn(signInRequest);
     }
 
 }
