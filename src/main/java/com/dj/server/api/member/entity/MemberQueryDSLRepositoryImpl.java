@@ -20,11 +20,11 @@ public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport impl
     }
 
     @Override
-    public Optional<Member> findByEmail(String email) {
+    public Member findByMemberSnsId(String memberSnsId) {
         final QMember member = QMember.member;
 
-        return Optional.ofNullable(from(member)
-                .where(member.memberEmail.eq(email))
-                .fetchOne());
+        return from(member)
+                .where(member.memberSnsId.eq(memberSnsId))
+                .fetchOne();
     }
 }

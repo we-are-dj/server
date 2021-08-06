@@ -1,12 +1,23 @@
 package com.dj.server.config.security;
+import com.dj.server.api.member.service.OAuth2Provider;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WebSecurityConfigurerAdapter를 상속받고
@@ -17,6 +28,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * @author Informix
  * @created 2021-08-03 Tue
  */
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -41,19 +53,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors()
-                    .configurationSource(corsConfigurationSource())
-                    .and()
-                    .csrf()
-                    .disable()
-                    .authorizeRequests()
-                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+        httpSecurity.authorizeRequests()
                 // .antMatchers("/put").hasAnyRole("ADMIN")
-                // .antMatchers("/**").denyAll()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin()
-                    .disable();
+                // .antMatchers("/", "/oauth2/**", "/login/**", "/css/**",
+                //        "/images/**", "/js/**", "/console/**").permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                // .anyRequest().authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .cors()
+                .configurationSource(corsConfigurationSource())
+                .and()
+                .oauth2Login().defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailure")
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+                .and()
+                .formLogin().disable()
+                .csrf().disable();
     }
 
     /**
@@ -89,5 +108,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository(OAuth2ClientProperties properties,
+                                             @Value("${spring.security.oauth2.client.registration.kakao.client-id}") String kakaoClientId,
+                                             @Value("${spring.security.oauth2.client.registration.kakao.client-secret}") String kakaoClientSecret) {
+        List<ClientRegistration> registrations = new ArrayList<>();
 
+        // 카카오 OAuth2 정보 추가
+        registrations.add(OAuth2Provider.KAKAO.getBuilder("kakao")
+                                                    .clientId(kakaoClientId)
+                                                    .clientSecret(kakaoClientSecret)
+                                                    .build());
+
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
 }

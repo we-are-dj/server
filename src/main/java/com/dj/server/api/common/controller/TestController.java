@@ -62,4 +62,15 @@ public class TestController {
     public String sendCrudError() {
         throw new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER);
     }
+
+    @GetMapping("/kakao-login")
+    public String sendKakaoAuthorizationCode(@RequestParam("code") String code) {
+        return code;
+    }
+
+    @GetMapping("/login/oauth2/kakao")
+    public String getKakaoProfile() {
+        return "";
+    }
+
 }

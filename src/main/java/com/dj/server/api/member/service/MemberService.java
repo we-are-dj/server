@@ -2,17 +2,18 @@ package com.dj.server.api.member.service;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
+import com.dj.server.api.member.entity.SocialType;
 import com.dj.server.api.member.service.jwt.JwtUtil;
-import com.dj.server.api.member.service.req_res.SignInRequest;
-import com.dj.server.api.member.service.req_res.SignInResponse;
-import com.dj.server.api.member.service.req_res.SignUpRequest;
-import com.dj.server.exception.member.MemberCrudErrorCode;
-import com.dj.server.exception.member.MemberException;
-import com.dj.server.exception.member.MemberPermitErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 유저에 대한 전반적인 비즈니스 로직을 담당합니다.
@@ -27,38 +28,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemberService {
 
-        @Autowired
-        private JwtUtil jwtUtil;
+    @Autowired
+    private JwtUtil jwtUtil;
 
-        @Autowired
-        private MemberRepository memberRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
-        public void signUp(SignUpRequest signUpRequest) {
-            verifyDuplicatedMember(signUpRequest.getEmail());
+    protected Member getMember(Member member, HttpSession session) {
+        if (member == null) {
+            try {
+                OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+                Map<String, Object> map = token.getPrincipal().getAttributes();
 
-            Member newMember = Member.builder()
-                    .memberEmail(signUpRequest.getEmail())
-                    .memberNickName(signUpRequest.getNickName())
-                    .memberPassword(signUpRequest.getPassword())
-                    .memberRole(signUpRequest.getMemberRole())
-                    .token(jwtUtil.createToken())
-                    .build();
+                member = memberRepository.findByMemberSnsId(member.getMemberSnsId());
+                if (member == null)
+                    member = memberRepository.save(member);
 
-            memberRepository.save(newMember);
+                session.setAttribute("member", member);
+            } catch (ClassCastException ex) {
+                return member;
+            }
         }
+        return member;
+    }
 
-        private void verifyDuplicatedMember(String memberEmail) {
-            if(memberRepository.findByEmail(memberEmail).isPresent())
-                throw new MemberException(MemberCrudErrorCode.DUPLICATED);
-        }
+    private Member getKaKaoProfile(Long kakaoId, Map<String, Object> map) {
+        Map<String, String> propertyMap = (HashMap<String, String>) map.get("properties");
 
-        public SignInResponse signIn(SignInRequest signInRequest) {
-            Member findMember = memberRepository.findByEmail(signInRequest.getEmail())
-                    .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
-
-            if (!findMember.getMemberPassword().equals(signInRequest.getPassword()))
-                throw new MemberException(MemberPermitErrorCode.SIGNIN_FAILED);
-
-            return new SignInResponse(findMember.getToken());
-        }
+        return Member.builder()
+                .memberSnsId(String.valueOf(kakaoId))
+                .memberNickName(propertyMap.get("nickname"))
+                .socialType(SocialType.KAKAO)
+                .build();
+    }
 }

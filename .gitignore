@@ -215,6 +215,7 @@ gradle-app.setting
 
 ### properties ###
 application-db.yml
+application-kakao.yml
 
 ### QueryDsl ###
 src/main/generated
