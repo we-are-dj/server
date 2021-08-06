@@ -2,7 +2,6 @@ package com.dj.server.api.member.service;
 
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -16,12 +15,12 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpSession;
 
-@RequiredArgsConstructor
+
 @Component
-public class UserArgumentResolver implements HandlerMethodArgumentResolver {
+public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private final MemberService memberService;
+    private MemberService memberService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {

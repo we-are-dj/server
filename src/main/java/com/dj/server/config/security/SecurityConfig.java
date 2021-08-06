@@ -45,7 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * anyRequest().permitAll()
      * 모든 요청에 대하여 (인증된 사용자인지 검사하지 않고) 요청 데이터 등을 반환하도록 설정됨
      *
-     * and().formLogin().disable()
+     * .headers().frameOptions().disable()
+     * X-Frame-Options 비활성화
+     *
+     * formLogin().disable()
      * form based login 비활성화됨
      * (Spring Security auth login 화면 비활성화)
      *
@@ -64,12 +67,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .configurationSource(corsConfigurationSource())
                 .and()
-                .oauth2Login().defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailure")
-                .and()
+              //  .oauth2Login().defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailure")
+              //  .and()
                 .headers().frameOptions().disable()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+               // .and()
+               // .exceptionHandling()
+               // .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")) 로그인 페이지가 없다면 비활성화
                 .and()
                 .formLogin().disable()
                 .csrf().disable();

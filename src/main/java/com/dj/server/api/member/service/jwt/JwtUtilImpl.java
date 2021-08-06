@@ -17,15 +17,24 @@ import java.util.Date;
  */
 @Repository
 public class JwtUtilImpl implements JwtUtil {
-    private final String TEST_SIGN_KEY = "TESTKEY";
-    private final String ISSUER = "TEST_ISSUER";
-    private final Date EXPIRED_TIME = new Date((System.currentTimeMillis() / 1000 / 60) * 10); // 10 mins
+    private final String TEST_SIGN_KEY = "TEST_KEY";
+    private final String ISSUER = "WE_ARE_DJ";
+    private final Date ACCESS_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 10)); // 10 mins
+    private final Date REFRESH_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 60 * 24 * 2)); // 2 weeks
 
     @Override
-    public String createToken() {
+    public String createAccessToken() {
         return JWT.create()
                 .withIssuer(ISSUER)
-                .withExpiresAt(EXPIRED_TIME)
+                .withExpiresAt(ACCESS_EXPIRED_TIME)
+                .sign(Algorithm.HMAC256(TEST_SIGN_KEY));
+    }
+
+    @Override
+    public String createRefreshToken() {
+        return JWT.create()
+                .withIssuer(ISSUER)
+                .withExpiresAt(REFRESH_EXPIRED_TIME)
                 .sign(Algorithm.HMAC256(TEST_SIGN_KEY));
     }
 
@@ -34,7 +43,6 @@ public class JwtUtilImpl implements JwtUtil {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TEST_SIGN_KEY))
                 .withIssuer(ISSUER)
                 .build();
-
         verifier.verify(givenToken);
     }
 }

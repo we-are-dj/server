@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * 유저에 대한 전반적인 비즈니스 로직을 담당합니다.
- * 대표적인 예시로 회원가입, 로그인 등을 처리합니다.
+ * oauth2 인증 회원 정보 가져오기, 회원 정보를 DB에 저장 등을 처리합니다.
  *
  * @author Informix
  * @created 2021-08-04
@@ -35,13 +35,13 @@ public class MemberService {
     private MemberRepository memberRepository;
 
     protected Member getMember(Member member, HttpSession session) {
-        if (member == null) {
+        if (member != null) {
             try {
                 OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
                 Map<String, Object> map = token.getPrincipal().getAttributes();
 
-                member = memberRepository.findByMemberSnsId(member.getMemberSnsId());
-                if (member == null)
+                Member findMember = memberRepository.findByMemberSnsId(member.getMemberSnsId());
+                if (findMember == null)
                     member = memberRepository.save(member);
 
                 session.setAttribute("member", member);
