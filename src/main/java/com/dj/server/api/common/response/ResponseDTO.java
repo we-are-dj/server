@@ -2,6 +2,7 @@ package com.dj.server.api.common.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
  *
  */
 
+@ToString
 @Getter
 @RequiredArgsConstructor
 public class ResponseDTO<T> {
