@@ -2,11 +2,14 @@ plugins {
     id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'java-library' // QueryDSL must have
 }
 
 group = 'com.dj.server'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+
+def querydslVersion = '4.3.1'
 
 configurations {
     compileOnly {
@@ -25,7 +28,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -35,6 +40,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+    //querydsl
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+
 
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -51,7 +64,9 @@ dependencies {
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    runtimeOnly 'com.h2database:h2:1.4.200'
+    testImplementation 'com.h2database:h2:1.4.200'
+//    testImplementation 'com.querydsl:querydsl-jpa'
+//    testImplementation 'com.querydsl:querydsl-apt'
 
 }
 
@@ -64,4 +79,3 @@ jar {
 test {
     useJUnitPlatform()
 }
-

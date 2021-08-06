@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * LB 서버 상태 확인 Controller
+ * LB (로드밸런서) 에서 서버 상태 확인을 하는 Controller
  *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
  */
 
 @Slf4j

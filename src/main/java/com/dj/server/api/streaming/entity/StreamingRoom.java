@@ -9,6 +9,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
+/**
+ *
+ * 스트리밍 방에 대한 Entity
+ *
+ * @author JaeHyun
+ * @created 2021-08-04
+ * @since 0.0.1
+ *
+ */
+
 @Getter
 @NoArgsConstructor
 @Table
