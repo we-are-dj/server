@@ -1,9 +1,11 @@
-package com.dj.server.api.member.dto;
+package com.dj.server.api.member.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Getter
 public class MemberResponseDTO {
 

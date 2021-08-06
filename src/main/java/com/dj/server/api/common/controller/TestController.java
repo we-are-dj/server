@@ -1,21 +1,26 @@
 package com.dj.server.api.common.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.member.dto.MemberResponseDTO;
+import com.dj.server.api.member.dto.request.MemberTestRequestDTO;
+import com.dj.server.api.member.dto.response.MemberResponseDTO;
 import com.dj.server.exception.member.MemberCrudErrorCode;
 import com.dj.server.exception.member.MemberException;
 import com.dj.server.exception.member.MemberPermitErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * CORS를 테스트하기 위하여 만들어진 컨트롤러
+ * 각종 테스트를 위한 테스트 컨트롤러
  *
- * @author Informix
+ * @author Informix, JaeHyun
  * @created 2021-08-03
+ * @update 2021-08-06
  * @since 0.0.1
  */
+
+@Slf4j
 @RestController
 public class TestController {
 
@@ -62,4 +67,21 @@ public class TestController {
     public String sendCrudError() {
         throw new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER);
     }
+
+
+    /**
+     *
+     * aop 로그 확인을 위한 테스트 컨트롤러
+     *
+     * @param memberTestRequestDTO
+     * @return
+     */
+    @GetMapping("/test-aop/get")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ResponseDTO<MemberResponseDTO>> testAop(@RequestBody MemberTestRequestDTO memberTestRequestDTO) {
+        return new ResponseEntity<>(new ResponseDTO<>(MemberResponseDTO.builder().memberSnsId(memberTestRequestDTO.getMemberSnsId())
+                .nickName(memberTestRequestDTO.getNickName()).build(), "SUCCESS"), HttpStatus.OK);
+    }
+
+
 }
