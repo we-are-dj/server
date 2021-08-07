@@ -4,5 +4,4 @@ import java.util.Optional;
 
 public interface MemberQueryDSLRepository {
     Member findByMemberNickName(String nickName);
-    Member findByMemberSnsId(String memberSnsId);
 }

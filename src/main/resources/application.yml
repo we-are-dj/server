@@ -5,4 +5,4 @@ spring:
   profiles:
     include:
       - db # db 설정
-      - kakao # kakao 설정
+      - oauth2 # kakao 설정

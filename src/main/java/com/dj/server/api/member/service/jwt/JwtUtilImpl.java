@@ -21,11 +21,18 @@ import java.util.Date;
  * @created 2021-08-04
  * @since 0.0.1
  */
+
 @Repository
 public class JwtUtilImpl implements JwtUtil {
     private final String ISSUER = "WE_ARE_DJ";
     private final Date ACCESS_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 10)); // 10 mins
     private final Date REFRESH_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 60 * 24 * 2)); // 2 weeks
+
+    private Member member;
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 
     @Override
     public String createAccessToken() {

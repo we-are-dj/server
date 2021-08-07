@@ -18,13 +18,4 @@ public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport impl
                 .where(member.memberNickName.eq(nickName))
                 .fetchOne();
     }
-
-    @Override
-    public Member findByMemberSnsId(String memberSnsId) {
-        final QMember member = QMember.member;
-
-        return from(member)
-                .where(member.memberSnsId.eq(memberSnsId))
-                .fetchOne();
-    }
 }

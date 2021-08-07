@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  *
  * 회원 Repository
@@ -15,4 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberQueryDSLRepository {
+
+    Optional<Member> findByMemberSnsId(String memberSnsId);
+
 }

@@ -65,6 +65,9 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
+    @Column
+    private String memberName;
+
     @Builder
     public Member(String memberSnsId, MemberRole memberRole, SocialType socialType) {
         this.memberSnsId = memberSnsId;
@@ -74,6 +77,16 @@ public class Member {
 
     public void updateNickName(String nickName) {
         this.memberNickName = nickName;
+    }
+
+    public Member updateName(String name) {
+        this.memberName = name;
+        return this;
+    }
+
+    public Member saveRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        return this;
     }
 
 }
