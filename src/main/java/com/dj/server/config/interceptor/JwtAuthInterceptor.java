@@ -36,7 +36,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
          *
          * @since 0.0.1
          */
-        if (request.getHeader(ACCESS_TOKEN_KEY) != null) {
+       /* if (request.getHeader(ACCESS_TOKEN_KEY) != null) {
             String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
             jwtUtil.verifyToken(accessToken);
             return true;
@@ -45,7 +45,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             // throw new MemberException(MemberPermitErrorCode.NOT_GRANTED);
             // return false;
         }
-
+        */
         return true;
     }
 

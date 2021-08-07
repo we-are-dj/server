@@ -62,6 +62,7 @@ dependencies {
     // auth0 JWT
     implementation 'com.auth0:java-jwt:3.18.1'
 
+    implementation 'com.h2database:h2:1.4.200'
 
     //test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

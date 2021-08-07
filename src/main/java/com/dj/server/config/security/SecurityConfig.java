@@ -58,16 +58,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .anyRequest().authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .cors()
-                .configurationSource(corsConfigurationSource())
-                .and()
+           //     .cors()
+           //     .configurationSource(corsConfigurationSource())
+           //     .and()
               //  .oauth2Login().defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailure")
               //  .and()
-                .headers().frameOptions().disable()
+           //     .headers().frameOptions().disable()
                // .and()
                // .exceptionHandling()
                // .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")) 로그인 페이지가 없다면 비활성화
-                .and()
+            //    .and()
                 .formLogin().disable()
                 .csrf().disable();
     }
