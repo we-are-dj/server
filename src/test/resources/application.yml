@@ -14,24 +14,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          kakao:
-            authorization-grant-type: authorization_code
-            client-id: 123213 # REST-API-KEY
-            client-secret: 2340234 # 클라이언트 시크릿 기능을 활성화했다면 필요하지만 비활성화한다면 제거해도 됨
-            redirect-uri: "{baseUrl}/login/oauth2/code/kakao/{registrationId}" # http://localhost:8080/login/oauth2/code/kakao
-            client-authentication-method: POST
-            client-name: Kakao
-            scope:
-              - profile # profile_image, profile_nickname를 포함한다.
-              # - account_email
 
-        provider:
-          kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
-            user-info-uri: https://kapi.kakao.com/v2/user/me
-            user-name-attribute: id
+client-id: test # KAKAO-REST-API-KEY
+client-secret: test # 클라이언트 시크릿 기능 활성화 후 사용
+redirect-uri: 'http://localhost:8080/login/oauth2/kakao'
+authorization-grant-type: test
