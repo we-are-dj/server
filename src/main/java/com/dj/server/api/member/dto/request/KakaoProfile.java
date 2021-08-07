@@ -26,6 +26,7 @@ public class KakaoProfile {
         return Member.builder()
                 .memberSnsId(String.valueOf(id))
                 .memberNickName(kakao_account.getProfile().getNickname())
+                .memberName(kakao_account.getProfile().getNickname())
                 .memberRole(MemberRole.USER)
                 .socialType(SocialType.KAKAO)
                 .build();

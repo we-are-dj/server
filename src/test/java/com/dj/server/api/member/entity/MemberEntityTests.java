@@ -92,7 +92,7 @@ public class MemberEntityTests {
     public void confirmMemberCreateDate() {
 
         Member member = memberRepository.findAll().get(0);
-        assertThat(member.getCreatedAt()).isNotNull();
+        assertThat(member.getCreateAt()).isNotNull();
     }
 
 }
