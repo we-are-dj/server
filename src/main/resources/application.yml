@@ -5,3 +5,4 @@ spring:
   profiles:
     include:
       - db # db 설정
+      - oauth2 # oauth2 설정
