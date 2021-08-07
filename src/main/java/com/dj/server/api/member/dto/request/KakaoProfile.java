@@ -5,9 +5,12 @@ import com.dj.server.api.member.entity.MemberRole;
 import com.dj.server.api.member.entity.SocialType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
-@Getter @ToString
+@Getter
+@Setter
+@ToString
 public class KakaoProfile {
 
     private final Long id;

@@ -3,6 +3,8 @@ package com.dj.server.api.common.response;
 
 import com.dj.server.WeAreDjApplication;
 import com.dj.server.api.common.controller.TestController;
+import com.dj.server.api.member.KakaoRequest;
+import com.dj.server.api.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,9 +29,16 @@ public class ResponseDTOTests {
 
     private MockMvc mockMvc;
 
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private KakaoRequest kakaoRequest;
+
+
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new TestController()).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new TestController(memberService, kakaoRequest)).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
     }
 
     @Test

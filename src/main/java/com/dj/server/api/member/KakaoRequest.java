@@ -1,39 +1,45 @@
 package com.dj.server.api.member;
 
 import com.dj.server.api.member.dto.request.KakaoProfile;
+import com.dj.server.api.member.dto.request.KakaoToken;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @Getter
+@Component
 public class KakaoRequest {
 
-    @Value("${spring.profiles.authorization-grant-type}")
+    @Value("${authorization-grant-type}")
     private String grantType;
 
-    @Value("${spring.profiles.client-id}")
+    @Value("${client-id}")
     private String clientId;
 
-    @Value("${spring.profiles.includes.client-secret}")
+    @Value("${client-secret}")
     private String clientSecret;
 
-    @Value("${spring.profiles.redirect-uri}")
+    @Value("${redirect-url}")
     private String redirectUri;
 
-    public String getAccessToken(String code) {
+    public KakaoToken getAccessToken(String code) {
 
         HttpHeaders header = new HttpHeaders();
 
         header.add("Content-type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        body.add("grant_type", getGrantType());
-        body.add("client_id", getClientId());
-        body.add("redirect_uri", getRedirectUri());
+        body.add("grant_type", this.grantType);
+        body.add("client_id", this.clientId );
+        body.add("redirect_uri", this.redirectUri);
         body.add("code", code);
+//        body.add("client_secret", this.clientSecret);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, header);
         RestTemplate rt = new RestTemplate();
@@ -43,28 +49,34 @@ public class KakaoRequest {
         return rt.postForObject(
                 "https://kauth.kakao.com/oauth/token",
                 kakaoTokenRequest,
-                String.class
+                KakaoToken.class
         );
     }
 
-    public KakaoProfile getKakaoProfile(String accessToken) {
+    public KakaoProfile getKakaoProfile(KakaoToken kakaoToken) {
 
-        final String authorizationValue = "Bearer " + accessToken;
+        final String authorizationValue = "Bearer " + kakaoToken.getAccess_token();
 
         HttpHeaders header = new HttpHeaders();
 
 
-        header.add("Content-type", "application-x-www-form-urlencoded;charset=utf-8");
+        header.add("Content-type", MediaType.APPLICATION_FORM_URLENCODED_VALUE + ";charset=UTF-8");
         header.add("Authorization", authorizationValue);
 
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(header);
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+//        body.add("client_secret", this.clientSecret);
+
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, header);
         RestTemplate rt = new RestTemplate();
 
-        return rt.postForObject(
-                "https://kauth.kakao.com/oauth/token",
+        KakaoProfile kakaoProfile = rt.postForObject(
+                "https://kapi.kakao.com/v2/user/me",
                 kakaoTokenRequest,
-                KakaoProfile.class
-        );
+                KakaoProfile.class);
+
+        log.info(kakaoProfile.toString());
+
+        return kakaoProfile;
 
 
     }

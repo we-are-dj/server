@@ -3,19 +3,18 @@ package com.dj.server.api.common.controller;
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.member.KakaoRequest;
 import com.dj.server.api.member.dto.request.KakaoProfile;
+import com.dj.server.api.member.dto.request.KakaoToken;
 import com.dj.server.api.member.dto.request.MemberTestRequestDTO;
 import com.dj.server.api.member.dto.response.MemberResponseDTO;
 import com.dj.server.api.member.dto.response.ResponseTokenDTO;
-import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRepository;
 import com.dj.server.api.member.service.MemberService;
-import com.dj.server.api.member.service.jwt.JwtUtil;
 import com.dj.server.exception.member.MemberCrudErrorCode;
 import com.dj.server.exception.member.MemberException;
 import com.dj.server.exception.member.MemberPermitErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -33,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 public class TestController {
 
     private final MemberService memberService;
+    private final KakaoRequest kakaoRequest;
 
     @PostMapping(value = {"/test-cors/post"})
     @ResponseStatus(HttpStatus.OK)
@@ -80,7 +80,6 @@ public class TestController {
 
 
     /**
-     *
      * aop 로그 확인을 위한 테스트 컨트롤러
      *
      * @param memberTestRequestDTO
@@ -96,9 +95,8 @@ public class TestController {
 
     @GetMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> getKakaoAuthCodeAndsendToken(@RequestParam("code") String code) {
-        KakaoRequest req = new KakaoRequest();
-        String accessToken = req.getAccessToken(code);
-        KakaoProfile kakaoProfile = req.getKakaoProfile(accessToken);
+        KakaoToken kakaoToken = kakaoRequest.getAccessToken(code);
+        KakaoProfile kakaoProfile = kakaoRequest.getKakaoProfile(kakaoToken);
 
         // jwt
         // 우리 서버가 생성한 jwt 토큰 두개를 같이 멤버에 넣어서 반환
