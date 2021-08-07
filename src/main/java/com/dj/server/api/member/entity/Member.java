@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  *
@@ -41,16 +40,22 @@ public class Member {
     @Column(length = 45, unique = true)
     private String memberNickName;
 
-
     @NotNull
     @ColumnDefault("0")
     @Column
     private boolean memberSts;
 
+    @Column
+    private String refreshToken;
+
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column
     private MemberRole memberRole;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
 
     @Column
     @CreationTimestamp
@@ -60,15 +65,30 @@ public class Member {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
+    @Column
+    private String memberName;
+
     @Builder
-    public Member(String memberSnsId, String memberNickName, MemberRole memberRole) {
+    public Member(String memberSnsId, String memberNickName, MemberRole memberRole, SocialType socialType) {
         this.memberSnsId = memberSnsId;
         this.memberNickName = memberNickName;
         this.memberRole = memberRole;
+        this.socialType = socialType;
     }
+
 
     public void updateNickName(String nickName) {
         this.memberNickName = nickName;
+    }
+
+    public Member updateName(String name) {
+        this.memberName = name;
+        return this;
+    }
+
+    public Member saveRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        return this;
     }
 
 }
