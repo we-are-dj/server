@@ -46,12 +46,8 @@ public class MemberService {
     @Transactional(rollbackFor = RuntimeException.class)
     public ResponseTokenDTO getToken(KakaoProfile profile) {
 
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        Map<String, Object> map = token.getPrincipal().getAttributes();
-
-
         Member member = memberRepository.findByMemberSnsId(String.valueOf(profile.getId()))
-                .map(entity -> entity.updateName(profile.getKakaoAccount().getProfile().getNickname()))
+                .map(entity -> entity.updateName(profile.getKakao_account().getProfile().getNickname()))
                 .orElse(profile.toEntity());
 
         memberRepository.save(member);

@@ -1,18 +1,20 @@
 package com.dj.server.api.member.dto.request;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@ToString
 @Getter
-@RequiredArgsConstructor
+@Setter
+@NoArgsConstructor
 public class KakaoAccount {
 
-    private final Profile profile;
+    private Profile profile;
 
+    @ToString
     @Getter
-    @RequiredArgsConstructor
+    @Setter
+    @NoArgsConstructor
     public static class Profile {
-        private final String nickname;
+        private String nickname;
     }
 }

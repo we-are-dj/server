@@ -5,7 +5,9 @@ import com.dj.server.api.member.dto.request.KakaoToken;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -36,7 +38,7 @@ public class KakaoRequest {
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", this.grantType);
-        body.add("client_id", this.clientId );
+        body.add("client_id", this.clientId);
         body.add("redirect_uri", this.redirectUri);
         body.add("code", code);
 //        body.add("client_secret", this.clientSecret);
@@ -64,21 +66,18 @@ public class KakaoRequest {
         header.add("Authorization", authorizationValue);
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-//        body.add("client_secret", this.clientSecret);
+        //body.add("client_secret", this.clientSecret);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, header);
-        RestTemplate rt = new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
 
-        KakaoProfile kakaoProfile = rt.postForObject(
+
+
+
+        return restTemplate.postForObject(
                 "https://kapi.kakao.com/v2/user/me",
                 kakaoTokenRequest,
                 KakaoProfile.class);
-
-        log.info(kakaoProfile.toString());
-
-        return kakaoProfile;
-
-
     }
 
 }
