@@ -1,7 +1,8 @@
 package com.dj.server.api.common.response;
 
 
-import com.dj.server.api.common.controller.TestController;
+import com.dj.server.test.controller.KakaoOauth2Controller;
+import com.dj.server.test.controller.ResponseController;
 import com.dj.server.api.member.dto.request.KakaoRequest;
 import com.dj.server.api.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(controllers = TestController.class)
+@WebMvcTest(controllers = ResponseController.class)
 public class ResponseDTOTests {
 
     private MockMvc mockMvc;
@@ -32,7 +33,7 @@ public class ResponseDTOTests {
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new TestController(memberService, kakaoRequest)).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new KakaoOauth2Controller(memberService, kakaoRequest)).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
     }
 
     @Test

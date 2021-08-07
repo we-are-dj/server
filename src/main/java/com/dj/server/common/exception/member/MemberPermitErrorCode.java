@@ -1,4 +1,4 @@
-package com.dj.server.exception.member;
+package com.dj.server.common.exception.member;
 
 import org.springframework.http.HttpStatus;
 

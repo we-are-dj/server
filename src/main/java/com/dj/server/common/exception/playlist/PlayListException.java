@@ -1,10 +1,10 @@
-package com.dj.server.exception.playlist;
+package com.dj.server.common.exception.playlist;
 
 
 /**
  * 서버 실행중 발생하는 PlayList Entity와 관련된 에러를 예외처리하기 위한 클래스.
  *
- * @see MemberErrorCode
+ * @see com.dj.server.common.exception.member.MemberErrorCode
  * @author Informix
  * @created 2021-08-03 Tue
  */

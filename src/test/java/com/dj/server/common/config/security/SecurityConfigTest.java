@@ -1,7 +1,6 @@
-package com.dj.server.config.security;
+package com.dj.server.common.config.security;
 
 import com.dj.server.WeAreDjApplication;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

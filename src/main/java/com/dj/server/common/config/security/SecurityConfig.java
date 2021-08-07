@@ -1,4 +1,4 @@
-package com.dj.server.config.security;
+package com.dj.server.common.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,9 +9,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * WebSecurityConfigurerAdapter를 상속받고

@@ -1,11 +1,10 @@
 
-package com.dj.server.config.interceptor;
+package com.dj.server.common.interceptor;
 
-import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
 import com.dj.server.api.member.service.jwt.JwtUtil;
-import com.dj.server.exception.member.MemberException;
-import com.dj.server.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.MemberException;
+import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;

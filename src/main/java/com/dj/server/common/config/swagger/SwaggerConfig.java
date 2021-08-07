@@ -1,4 +1,4 @@
-package com.dj.server.config.swagger;
+package com.dj.server.common.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

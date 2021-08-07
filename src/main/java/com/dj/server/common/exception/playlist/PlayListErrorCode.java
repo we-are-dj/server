@@ -1,4 +1,4 @@
-package com.dj.server.exception.playlist;
+package com.dj.server.common.exception.playlist;
 
 import org.springframework.http.HttpStatus;
 /**

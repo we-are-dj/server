@@ -1,4 +1,4 @@
-package com.dj.server.exception.member;
+package com.dj.server.common.exception.member;
 
 /**
  * 서버 실행중 발생하는 Member Entity와 관련된 에러를 예외처리하기 위한 클래스.

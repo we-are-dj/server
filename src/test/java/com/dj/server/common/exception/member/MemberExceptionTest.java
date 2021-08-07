@@ -1,9 +1,8 @@
-package com.dj.server.exception.member;
+package com.dj.server.common.exception.member;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
 import com.dj.server.api.member.entity.MemberRole;
-import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -12,10 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.persistence.PersistenceException;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
