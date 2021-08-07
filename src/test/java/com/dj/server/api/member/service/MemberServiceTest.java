@@ -1,7 +1,7 @@
-/*
+
 package com.dj.server.api.member.service;
 
-import com.dj.server.api.member.controller.MemberController;
+import com.dj.server.test.controller.CorsController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class MemberServiceTest {
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new MemberController()).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new CorsController()).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
         this.mockHttpServletRequestBuilder = MockMvcRequestBuilders.get("/signIn").header("memberEmail", "find1086@gmail.com");
     }
 
@@ -34,4 +34,3 @@ class MemberServiceTest {
     }
     
 }
-*/
