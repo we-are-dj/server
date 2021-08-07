@@ -30,7 +30,7 @@ public class KakaoRequest {
     @Value("${redirect-url}")
     private String redirectUri;
 
-    public KakaoToken getAccessToken(String code) {
+    public KakaoToken getAccessToken(String code, String url) {
 
         HttpHeaders header = new HttpHeaders();
 
@@ -39,7 +39,7 @@ public class KakaoRequest {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", this.grantType);
         body.add("client_id", this.clientId);
-        body.add("redirect_uri", this.redirectUri);
+        body.add("redirect_uri", url);
         body.add("code", code);
 //        body.add("client_secret", this.clientSecret);
 

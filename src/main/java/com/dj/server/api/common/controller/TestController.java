@@ -93,9 +93,9 @@ public class TestController {
     }
 
 
-    @GetMapping("/login/oauth2/kakao")
-    public ResponseDTO<ResponseTokenDTO> getKakaoAuthCodeAndsendToken(@RequestParam("code") String code) {
-        KakaoToken kakaoToken = kakaoRequest.getAccessToken(code);
+    @PostMapping("/login/oauth2/kakao")
+    public ResponseDTO<ResponseTokenDTO> getKakaoAuthCodeAndsendToken(@RequestParam("code") String code, @RequestParam("redirect_url") String url) {
+        KakaoToken kakaoToken = kakaoRequest.getAccessToken(code, url);
         KakaoProfile kakaoProfile = kakaoRequest.getKakaoProfile(kakaoToken);
 
         // jwt
