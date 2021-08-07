@@ -1,4 +1,4 @@
-package com.dj.server.api.member;
+package com.dj.server.api.member.dto.request;
 
 import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.dto.request.KakaoToken;
@@ -27,7 +27,7 @@ public class KakaoRequest {
     @Value("${client-secret}")
     private String clientSecret;
 
-    @Value("${redirect-url}")
+    @Value("${redirect-uri}")
     private String redirectUri;
 
     public KakaoToken getAccessToken(String code) {
@@ -45,8 +45,6 @@ public class KakaoRequest {
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, header);
         RestTemplate rt = new RestTemplate();
-
-        System.out.println(kakaoTokenRequest);
 
         return rt.postForObject(
                 "https://kauth.kakao.com/oauth/token",
@@ -70,9 +68,6 @@ public class KakaoRequest {
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(body, header);
         RestTemplate restTemplate = new RestTemplate();
-
-
-
 
         return restTemplate.postForObject(
                 "https://kapi.kakao.com/v2/user/me",
