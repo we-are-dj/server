@@ -1,14 +1,21 @@
 package com.dj.server.api.common.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
+import com.dj.server.api.member.KakaoRequest;
+import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.dto.request.MemberTestRequestDTO;
 import com.dj.server.api.member.dto.response.MemberResponseDTO;
+import com.dj.server.api.member.dto.response.ResponseTokenDTO;
+import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.member.entity.MemberRepository;
+import com.dj.server.api.member.service.MemberService;
+import com.dj.server.api.member.service.jwt.JwtUtil;
 import com.dj.server.exception.member.MemberCrudErrorCode;
 import com.dj.server.exception.member.MemberException;
 import com.dj.server.exception.member.MemberPermitErrorCode;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -83,5 +90,16 @@ public class TestController {
                 .nickName(memberTestRequestDTO.getNickName()).build(), "SUCCESS"), HttpStatus.OK);
     }
 
+
+    @GetMapping("/login/oauth2/kakao")
+    public ResponseDTO<ResponseTokenDTO> getKakaoAuthCodeAndsendToken(@RequestParam("code") String code) {
+        KakaoRequest req = new KakaoRequest();
+        String accessToken = req.getAccessToken(code);
+        KakaoProfile kakaoProfile = req.getKakaoProfile(accessToken);
+
+        // jwt
+        // 우리 서버가 생성한 jwt 토큰 두개를 같이 멤버에 넣어서 반환
+        return new ResponseDTO<>(memberService.getToken(kakaoProfile), "SUCCESS");
+    }
 
 }

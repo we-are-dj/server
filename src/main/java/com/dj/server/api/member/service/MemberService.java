@@ -1,9 +1,14 @@
 package com.dj.server.api.member.service;
 
+import com.dj.server.api.member.dto.request.KakaoProfile;
+import com.dj.server.api.member.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
+import com.dj.server.api.member.entity.MemberRole;
 import com.dj.server.api.member.entity.SocialType;
 import com.dj.server.api.member.service.jwt.JwtUtil;
+import com.dj.server.exception.member.MemberCrudErrorCode;
+import com.dj.server.exception.member.MemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,34 +36,34 @@ public class MemberService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    protected Member getMember(Member member, HttpSession session) {
-        if (member != null) {
-            try {
-                OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-                Map<String, Object> map = token.getPrincipal().getAttributes();
+    @Transactional(rollbackFor = RuntimeException.class)
+    public ResponseTokenDTO getToken(KakaoProfile profile) {
 
-                Member findMember = memberRepository.findByMemberSnsId(member.getMemberSnsId());
-                if (findMember == null)
-                    member = memberRepository.save(member);
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> map = token.getPrincipal().getAttributes();
 
-                session.setAttribute("member", member);
-            } catch (ClassCastException ex) {
-                return member;
-            }
-        }
-        return member;
+
+        Member member = memberRepository.findByMemberSnsId(String.valueOf(profile.getId()))
+                .map(entity -> entity.updateName(profile.getKakaoAccount().getProfile().getNickname()))
+                .orElse(profile.toEntity());
+
+        memberRepository.save(member);
+
+        return createToken(member);
     }
 
-    private Member getKaKaoProfile(Long kakaoId, Map<String, Object> map) {
-        Map<String, String> propertyMap = (HashMap<String, String>) map.get("properties");
+    private ResponseTokenDTO createToken(Member member) { // 업데이트
+        jwtUtil.setMember(member);
 
-        return Member.builder()
-                .memberSnsId(String.valueOf(kakaoId))
-                .memberNickName(propertyMap.get("nickname"))
-                .socialType(SocialType.KAKAO)
-                .build();
+        String accessToken = jwtUtil.createAccessToken();
+        String refreshToken = jwtUtil.createRefreshToken();
+
+        member.saveRefreshToken(refreshToken);
+
+        return new ResponseTokenDTO(accessToken, refreshToken);
     }
+
+
 }

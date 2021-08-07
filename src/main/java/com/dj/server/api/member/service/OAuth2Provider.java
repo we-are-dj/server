@@ -1,3 +1,4 @@
+/*
 package com.dj.server.api.member.service;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +25,6 @@ public enum OAuth2Provider {
         }
     };
 
-
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private static String kakaoRedirectUri;
 
@@ -38,3 +38,4 @@ public enum OAuth2Provider {
 
     public abstract ClientRegistration.Builder getBuilder(String registrationId);
 }
+*/

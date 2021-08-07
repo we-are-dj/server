@@ -1,9 +1,9 @@
+
 package com.dj.server.config.interceptor;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
 import com.dj.server.api.member.service.jwt.JwtUtil;
-import com.dj.server.exception.member.MemberCrudErrorCode;
 import com.dj.server.exception.member.MemberException;
 import com.dj.server.exception.member.MemberPermitErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     @Autowired
     private MemberRepository memberRepository;
 
-    private final String HEADER_TOKEN_KEY = "token";
+    private final String ACCESS_TOKEN_KEY = "access_token";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -36,11 +36,10 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
          *
          * @since 0.0.1
          */
-        if (request.getHeader("memberSnsId") != null) {
-            String memberSnsId = request.getHeader("memberSnsId");
-            Member member = memberRepository.findByMemberSnsId(memberSnsId);
-            String givenToken = request.getHeader(HEADER_TOKEN_KEY);
-            verifyToken(givenToken, member.getRefreshToken());
+        if (request.getHeader(ACCESS_TOKEN_KEY) != null) {
+            String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
+            jwtUtil.verifyToken(accessToken);
+            return true;
         } else {
             // log.error("해당 사용자는 로그인이 되어 있지 않음");
             // throw new MemberException(MemberPermitErrorCode.NOT_GRANTED);
@@ -50,7 +49,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private void verifyToken(String givenToken, String membersToken) {
+    private void verifyRefreshToken(String givenToken, String membersToken) {
         if (!givenToken.equals(membersToken)) {
             throw new MemberException(MemberPermitErrorCode.TOKEN_MISMATCH);
         }

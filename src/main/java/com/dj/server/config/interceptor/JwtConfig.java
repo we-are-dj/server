@@ -1,12 +1,8 @@
 package com.dj.server.config.interceptor;
 
-import com.dj.server.api.member.service.MemberArgumentResolver;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 /**
  * Jwt 인증을 감시하는 인터셉터의 설정 및
@@ -33,9 +29,10 @@ public class JwtConfig implements WebMvcConfigurer {
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }
 
-    @Override
+
+/*   @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MemberArgumentResolver());
-    }
+    }*/
 
 }

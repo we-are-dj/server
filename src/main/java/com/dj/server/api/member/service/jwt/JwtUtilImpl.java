@@ -3,7 +3,13 @@ package com.dj.server.api.member.service.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.member.entity.MemberRepository;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -17,7 +23,6 @@ import java.util.Date;
  */
 @Repository
 public class JwtUtilImpl implements JwtUtil {
-    private final String TEST_SIGN_KEY = "TEST_KEY";
     private final String ISSUER = "WE_ARE_DJ";
     private final Date ACCESS_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 10)); // 10 mins
     private final Date REFRESH_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 60 * 24 * 2)); // 2 weeks
@@ -27,7 +32,7 @@ public class JwtUtilImpl implements JwtUtil {
         return JWT.create()
                 .withIssuer(ISSUER)
                 .withExpiresAt(ACCESS_EXPIRED_TIME)
-                .sign(Algorithm.HMAC256(TEST_SIGN_KEY));
+                .sign(Algorithm.HMAC256(member.getMemberId() + ""));
     }
 
     @Override
@@ -35,12 +40,12 @@ public class JwtUtilImpl implements JwtUtil {
         return JWT.create()
                 .withIssuer(ISSUER)
                 .withExpiresAt(REFRESH_EXPIRED_TIME)
-                .sign(Algorithm.HMAC256(TEST_SIGN_KEY));
+                .sign(Algorithm.HMAC256(member.getMemberId() + ""));
     }
 
     @Override
     public void verifyToken(String givenToken) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(TEST_SIGN_KEY))
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(member.getMemberId() + ""))
                 .withIssuer(ISSUER)
                 .build();
         verifier.verify(givenToken);

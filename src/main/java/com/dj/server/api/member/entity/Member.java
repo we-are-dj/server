@@ -66,9 +66,8 @@ public class Member {
     private LocalDateTime updateAt;
 
     @Builder
-    public Member(String memberSnsId, String memberNickName, MemberRole memberRole, SocialType socialType) {
+    public Member(String memberSnsId, MemberRole memberRole, SocialType socialType) {
         this.memberSnsId = memberSnsId;
-        this.memberNickName = memberNickName;
         this.memberRole = memberRole;
         this.socialType = socialType;
     }

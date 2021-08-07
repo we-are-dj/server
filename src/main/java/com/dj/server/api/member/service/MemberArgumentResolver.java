@@ -1,8 +1,9 @@
+/*
+
 package com.dj.server.api.member.service;
 
-
+import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.entity.Member;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,8 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest().getSession();
-        Member member = (Member) session.getAttribute("member");
-        return memberService.getMember(member, session);
+        KakaoProfile kakaoProfile = (KakaoProfile) session.getAttribute("카카오에서 반환된 프로릴");
+        return memberService.getMember(kakaoProfile);
     }
 }
+*/

@@ -1,5 +1,6 @@
 package com.dj.server.api.member.service.jwt;
 
+import com.dj.server.api.member.entity.Member;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,4 +16,5 @@ public interface JwtUtil {
     String createAccessToken();
     String createRefreshToken();
     void verifyToken(String givenToken);
+    void setMember(Member member);
 }
