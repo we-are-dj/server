@@ -47,26 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.authorizeRequests()
-                // .antMatchers("/put").hasAnyRole("ADMIN")
-                // .antMatchers("/", "/oauth2/**", "/login/**", "/css/**",
-                //        "/images/**", "/js/**", "/console/**").permitAll()
+        httpSecurity.csrf().disable()
+                .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                // .anyRequest().authenticated()
                 .anyRequest().permitAll()
                 .and()
-           //     .cors()
-           //     .configurationSource(corsConfigurationSource())
-           //     .and()
-              //  .oauth2Login().defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailure")
-              //  .and()
-           //     .headers().frameOptions().disable()
-               // .and()
-               // .exceptionHandling()
-               // .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")) 로그인 페이지가 없다면 비활성화
-            //    .and()
-                .formLogin().disable()
-                .csrf().disable();
+                .formLogin()
+                .disable();
     }
 
     /**
