@@ -44,10 +44,13 @@ public class LoggingAop {
 
         log.info("Class ==> {}, method ==> {}", className, methodName);
 
+        logBuilder.append("class:").append(className).append(", method:").append(methodName);
+
         //들어온 값들 로그 남기기
         for(Object object : proceedingJoinPoint.getArgs()) {
-            log.info("Request Data ==> {}", object);
+            logBuilder.append(object);
         }
+        log.info(logBuilder.toString());
 
         //원래 실행해야 하는 메소드 실행
         Object object = proceedingJoinPoint.proceed();
