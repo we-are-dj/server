@@ -1,8 +1,7 @@
 
 package com.dj.server.common.interceptor;
 
-import com.dj.server.api.member.entity.MemberRepository;
-import com.dj.server.api.member.service.jwt.JwtUtil;
+import com.dj.server.common.jwt.JwtClass;
 import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import lombok.extern.slf4j.Slf4j;
@@ -16,24 +15,21 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtClass jwtClass;
 
-    @Autowired
-    private MemberRepository memberRepository;
-
-    private final String ACCESS_TOKEN_KEY = "access_token";
+    // private final String ACCESS_TOKEN_KEY = "access_token";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
+
         /**
-         * if (request.getHeader("memberSnsId") != null)
-         * 로그인이 필요한 상황이 왔을 때, 반드시 null이 아니어야 하며 null이라면 NPE 에러가 발생하므로
-         * 여기에 해당하는 예외처리가 필요할 수 있다.
-         * 카카오 로그인을 당분간 사용할 계획이지만 kakao 고유아이디 (memberSnsId) 는 아직
-         * header에 담아서 보내며 개발하기 힘들기 때문에, 이 때문에 발생하는 NPE 에러를 무시하기 위해 else 를 주석처리함
+         *  if (request.getHeader(ACCESS_TOKEN_KEY) != null)
+         *  로그인된 유저일 경우 해당 조건문을 수행.
          *
-         * @since 0.0.1
+         *  로그인이 되어 있지 않다면 로그인을 해달라고 요청해야 한다.
+         *
+         *  @since 0.0.1
          */
        /* if (request.getHeader(ACCESS_TOKEN_KEY) != null) {
             String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
@@ -53,6 +49,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             throw new MemberException(MemberPermitErrorCode.TOKEN_MISMATCH);
         }
 
-        jwtUtil.verifyToken(givenToken);
+        jwtClass.verifyToken(givenToken);
     }
 }

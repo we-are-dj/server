@@ -4,7 +4,7 @@ import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
-import com.dj.server.api.member.service.jwt.JwtUtil;
+import com.dj.server.common.jwt.JwtClass;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 유저에 대한 전반적인 비즈니스 로직을 담당합니다.
- * oauth2 인증 회원 정보 가져오기, 회원 정보를 DB에 저장 등을 처리합니다.
+ * oauth2로부터 인증된 회원의 정보 가져오기, 회원 정보를 DB에 저장 등을 처리합니다.
  *
  * @author Informix
  * @created 2021-08-04
@@ -23,8 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
-    private final JwtUtil jwtUtil;
-
+    private final JwtClass jwtClass;
     private final MemberRepository memberRepository;
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -39,11 +38,10 @@ public class MemberService {
         return createToken(member);
     }
 
-    private ResponseTokenDTO createToken(Member member) { // 업데이트
-        jwtUtil.setMember(member);
+    private ResponseTokenDTO createToken(Member member) {
 
-        String accessToken = jwtUtil.createAccessToken();
-        String refreshToken = jwtUtil.createRefreshToken();
+        String accessToken = jwtClass.createAccessToken();
+        String refreshToken = jwtClass.createRefreshToken();
 
         member.saveRefreshToken(refreshToken);
 
