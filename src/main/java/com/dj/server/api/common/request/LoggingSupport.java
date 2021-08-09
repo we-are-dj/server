@@ -4,6 +4,7 @@ package com.dj.server.api.common.request;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,12 +21,15 @@ import java.util.List;
  */
 
 
+@Setter
 @Getter
-@RequiredArgsConstructor
 @Component
 public class LoggingSupport<T> {
 
     private final List<T> data = new ArrayList<>();
+    private String className;
+    private String methodName;
+
 
     @Override
     public String toString() {

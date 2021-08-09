@@ -48,7 +48,8 @@ public class LoggingAop {
         String className = proceedingJoinPoint.getTarget().getClass().getName();
         String methodName = proceedingJoinPoint.getSignature().getName();
 
-        loggingSupport.getData().add("className:" + className + "," + "method:" + methodName);
+        loggingSupport.setClassName(className);
+        loggingSupport.setMethodName(methodName);
 
         //들어온 값들 로그 남기기
         for(Object object : proceedingJoinPoint.getArgs()) {
@@ -58,7 +59,7 @@ public class LoggingAop {
 
         //원래 실행해야 하는 메소드 실행
         Object object = proceedingJoinPoint.proceed();
-
+        
         log.info(object.toString());
 
         return object;
