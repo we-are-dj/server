@@ -1,5 +1,7 @@
 package com.dj.server.common.aop;
 
+import com.dj.server.api.common.request.LoggingSupport;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -18,9 +20,13 @@ import org.springframework.stereotype.Component;
  */
 
 @Slf4j
+@RequiredArgsConstructor
 @Aspect
 @Component
 public class LoggingAop {
+
+
+    private final LoggingSupport<Object> loggingSupport;
 
     /**
      *
@@ -42,20 +48,18 @@ public class LoggingAop {
         String className = proceedingJoinPoint.getTarget().getClass().getName();
         String methodName = proceedingJoinPoint.getSignature().getName();
 
-        log.info("Class ==> {}, method ==> {}", className, methodName);
-
-        logBuilder.append("class:").append(className).append(", method:").append(methodName);
+        loggingSupport.getData().add("className:" + className + "," + "method:" + methodName);
 
         //들어온 값들 로그 남기기
         for(Object object : proceedingJoinPoint.getArgs()) {
-            logBuilder.append(object);
+            loggingSupport.getData().add(object);
         }
-        log.info(logBuilder.toString());
+        log.info(loggingSupport.toString());
 
         //원래 실행해야 하는 메소드 실행
         Object object = proceedingJoinPoint.proceed();
 
-        log.info("Response Data ==> {}", object.toString());
+        log.info(object.toString());
 
         return object;
     }

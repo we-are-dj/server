@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +55,7 @@ public class MemberController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
+
     @GetMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> singUp(@RequestParam("code") String code, @RequestParam("redirect_url") String url) {
         KakaoToken kakaoToken = kakaoRequest.getAccessToken(code, url);
@@ -61,7 +63,7 @@ public class MemberController {
 
         // jwt
         // 우리 서버가 생성한 jwt 토큰 두개를 같이 멤버에 넣어서 반환
-        return new ResponseDTO<>(memberService.getToken(kakaoProfile), "SUCCESS");
+        return new ResponseDTO<>(memberService.getToken(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }
 
 }
