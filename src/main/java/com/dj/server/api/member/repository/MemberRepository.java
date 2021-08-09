@@ -11,6 +11,7 @@ import java.util.Optional;
  * 회원 Repository
  *
  * @author JaeHyun
+ * @author Informix
  * @created 2021-08-04
  * @since 0.0.1
  */

@@ -17,6 +17,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * 해당 Filter는 ApplicationContext에 정의된 Spring Bean이 되어 DI와 Life cycle 기능을 활용할 수 있습니다.
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-03 Tue
  */
 @RequiredArgsConstructor

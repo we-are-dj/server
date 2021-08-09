@@ -11,6 +11,7 @@ import lombok.*;
  * profile를 중첩 클래스로 사용합니다.
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-07
  * @since 0.0.1
  */
