@@ -37,7 +37,7 @@ public class ResponseController {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
                 .memberSnsId("kakao123")
                 .nickName("홍길동").build();
-        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO, "Ok");
+        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO, "Ok", HttpStatus.OK);
         return new ResponseEntity<>(responseDTOResponseDTO, HttpStatus.OK);
     }
 }

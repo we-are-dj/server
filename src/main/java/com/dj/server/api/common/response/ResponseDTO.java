@@ -1,5 +1,6 @@
 package com.dj.server.api.common.response;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
@@ -18,12 +19,16 @@ import org.springframework.http.HttpStatus;
  *
  */
 
-@ToString
 @Getter
 @RequiredArgsConstructor
 public class ResponseDTO<T> {
 
     private final T data;
     private final String message;
+    private final HttpStatus httpStatus;
 
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }

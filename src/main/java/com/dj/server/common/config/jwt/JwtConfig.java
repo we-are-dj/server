@@ -1,5 +1,6 @@
-package com.dj.server.common.interceptor;
+package com.dj.server.common.config.jwt;
 
+import com.dj.server.common.interceptor.JwtAuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
