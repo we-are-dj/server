@@ -1,5 +1,7 @@
 package com.dj.server.common.interceptor;
 
+import com.dj.server.common.jwt.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -13,7 +15,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 0.0.1
  */
 @Configuration
+@RequiredArgsConstructor
 public class JwtConfig implements WebMvcConfigurer {
+
+    private final JwtUtil jwtUtil;
+
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/",
             "/signUp",
@@ -24,7 +30,7 @@ public class JwtConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtAuthInterceptor())
+        registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
                 //.addPathPatterns("/**") // URI 전체를 인터셉터로 제어
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }

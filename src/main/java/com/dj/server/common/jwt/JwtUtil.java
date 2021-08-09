@@ -17,7 +17,7 @@ import java.util.Date;
  */
 
 @Component
-public class JwtClass {
+public class JwtUtil {
     private final String ISSUER = "WE_ARE_DJ";
     private final Date ACCESS_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 10)); // 10 mins
     private final Date REFRESH_EXPIRED_TIME = new Date(System.currentTimeMillis() / (1000 * 60 * 60 * 24 * 2)); // 2 weeks

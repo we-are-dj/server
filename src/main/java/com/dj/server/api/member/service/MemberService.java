@@ -4,7 +4,7 @@ import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.MemberRepository;
-import com.dj.server.common.jwt.JwtClass;
+import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MemberService {
 
-    private final JwtClass jwtClass;
+    private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
 
     @Transactional(rollbackFor = RuntimeException.class)
@@ -40,8 +40,8 @@ public class MemberService {
 
     private ResponseTokenDTO createToken(Member member) {
 
-        String accessToken = jwtClass.createAccessToken();
-        String refreshToken = jwtClass.createRefreshToken();
+        String accessToken = jwtUtil.createAccessToken();
+        String refreshToken = jwtUtil.createRefreshToken();
 
         member.saveRefreshToken(refreshToken);
 

@@ -1,21 +1,21 @@
 
 package com.dj.server.common.interceptor;
 
-import com.dj.server.common.jwt.JwtClass;
+import com.dj.server.common.jwt.JwtUtil;
 import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private JwtClass jwtClass;
+    private final JwtUtil jwtUtil;
 
     // private final String ACCESS_TOKEN_KEY = "access_token";
 
@@ -49,6 +49,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             throw new MemberException(MemberPermitErrorCode.TOKEN_MISMATCH);
         }
 
-        jwtClass.verifyToken(givenToken);
+        jwtUtil.verifyToken(givenToken);
     }
 }
