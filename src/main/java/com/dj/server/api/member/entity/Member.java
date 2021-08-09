@@ -45,7 +45,7 @@ public class Member {
     @Column
     private boolean memberSts;
 
-    @Column
+    @Column(length = 200)
     private String refreshToken;
 
     @NotNull
@@ -59,21 +59,22 @@ public class Member {
 
     @Column
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime createAt;
 
     @Column
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    @Column
+    @Column(length = 45)
     private String memberName;
 
     @Builder
-    public Member(String memberSnsId, String memberNickName, MemberRole memberRole, SocialType socialType) {
+    public Member(String memberSnsId, String memberNickName, MemberRole memberRole, SocialType socialType, String memberName) {
         this.memberSnsId = memberSnsId;
         this.memberNickName = memberNickName;
         this.memberRole = memberRole;
         this.socialType = socialType;
+        this.memberName = memberName;
     }
 
     public void updateNickName(String nickName) {
