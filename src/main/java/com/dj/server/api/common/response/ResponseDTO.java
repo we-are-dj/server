@@ -3,7 +3,7 @@ package com.dj.server.api.common.response;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import org.springframework.http.HttpStatus;
 
 /**
  *
