@@ -1,8 +1,8 @@
 package com.dj.server.api.member.dto.request;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRole;
-import com.dj.server.api.member.entity.SocialType;
+import com.dj.server.api.member.model.MemberRole;
+import com.dj.server.api.member.model.SocialType;
 import lombok.*;
 
 /**

@@ -1,10 +1,10 @@
-package com.dj.server.api.member.entity;
+package com.dj.server.api.member.model;
 
 import lombok.Getter;
 
 /**
- * Member가 어떤 Oauth2 소셜인증을 통해
- * 서비스를 이용하기 시작했는지 파악하기 위해 만들어짐.
+ * Member가 어떤 Oauth2 소셜인증을 통해서
+ * 로그인하였는지 파악하기 위한 용도.
  *
  * @author Informix
  * @created 2021-08-07

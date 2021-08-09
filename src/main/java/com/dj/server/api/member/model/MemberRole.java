@@ -1,4 +1,4 @@
-package com.dj.server.api.member.entity;
+package com.dj.server.api.member.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

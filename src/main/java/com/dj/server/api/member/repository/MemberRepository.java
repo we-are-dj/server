@@ -1,8 +1,8 @@
-package com.dj.server.api.member.entity;
+package com.dj.server.api.member.repository;
 
+import com.dj.server.api.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

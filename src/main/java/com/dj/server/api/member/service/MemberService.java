@@ -3,7 +3,7 @@ package com.dj.server.api.member.service;
 import com.dj.server.api.member.dto.request.KakaoProfile;
 import com.dj.server.api.member.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRepository;
+import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,6 @@ public class MemberService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public ResponseTokenDTO getToken(KakaoProfile profile) {
-
         Member member = memberRepository.findByMemberSnsId(String.valueOf(profile.getId()))
                 .map(entity -> entity.updateName(profile.getKakao_account().getProfile().getNickname()))
                 .orElse(profile.toEntity());
