@@ -2,6 +2,13 @@ package com.dj.server.common.exception.member;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Member Entity의 CRUD 작업 중 발생할 수 있는 에러들을 모아둔 열거형 클래스.
+ *
+ * @author Informix
+ * @created 2021-08-04
+ * @since 0.0.1
+ */
 public enum MemberCrudErrorCode implements MemberErrorCode {
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, 404, "회원이 존재하지 않습니다"),
     DUPLICATED(HttpStatus.FORBIDDEN, 403, "이 회원은 이미 존재하기 때문에 재등록할 수 없습니다.");

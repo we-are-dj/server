@@ -17,7 +17,8 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
 
-    // private final String ACCESS_TOKEN_KEY = "access_token";
+    // private final String ACCESS_TOKEN_KEY = "access-token";
+    // private final String REFRESH_TOKEN_KEY = "refresh-token";
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

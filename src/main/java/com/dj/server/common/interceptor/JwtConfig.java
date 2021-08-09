@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Jwt 인증을 감시하는 인터셉터의 설정 및
- * Jwt 인증을 지속적으로 확인
+ * Jwt 인증이 유효한지 지속적으로 확인
  *
  * @author Informix
  * @created 2021-08-04
@@ -22,10 +22,10 @@ public class JwtConfig implements WebMvcConfigurer {
 
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/",
-            "/signUp",
             "/signIn",
-            "/signUp/**",
             "/signIn/**",
+            "/streaming",
+            "/streaming/**"
     };
 
     @Override

@@ -76,7 +76,6 @@ public class Member {
         this.socialType = socialType;
     }
 
-
     public void updateNickName(String nickName) {
         this.memberNickName = nickName;
     }

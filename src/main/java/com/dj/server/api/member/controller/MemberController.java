@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,8 +54,8 @@ public class MemberController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @GetMapping("/login/oauth2/kakao")
-    public ResponseDTO<ResponseTokenDTO> singUp(@RequestParam("code") String code, @RequestParam("redirect_url") String url) {
-        KakaoToken kakaoToken = kakaoRequest.getAccessToken(code, url);
+    public ResponseDTO<ResponseTokenDTO> singUp(@RequestParam("code") String code, @RequestParam("redirect_uri") String uri) {
+        KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(code, uri);
         KakaoProfile kakaoProfile = kakaoRequest.getKakaoProfile(kakaoToken);
 
         // jwt
