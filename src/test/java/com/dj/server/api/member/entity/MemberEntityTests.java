@@ -1,5 +1,6 @@
 package com.dj.server.api.member.entity;
 
+import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

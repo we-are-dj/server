@@ -13,7 +13,6 @@ public class MemberTestRequestDTO {
     private String nickName;
     private String memberSnsId;
 
-
     @Builder
     public MemberTestRequestDTO(String nickName, String memberSnsId) {
         this.nickName = nickName;

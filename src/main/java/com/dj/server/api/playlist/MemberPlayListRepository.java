@@ -1,4 +1,4 @@
-package com.dj.server.api.member.entity.playlist;
+package com.dj.server.api.playlist;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

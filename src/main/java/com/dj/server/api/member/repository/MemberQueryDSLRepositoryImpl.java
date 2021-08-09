@@ -1,8 +1,8 @@
-package com.dj.server.api.member.entity;
+package com.dj.server.api.member.repository;
 
+import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.member.entity.QMember;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-
-import java.util.Optional;
 
 
 public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport implements MemberQueryDSLRepository {

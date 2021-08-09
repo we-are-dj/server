@@ -1,12 +1,11 @@
-package com.dj.server.api.member.entity.musiclist;
+package com.dj.server.api.musiclist;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRepository;
-import com.dj.server.api.member.entity.playlist.MemberPlayList;
-import com.dj.server.api.member.entity.playlist.MemberPlayListRepository;
+import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.api.playlist.MemberPlayList;
+import com.dj.server.api.playlist.MemberPlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.playlist.MemberPlayListDummy;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
