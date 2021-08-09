@@ -1,13 +1,12 @@
-package com.dj.server.api.member.entity.playlist;
+package com.dj.server.api.playlist;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRepository;
+import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.playlist.MemberPlayListDummy;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 

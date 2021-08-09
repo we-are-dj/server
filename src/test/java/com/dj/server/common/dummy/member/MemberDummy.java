@@ -1,8 +1,7 @@
 package com.dj.server.common.dummy.member;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.MemberRole;
-import org.springframework.stereotype.Component;
+import com.dj.server.api.member.model.MemberRole;
 
 /**
  *

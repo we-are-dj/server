@@ -1,16 +1,7 @@
 package com.dj.server.test.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.member.dto.request.KakaoProfile;
-import com.dj.server.api.member.dto.request.KakaoRequest;
-import com.dj.server.api.member.dto.request.KakaoToken;
-import com.dj.server.test.dto.MemberTestRequestDTO;
 import com.dj.server.api.member.dto.response.MemberResponseDTO;
-import com.dj.server.api.member.dto.response.ResponseTokenDTO;
-import com.dj.server.api.member.service.MemberService;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,7 +28,7 @@ public class ResponseController {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
                 .memberSnsId("kakao123")
                 .nickName("홍길동").build();
-        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO, "Ok");
+        ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO, "Ok", HttpStatus.OK);
         return new ResponseEntity<>(responseDTOResponseDTO, HttpStatus.OK);
     }
 }

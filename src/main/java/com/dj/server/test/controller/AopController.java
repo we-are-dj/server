@@ -23,8 +23,8 @@ public class AopController {
      */
     @GetMapping("/test-aop/get")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResponseDTO<MemberResponseDTO>> testAop(@RequestBody MemberTestRequestDTO memberTestRequestDTO) {
-        return new ResponseEntity<>(new ResponseDTO<>(MemberResponseDTO.builder().memberSnsId(memberTestRequestDTO.getMemberSnsId())
-                .nickName(memberTestRequestDTO.getNickName()).build(), "SUCCESS"), HttpStatus.OK);
+    public ResponseDTO<MemberResponseDTO> testAop(@RequestBody MemberTestRequestDTO memberTestRequestDTO) {
+        return new ResponseDTO<>(MemberResponseDTO.builder().memberSnsId(memberTestRequestDTO.getMemberSnsId())
+                .nickName(memberTestRequestDTO.getNickName()).build(), "SUCCESS", HttpStatus.OK);
     }
 }

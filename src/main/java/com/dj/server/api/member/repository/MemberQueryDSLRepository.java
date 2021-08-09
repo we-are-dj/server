@@ -1,6 +1,6 @@
-package com.dj.server.api.member.entity;
+package com.dj.server.api.member.repository;
 
-import java.util.Optional;
+import com.dj.server.api.member.entity.Member;
 
 public interface MemberQueryDSLRepository {
     Member findByMemberNickName(String nickName);

@@ -1,7 +1,7 @@
 package com.dj.server.common.dummy.playlist;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.entity.playlist.MemberPlayList;
+import com.dj.server.api.playlist.MemberPlayList;
 
 /**
  *

@@ -1,8 +1,8 @@
 package com.dj.server.api.common.response;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -14,16 +14,20 @@ import org.springframework.http.HttpStatus;
  * @author JaeHyun
  * @created 2021-08-04
  * @since 0.0.1
- * @param <T> --> 주로 Entity 에 대한 ResponseDTO 가 파라매터로 들어오게 됩니다.
+ * @param <T> 주로 Entity에 대한 ResponseDTO가 타입 파라매터로 들어옵니다.
  *
  */
 
-@ToString
 @Getter
 @RequiredArgsConstructor
 public class ResponseDTO<T> {
 
     private final T data;
     private final String message;
+    private final HttpStatus httpStatus;
 
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }
