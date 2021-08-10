@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 회원 도메인 관련 요청의 데이터를 보내주는 컨트롤러
  *
  * @author JaeHyun
+ * @author Informix
  * @created 2021-08-04
  * @since 0.0.1
  *

@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
  * 다시금 유저 정보를 카카오에 요청하는 목적으로 사용되는 클래스.
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-07
  * @since 0.0.1
  */
