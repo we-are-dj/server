@@ -29,6 +29,7 @@ public class LoggingSupport<T> {
     private final List<T> data = new ArrayList<>();
     private String className;
     private String methodName;
+    private String userIp;
 
 
     @Override
