@@ -10,6 +10,7 @@ import lombok.*;
  * 반환되는 유저 정보를 담을 그릇으로 사용됩니다.
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-07
  * @since 0.0.1
  */

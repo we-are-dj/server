@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
  * 회원 Entity 클래스
  *
  * @author JaeHyun
+ * @author Informix
  * @created 2021-08-04
  * @since 0.0.1
  *

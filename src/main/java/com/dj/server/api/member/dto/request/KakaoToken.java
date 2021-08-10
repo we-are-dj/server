@@ -7,6 +7,7 @@ import lombok.*;
  * 카카오로부터 반환되는 데이터들을 담기 위한 그릇
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-07
  * @since 0.0.1
  */
