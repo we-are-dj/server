@@ -47,7 +47,7 @@ public class MemberController {
     }
 
 
-    @ApiOperation(value = "signUp", notes = "로그인")
+    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")

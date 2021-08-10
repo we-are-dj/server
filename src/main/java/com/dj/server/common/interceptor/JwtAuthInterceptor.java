@@ -17,39 +17,23 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     private final JwtUtil jwtUtil;
 
-    // private final String ACCESS_TOKEN_KEY = "access-token";
-    // private final String REFRESH_TOKEN_KEY = "refresh-token";
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
+        final String ACCESS_TOKEN_KEY = "access_token";
+        final String REFRESH_TOKEN_KEY = "refresh_token";
 
-        /**
-         *  if (request.getHeader(ACCESS_TOKEN_KEY) != null)
-         *  로그인된 유저일 경우 해당 조건문을 수행.
-         *
-         *  로그인이 되어 있지 않다면 로그인을 해달라고 요청해야 한다.
-         *
-         *  @since 0.0.1
-         */
-       /* if (request.getHeader(ACCESS_TOKEN_KEY) != null) {
+        if (request.getHeader(ACCESS_TOKEN_KEY) != null && request.getHeader(REFRESH_TOKEN_KEY) != null) {
             String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
-            jwtUtil.verifyToken(accessToken);
-            return true;
-        } else {
-            // log.error("해당 사용자는 로그인이 되어 있지 않음");
-            // throw new MemberException(MemberPermitErrorCode.NOT_GRANTED);
-            // return false;
-        }
-        */
+            String refreshToken = request.getHeader(REFRESH_TOKEN_KEY);
+
+            String newToken = jwtUtil.verifyAccessToken(accessToken, refreshToken);
+            response.setHeader(ACCESS_TOKEN_KEY, newToken);
+        } /*else {
+            log.error("해당 사용자는 로그인 유지에 필요한 토큰 값을 가지고 있지 않습니다.");
+            return false;
+            //throw new MemberException(MemberPermitErrorCode.NOT_SIGNED);
+        }*/
         return true;
-    }
-
-    private void verifyRefreshToken(String givenToken, String membersToken) {
-        if (!givenToken.equals(membersToken)) {
-            throw new MemberException(MemberPermitErrorCode.TOKEN_MISMATCH);
-        }
-
-        jwtUtil.verifyToken(givenToken);
     }
 }

@@ -23,10 +23,8 @@ public class JwtConfig implements WebMvcConfigurer {
 
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/",
-            "/signUp",
-            "/signIn",
-            "/signUp/**",
-            "/signIn/**",
+            "/login",
+            "/login/**",
     };
 
     @Override
