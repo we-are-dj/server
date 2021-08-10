@@ -1,7 +1,7 @@
 package com.dj.server.api.common.response;
 
 
-import com.dj.server.api.member.dto.request.KakaoRequest;
+import com.dj.server.api.member.service.oauth2.kakao.request.KakaoRequest;
 import com.dj.server.api.member.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

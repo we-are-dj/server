@@ -1,7 +1,7 @@
 package com.dj.server.api.member.entity;
 
-import com.dj.server.api.member.model.MemberRole;
-import com.dj.server.api.member.model.SocialType;
+import com.dj.server.api.member.entity.enums.MemberRole;
+import com.dj.server.api.member.entity.enums.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

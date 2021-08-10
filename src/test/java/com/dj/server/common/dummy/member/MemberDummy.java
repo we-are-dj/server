@@ -1,7 +1,7 @@
 package com.dj.server.common.dummy.member;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.model.MemberRole;
+import com.dj.server.api.member.entity.enums.MemberRole;
 
 /**
  *
