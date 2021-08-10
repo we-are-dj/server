@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
  * oauth2로부터 인증된 회원의 정보 가져오기, 회원 정보를 DB에 저장 등을 처리합니다.
  *
  * @author Informix
+ * @author JaeHyun
  * @created 2021-08-04
  * @since 0.0.1
  */
