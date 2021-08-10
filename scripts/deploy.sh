@@ -38,7 +38,7 @@ echo "> $JAR_NAME 실행"
 
 
 sudo nohup java -jar \
-    -Dspring.config.location=classpath:/application.yml,/home/ec2-user/properties/application-db.yml \
+    -Dspring.config.location=classpath:/application.yml,/home/ec2-user/properties/application-db.yml,/home/ec2-user/properties/application-oauth2.yml \
     -Dspring.profiles.active=real \
     -Djava.net.preferIPv4Stack=true \
     $JAR_NAME > $START_REPOSITORY/nohup.out 2>&1 &
