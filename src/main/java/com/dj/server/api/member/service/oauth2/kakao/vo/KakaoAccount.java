@@ -1,4 +1,4 @@
-package com.dj.server.api.member.dto.request;
+package com.dj.server.api.member.service.oauth2.kakao.vo;
 
 import lombok.*;
 
