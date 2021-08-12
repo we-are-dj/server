@@ -1,4 +1,4 @@
-package com.dj.server.api.playlist;
+package com.dj.server.api.playlist.entity;
 
 
 import com.dj.server.api.member.entity.Member;
@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table
 @Entity
-public class MemberPlayList {
+public class PlayList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class MemberPlayList {
 
     //private boolean use;
     @Builder
-    public MemberPlayList(Member member, String playListName) {
+    public PlayList(Member member, String playListName) {
         this.member = member;
         this.playListName = playListName;
     }

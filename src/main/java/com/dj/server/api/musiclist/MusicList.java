@@ -1,7 +1,7 @@
 package com.dj.server.api.musiclist;
 
 
-import com.dj.server.api.playlist.MemberPlayList;
+import com.dj.server.api.playlist.entity.PlayList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class MusicList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private MemberPlayList memberPlayList;
+    private PlayList memberPlayList;
 
     @Column
     private Integer musicNo;

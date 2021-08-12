@@ -2,8 +2,8 @@ package com.dj.server.api.musiclist;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
-import com.dj.server.api.playlist.MemberPlayList;
-import com.dj.server.api.playlist.MemberPlayListRepository;
+import com.dj.server.api.playlist.entity.PlayList;
+import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.playlist.MemberPlayListDummy;
 import org.junit.jupiter.api.DisplayName;
@@ -23,7 +23,7 @@ public class MusicListTests {
     private MemberRepository memberRepository;
 
     @Autowired
-    private MemberPlayListRepository memberPlayListRepository;
+    private PlayListRepository memberPlayListRepository;
 
     @Autowired
     private MusicListRepository musicListRepository;
@@ -53,7 +53,7 @@ public class MusicListTests {
 
         Member member = memberRepository.save(memberDummy.toEntity());
 
-        MemberPlayList memberPlayList = memberPlayListRepository.save(memberPlayListDummy.toEntity(member));
+        PlayList memberPlayList = memberPlayListRepository.save(memberPlayListDummy.toEntity(member));
 
         Long id8 = null;
 
