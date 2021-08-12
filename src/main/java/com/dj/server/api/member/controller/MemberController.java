@@ -1,8 +1,8 @@
 package com.dj.server.api.member.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.dto.response.ResponseTokenDTO;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

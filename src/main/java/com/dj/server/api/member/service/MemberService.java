@@ -1,10 +1,10 @@
 package com.dj.server.api.member.service;
 
 import com.dj.server.api.member.service.oauth2.kakao.request.KakaoRequest;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.dto.response.ResponseTokenDTO;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoToken;
+import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;

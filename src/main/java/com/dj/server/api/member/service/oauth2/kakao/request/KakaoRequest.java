@@ -1,8 +1,8 @@
 package com.dj.server.api.member.service.oauth2.kakao.request;
 
 
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoToken;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
