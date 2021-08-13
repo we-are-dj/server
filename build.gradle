@@ -42,11 +42,12 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
 
     //querydsl
-//    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
-//    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
-//    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'
-//    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.0.0'
-//    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.0.0'
+    implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
+    annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion, classifier: 'jpa'
+    annotationProcessor 'javax.persistence:javax.persistence-api:2.2'
+    annotationProcessor 'javax.annotation:javax.annotation-api:1.3.2'
+
 
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.5.3'

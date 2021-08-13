@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 @Repository
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberQueryDSLRepository {
 
     Optional<Member> findByMemberSnsId(String memberSnsId);
 

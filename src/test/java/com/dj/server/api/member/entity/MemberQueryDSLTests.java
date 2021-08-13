@@ -21,21 +21,21 @@ public class MemberQueryDSLTests {
     private final MemberDummy memberDummy = MemberDummy.getInstance();
 
 
-//    @Test
-//    @Order(1)
-//    @DisplayName("QueryDsl 테스트")
-//    public void queryDSLTest() {
-//
-//        //given
-//        final String nickName = "홍길동";
-//        Member memberId = memberRepository.save(memberDummy.toEntity());
-//
-//        //when -> QueryDsl
-//        Member member = memberRepository.findByMemberNickName(nickName);
-//
-//
-//        assertThat(member.getMemberNickName()).isEqualTo(nickName);
-//
-//    }
+    @Test
+    @Order(1)
+    @DisplayName("QueryDsl 테스트")
+    public void queryDSLTest() {
+
+        //given
+        final String nickName = "홍길동";
+        Member memberId = memberRepository.save(memberDummy.toEntity());
+
+        //when -> QueryDsl
+        Member member = memberRepository.findByMemberNickName(nickName);
+
+
+        assertThat(member.getMemberNickName()).isEqualTo(nickName);
+
+    }
 
 }
