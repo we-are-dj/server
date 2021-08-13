@@ -5,24 +5,21 @@ import com.dj.server.api.member.entity.enums.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- *
- *
  * 회원 Entity 클래스
  *
  * @author JaeHyun
  * @author Informix
  * @created 2021-08-04
  * @since 0.0.1
- *
  */
 
 @Getter
