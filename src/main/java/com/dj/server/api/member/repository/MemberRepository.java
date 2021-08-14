@@ -18,6 +18,5 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberQueryDSLRepository {
-    Optional<Member> findByRefreshToken(String refreshToken);
     Optional<Member> findByMemberSnsId(String memberSnsId);
 }

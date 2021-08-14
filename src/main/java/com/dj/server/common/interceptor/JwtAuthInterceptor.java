@@ -2,8 +2,7 @@
 package com.dj.server.common.interceptor;
 
 import com.dj.server.common.jwt.JwtUtil;
-import com.dj.server.common.exception.member.MemberException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -27,13 +26,14 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
             String refreshToken = request.getHeader(REFRESH_TOKEN_KEY);
 
-            String newToken = jwtUtil.verifyAccessToken(accessToken, refreshToken);
+            String newToken = jwtUtil.verifyToken(accessToken, refreshToken);
             response.setHeader(ACCESS_TOKEN_KEY, newToken);
-        } /*else {
-            log.error("해당 사용자는 로그인 유지에 필요한 토큰 값을 가지고 있지 않습니다.");
+            System.out.println("new token: " + response.getHeader(ACCESS_TOKEN_KEY));
+        }
+        else {
+            log.error("로그인 중이지 않은 유저의 비정상적 요청이 들어왔습니다.");
             return false;
-            //throw new MemberException(MemberPermitErrorCode.NOT_SIGNED);
-        }*/
+        }
         return true;
     }
 }

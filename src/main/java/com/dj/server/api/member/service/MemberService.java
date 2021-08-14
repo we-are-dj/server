@@ -72,7 +72,10 @@ public class MemberService {
 
         member.saveRefreshToken(refreshToken);
 
-        return new ResponseTokenDTO(accessToken, refreshToken);
+        return ResponseTokenDTO.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build();
     }
 
 

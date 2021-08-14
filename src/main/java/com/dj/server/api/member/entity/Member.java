@@ -44,9 +44,9 @@ public class Member {
     private String memberNickName;
 
     @NotNull
-    @ColumnDefault("0")
+    @ColumnDefault("Y")
     @Column
-    private boolean memberSts;
+    private String memberSts;
 
     @Column(length = 200)
     private String refreshToken;
