@@ -4,9 +4,6 @@ import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.QMember;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-import java.util.Optional;
-
-
 public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport implements MemberQueryDSLRepository {
 
     public MemberQueryDSLRepositoryImpl() {
@@ -20,4 +17,6 @@ public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport impl
                 .where(member.memberNickName.eq(nickName))
                 .fetchOne();
     }
+
+
 }

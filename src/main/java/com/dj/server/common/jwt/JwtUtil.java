@@ -5,8 +5,6 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
@@ -27,8 +25,8 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Base64;
-import java.util.Date;
 
 /**
  * token 생성 규칙에 따라 token을 생성하며
@@ -43,12 +41,10 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtUtil {
     private final String ISSUER = "WE_ARE_DJ";
-    private final LocalDateTime ACCESS_EXPIRED_TIME = LocalDateTime.now().plusMinutes(10);
-    private final LocalDateTime REFRESH_EXPIRED_TIME = LocalDateTime.now().plusWeeks(2);
-
     private final MemberRepository memberRepository;
     private String memberId;
 
+    public String getMemberId() { return memberId; }
     public void setTokenIngredient(String memberId) {
         this.memberId = memberId;
     }
@@ -62,7 +58,7 @@ public class JwtUtil {
     public String createAccessToken() {
         return JWT.create()
                 .withIssuer(ISSUER)
-                .withExpiresAt(Timestamp.valueOf(ACCESS_EXPIRED_TIME))
+                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusHours(6).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime()))
                 .withClaim("memberId", memberId)
                 .sign(Algorithm.HMAC256(memberId));
     }
@@ -76,7 +72,7 @@ public class JwtUtil {
     public String createRefreshToken() {
         return JWT.create()
                 .withIssuer(ISSUER)
-                .withExpiresAt(Timestamp.valueOf(REFRESH_EXPIRED_TIME))
+                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusWeeks(2).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime()))
                 .withClaim("memberId", memberId)
                 .sign(Algorithm.HMAC256(memberId));
     }
@@ -168,17 +164,12 @@ public class JwtUtil {
     public boolean verifyAccessToken(String accessToken) {
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(memberId))
-                                      .withClaim("memberId", memberId)
-                                      .withIssuer(ISSUER)
-                                      .build();
-            DecodedJWT jwt = verifier.verify(accessToken);
-
-            Claim expClaim = jwt.getClaim("exp");
-
-            if (expClaim.asDate().compareTo(Date.from(LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant())) < 0) {
-                return false;
-            }
-
+                    .withClaim("memberId", memberId)
+                    .withIssuer(ISSUER)
+                    .build();
+            verifier.verify(accessToken);
+        } catch (TokenExpiredException expired) {
+            return false;
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());
@@ -210,20 +201,18 @@ public class JwtUtil {
                                     .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
         String savedRefreshToken = member.getRefreshToken();
 
+        if (savedRefreshToken == null) throw new MemberException(MemberPermitErrorCode.TOKEN_EXPIRED);
+
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(memberId))
-                                      .withClaim("memberId", memberId)
-                                      .withIssuer(ISSUER)
-                                      .build();
-            DecodedJWT jwt = verifier.verify(refreshToken);
+                    .withClaim("memberId", memberId)
+                    .withIssuer(ISSUER)
+                    .build();
+            verifier.verify(refreshToken);
 
-            Claim expClaim = jwt.getClaim("exp");
-
-            if (expClaim.asDate().compareTo(Date.from(LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul")).toInstant())) < 0) {
-                log.error("리프레시 토큰이 만료되었습니다. 재로그인이 요구됩니다.");
-                throw new MemberException(MemberPermitErrorCode.TOKEN_EXPIRED);
-            }
-
+        } catch (TokenExpiredException expired) {
+            log.error("리프레시 토큰이 만료되었습니다. 재로그인이 요구됩니다.");
+            throw new MemberException(MemberPermitErrorCode.TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("리프레시 토큰 검증에 실패했습니다. 유효하지 않은 리프레시 토큰입니다.");
             throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);

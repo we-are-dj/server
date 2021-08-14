@@ -96,4 +96,8 @@ public class MemberService {
         KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(code, uri);
         return kakaoRequest.getKakaoProfile(kakaoToken);
     }
+
+    public String getMemberId() {
+        return jwtUtil.getMemberId();
+    }
 }

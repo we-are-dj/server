@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -56,6 +53,12 @@ public class MemberController {
     public ResponseDTO<ResponseTokenDTO> signUp(@RequestParam("code") String code, @RequestParam("redirect_uri") String uri) {
         KakaoProfile kakaoProfile = memberService.getKakaoProfile(code, uri);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseDTO<String> signOut() {
+        // todo: 로그아웃 로직 구현
+        return new ResponseDTO<>("사용자가 로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
 
 }
