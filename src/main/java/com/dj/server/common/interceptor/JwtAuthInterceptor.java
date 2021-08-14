@@ -1,6 +1,8 @@
 
 package com.dj.server.common.interceptor;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +29,16 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
             String refreshToken = request.getHeader(REFRESH_TOKEN_KEY);
 
-            String newToken = jwtUtil.verifyToken(accessToken, refreshToken);
-            response.setHeader(ACCESS_TOKEN_KEY, newToken);
-            response.setHeader(REFRESH_TOKEN_KEY, refreshToken);
+            try {
+                String newToken = jwtUtil.verifyToken(accessToken, refreshToken);
+                response.setHeader(ACCESS_TOKEN_KEY, newToken);
+                response.setHeader(REFRESH_TOKEN_KEY, refreshToken);
+            } catch (JWTVerificationException | MemberException jwte) {
+                log.error("유저가 전달한 토큰이 유효하지 않습니다 :: " + jwte.getMessage());
+                response.setStatus(MemberPermitErrorCode.NOT_GRANTED.httpErrorCode());
+                response.sendRedirect("/");
+                return false;
+            }
         }
         else {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
