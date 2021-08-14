@@ -24,12 +24,6 @@ public class KakaoProfile {
     private Long id;
     private KakaoAccount kakao_account;
 
-    @Builder
-    public KakaoProfile(Long id, KakaoAccount kakaoAccount) {
-        this.id = id;
-        this.kakao_account = kakaoAccount;
-    }
-
     /**
      * @see com.dj.server.api.member.service.MemberService
      * @return 신규 로그인 유저 정보

@@ -103,7 +103,6 @@ public class JwtUtil {
         ObjectMapper convertJsonStringToClass = new ObjectMapper();
         try {
             AccessTokenPayLoad payLoad = convertJsonStringToClass.readValue(decoded, AccessTokenPayLoad.class);
-            System.out.println("payLoad: " + payLoad);
             if (payLoad.getMemberId() == null || payLoad.getIss() == null || payLoad.getExp() == 0) {
                 log.error("액세스 토큰을 검증하는데 필요한 요소를 페이로드 내에서 찾지 못했습니다. 클라이언트가 변조된 토큰을 전달했을 가능성이 있습니다.");
                 throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
@@ -112,7 +111,7 @@ public class JwtUtil {
         } catch (JsonProcessingException e) {
             log.error(e.getMessage());
         }
-        throw new InternalAuthenticationServiceException("액세스 토큰의 페이로드를 PayLoad 클래스에 매핑하는 도중 예기치 못한 문제가 발생했습니다.");
+        throw new InternalAuthenticationServiceException("액세스 토큰의 페이로드를 PayLoad 클래스에 매핑하는 도중 예기치 못한 문제가 발생했습니다. 페이로드가 변조되지 않았는지 확인하십시오.");
     }
 
     /**

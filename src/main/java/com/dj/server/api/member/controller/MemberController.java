@@ -10,7 +10,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -49,16 +52,21 @@ public class MemberController {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @GetMapping("/login/oauth2/kakao")
+    @PostMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> signUp(@RequestParam("code") String code, @RequestParam("redirect_uri") String uri) {
         KakaoProfile kakaoProfile = memberService.getKakaoProfile(code, uri);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }
 
     @DeleteMapping("/logout")
-    public ResponseDTO<String> signOut() {
-        // todo: 로그아웃 로직 구현
-        return new ResponseDTO<>("사용자가 로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
+    public ResponseEntity<String> signOut() {
+        memberService.invalidateRefreshToken();
+        HttpHeaders responseHeader = new HttpHeaders();
+        responseHeader.set("access_token", null);
+        responseHeader.set("refresh_token", null);
+
+        // todo: headers does not really change as null. need to debug or get the other solution.
+        return ResponseEntity.ok().headers(responseHeader).body("로그아웃 되었습니다.");
     }
 
 }

@@ -98,7 +98,21 @@ public class MemberService {
         return kakaoRequest.getKakaoProfile(kakaoToken);
     }
 
-    public String getMemberId() {
-        return jwtUtil.getMemberId();
+    /**
+     * 액세스 토큰의 페이로드를 복호화할 때, 그 안에 포함되었던 memberId를
+     * JwtUtil은 저장해두고 있습니다. 그 값을 가져옵니다.
+     *
+     * @return member 고유 아이디
+     */
+    public Long getMemberId() {
+        return Long.parseLong(jwtUtil.getMemberId());
+    }
+
+    /**
+     * 로그아웃 요청시 데이터베이스의 리프레시 토큰을 null로 만들어 만료시킵니다.
+     * @since 0.0.1
+     */
+    public void invalidateRefreshToken() {
+        memberRepository.save(memberRepository.invalidateRefreshToken(getMemberId()));
     }
 }
