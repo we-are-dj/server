@@ -26,8 +26,6 @@ dependencies {
     //web or spring-starter
     implementation 'org.springframework.boot:spring-boot-starter-web:2.5.3'
     implementation 'org.springframework.boot:spring-boot-starter-mail:2.5.3'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.5.3'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-aop:2.5.3'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.3'
 
