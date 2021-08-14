@@ -1,8 +1,10 @@
 package com.dj.server.api.member.service;
 
-import com.dj.server.api.member.dto.request.KakaoProfile;
+import com.dj.server.api.member.service.oauth2.kakao.request.KakaoRequest;
+import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
 import com.dj.server.api.member.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class MemberService {
 
     private final JwtUtil jwtUtil;
     private final MemberRepository memberRepository;
+    private final KakaoRequest kakaoRequest;
 
     /**
      * 카카오로 로그인한 유저 정보 중 카카오의 고유 ID를 확인하여
@@ -42,7 +45,8 @@ public class MemberService {
      * @return 서버에서 생성한 액세스 토큰과 리프레시 토큰
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public ResponseTokenDTO getToken(KakaoProfile profile) {
+    public ResponseTokenDTO getGeneratedTokens(KakaoProfile profile) {
+
         Member member = memberRepository.findByMemberSnsId(String.valueOf(profile.getId()))
                 .map(entity -> entity.updateName(profile.getKakao_account().getProfile().getNickname()))
                 .orElse(profile.toEntity());
@@ -53,6 +57,7 @@ public class MemberService {
     }
 
     /**
+     *  Member의 고유 Id를 사용하여 토큰들을 생성합니다.
      * 액세스토큰과 리프레시토큰을 생성 후 리프레시토큰은 데이터베이스에 저장하고,
      * 프론트엔드 서버로 이 토큰들을 반환하고자 하는 용도로 사용됩니다.
      *
@@ -61,13 +66,31 @@ public class MemberService {
      */
     private ResponseTokenDTO createToken(Member member) {
 
+        jwtUtil.setTokenIngredient(String.valueOf(member.getMemberId()));
         String accessToken = jwtUtil.createAccessToken();
         String refreshToken = jwtUtil.createRefreshToken();
 
-        memberRepository.save(member.saveRefreshToken(refreshToken));
+        member.saveRefreshToken(refreshToken);
 
         return new ResponseTokenDTO(accessToken, refreshToken);
     }
 
 
+    /**
+     * 먼저 인가코드를 사용하여 카카오로부터 액세스 토큰을 발급받습니다.
+     * 그 후 액세스토큰을 사용하여 로그인한 유저의 정보를 카카오로부터 가져옵니다.
+     *
+     * 이 작업은 KakaoProfile의 getKakaoProfile 메서드에
+     * 카카오 프로필을 가져오는 것을 위임하여 수행되며,
+     * KakaoProfile의 getKakaoProfile 메서드가 반환하는 결과값을 리턴합니다.
+     *
+     * @see KakaoProfile
+     * @param code 카카오 인가코드
+     * @param uri redirect uri
+     * @return 카카오 액세스 토큰을 사용하여 카카오로부터 받은 유저의 프로필 정보
+     */
+    public KakaoProfile getKakaoProfile(String code, String uri) {
+        KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(code, uri);
+        return kakaoRequest.getKakaoProfile(kakaoToken);
+    }
 }

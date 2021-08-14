@@ -2,7 +2,7 @@ package com.dj.server.common.exception.member;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
-import com.dj.server.api.member.model.MemberRole;
+import com.dj.server.api.member.entity.enums.MemberRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;

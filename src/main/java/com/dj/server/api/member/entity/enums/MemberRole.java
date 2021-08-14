@@ -1,4 +1,4 @@
-package com.dj.server.api.member.model;
+package com.dj.server.api.member.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
