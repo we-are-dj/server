@@ -1,6 +1,7 @@
 package com.dj.server.api.member.entity.enums;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Member가 어떤 Oauth2 소셜인증을 통해서
@@ -11,13 +12,11 @@ import lombok.Getter;
  * @since 0.0.1
  */
 @Getter
+@RequiredArgsConstructor
 public enum SocialType {
     GOOGLE("google"),
     KAKAO("kakao");
 
     private final String name;
 
-    SocialType(String name) {
-        this.name = name;
-    }
 }
