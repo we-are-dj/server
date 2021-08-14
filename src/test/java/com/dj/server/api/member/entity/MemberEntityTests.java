@@ -1,5 +1,6 @@
 package com.dj.server.api.member.entity;
 
+import com.dj.server.api.member.entity.enums.StatusType;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,7 +84,7 @@ public class MemberEntityTests {
 
         Member member = memberRepository.findAll().get(0); //
 
-//        assertThat(member.getMemberSts()).isEqualTo("Y");
+        assertThat(member.getMemberSts()).isEqualTo(StatusType.NORMAL);
 
     }
 
