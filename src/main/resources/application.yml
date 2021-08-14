@@ -6,3 +6,9 @@ spring:
     include:
       - db # db 설정
       - oauth2 # oauth2 설정
+
+#QueryLoggin
+#logging:
+#  level:
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type: trace
