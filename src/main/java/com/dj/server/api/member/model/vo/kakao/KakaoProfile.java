@@ -1,8 +1,9 @@
-package com.dj.server.api.member.service.oauth2.kakao.vo;
+package com.dj.server.api.member.model.vo.kakao;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.enums.MemberRole;
 import com.dj.server.api.member.entity.enums.SocialType;
+import com.dj.server.api.member.entity.enums.StatusType;
 import lombok.*;
 
 /**
@@ -23,12 +24,6 @@ public class KakaoProfile {
     private Long id;
     private KakaoAccount kakao_account;
 
-    @Builder
-    public KakaoProfile(Long id, KakaoAccount kakaoAccount) {
-        this.id = id;
-        this.kakao_account = kakaoAccount;
-    }
-
     /**
      * @see com.dj.server.api.member.service.MemberService
      * @return 신규 로그인 유저 정보
@@ -38,6 +33,7 @@ public class KakaoProfile {
                 .memberSnsId(String.valueOf(id))
                 .memberNickName(kakao_account.getProfile().getNickname())
                 .memberName(kakao_account.getProfile().getNickname())
+                .memberSts(StatusType.NORMAL)
                 .memberRole(MemberRole.USER)
                 .socialType(SocialType.KAKAO)
                 .build();

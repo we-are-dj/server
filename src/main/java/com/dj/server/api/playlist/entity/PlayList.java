@@ -2,21 +2,22 @@ package com.dj.server.api.playlist.entity;
 
 
 import com.dj.server.api.member.entity.Member;
+import javax.persistence.*;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
 /**
- *
  * 회원의 재생목록 리스트 Entity
- *
+ * <p>
  * ex) 발라드, 팝송 , ETC
+ *
  * @author JaeHyun
  * @created 2021-08-04
  * @since 0.0.1

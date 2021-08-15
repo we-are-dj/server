@@ -1,20 +1,24 @@
 package com.dj.server.api.member.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.dto.response.ResponseTokenDTO;
+import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
+import com.dj.server.common.exception.member.MemberCrudErrorCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -47,15 +51,26 @@ public class MemberController {
     }
 
 
-    @ApiOperation(value = "signUp", notes = "로그인")
+    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @GetMapping("/login/oauth2/kakao")
-    public ResponseDTO<ResponseTokenDTO> signUp(@RequestParam("code") String code, @RequestParam("redirect_uri") String uri) {
-        KakaoProfile kakaoProfile = memberService.getKakaoProfile(code, uri);
+    @PostMapping("/login/oauth2/kakao")
+    public ResponseDTO<ResponseTokenDTO> signUp(MemberSaveRequestDTO memberSaveRequestDTO) {
+        KakaoProfile kakaoProfile = memberService.getKakaoProfile(memberSaveRequestDTO);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
+    }
+    
+    @ApiOperation(value = "logout", notes = "로그아웃")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "회원이 존재하지 않습니다")
+    })
+    @DeleteMapping("/logout")
+    public ResponseDTO<String> signOut() {
+        memberService.invalidateRefreshToken();
+        return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
 
 }

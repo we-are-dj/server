@@ -4,4 +4,5 @@ import com.dj.server.api.member.entity.Member;
 
 public interface MemberQueryDSLRepository {
     Member findByMemberNickName(String nickName);
+    Member invalidateRefreshToken(Long memberId);
 }

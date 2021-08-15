@@ -11,7 +11,6 @@ import javax.persistence.*;
 /**
  * 재생목록에 대한 노래를 수록하는 Entity
  *
- *
  * @author JaeHyun
  * @created 2021-08-04
  * @since 0.0.1

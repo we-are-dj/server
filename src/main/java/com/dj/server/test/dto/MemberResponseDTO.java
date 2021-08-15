@@ -1,4 +1,4 @@
-package com.dj.server.api.member.dto.response;
+package com.dj.server.test.dto;
 
 import lombok.Builder;
 import lombok.Getter;

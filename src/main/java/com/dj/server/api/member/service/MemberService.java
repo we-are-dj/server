@@ -1,11 +1,14 @@
 package com.dj.server.api.member.service;
 
+import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
 import com.dj.server.api.member.service.oauth2.kakao.request.KakaoRequest;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.dto.response.ResponseTokenDTO;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoToken;
+import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +67,7 @@ public class MemberService {
      * @param member Database에 저장된 Member 정보
      * @return 서버에서 생성한 액세스 토큰과 리프레시 토큰
      */
+
     private ResponseTokenDTO createToken(Member member) {
 
         jwtUtil.setTokenIngredient(String.valueOf(member.getMemberId()));
@@ -72,7 +76,10 @@ public class MemberService {
 
         member.saveRefreshToken(refreshToken);
 
-        return new ResponseTokenDTO(accessToken, refreshToken);
+        return ResponseTokenDTO.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .build();
     }
 
 
@@ -89,8 +96,46 @@ public class MemberService {
      * @param uri redirect uri
      * @return 카카오 액세스 토큰을 사용하여 카카오로부터 받은 유저의 프로필 정보
      */
-    public KakaoProfile getKakaoProfile(String code, String uri) {
-        KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(code, uri);
+    public KakaoProfile getKakaoProfile(MemberSaveRequestDTO memberSaveRequestDTO) {
+        KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(memberSaveRequestDTO.getCode(), memberSaveRequestDTO.getRedirectUri());
         return kakaoRequest.getKakaoProfile(kakaoToken);
+    }
+
+    /**
+     * 액세스 토큰의 페이로드를 복호화할 때, 그 안에 포함되었던 memberId를
+     * JwtUtil은 저장해두고 있습니다. 그 값을 가져옵니다.
+     *
+     * @return member 고유 아이디
+     */
+    public Long getMemberId() {
+        return Long.parseLong(jwtUtil.getMemberId());
+    }
+
+    /**
+     * 로그아웃 요청시 데이터베이스의 리프레시 토큰을 null로 만들어 만료시킵니다.
+     *
+     * @since 0.0.1
+     */
+
+    /**
+     * 추가 사항 해당 주석은 확인 후 제거해주시길 바랍니다.
+     *
+     * 회원의 save 를 하여 저장하는것이 아닌
+     * jpa 에서 영속성에서 변화된 객체를 감지하여
+     * 해당 변화를 update 시켜주는 더티 체킹을 활성화 시켜
+     * refresh 토큰을 제거하는게 올바르다 생각하여
+     * 해당 메소드를 변경하겠습니다.
+     *
+     * + queryDSL 문법가 findBY 문법이 같아보입니다.
+     *
+     * queryDSL Impl 에서 구현해두신 소스는 그대로 둘테니
+     * 확인하시고 제거해주시길 바랍니다.
+     *
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void invalidateRefreshToken() {
+        memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).invalidateRefreshToken();
+
+//        memberRepository.save(memberRepository.invalidateRefreshToken(getMemberId()));
     }
 }
