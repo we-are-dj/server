@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *
  * 회원 도메인 관련 요청의 데이터를 보내주는 컨트롤러
@@ -59,14 +61,12 @@ public class MemberController {
     }
 
     @DeleteMapping("/logout")
-    public ResponseEntity<String> signOut() {
+    public ResponseDTO<String> signOut(HttpServletResponse response) {
         memberService.invalidateRefreshToken();
-        HttpHeaders responseHeader = new HttpHeaders();
-        responseHeader.set("access_token", null);
-        responseHeader.set("refresh_token", null);
+        response.setHeader("access_token", null);
+        response.setHeader("refresh_token", null);
 
-        // todo: headers does not really change as null. need to debug or get the other solution.
-        return ResponseEntity.ok().headers(responseHeader).body("로그아웃 되었습니다.");
+        return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
 
 }
