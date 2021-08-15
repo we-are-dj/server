@@ -41,7 +41,7 @@ public class SecurityConfigTest {
     @DisplayName("cors post test")
     public void testCorsPost() throws Exception {
         this.mockMvc
-                .perform(post("/test-cors/post")
+                .perform(post("/test/cors-post")
                         .header("Access-Control-Request-Method", "POST")
                         .header("Origin", "*"))
                 .andDo(print())
@@ -52,7 +52,7 @@ public class SecurityConfigTest {
     @DisplayName("cors get test")
     public void testCorsGet() throws Exception {
         this.mockMvc
-                .perform(get("/test-cors/get")
+                .perform(get("/test/cors-get")
                         .header("Access-Control-Request-Method", "GET")
                         .header("Origin", "*"))
                 .andDo(print())
@@ -63,7 +63,7 @@ public class SecurityConfigTest {
     @DisplayName("cors put test")
     public void testCorsPut() throws Exception {
         this.mockMvc
-                .perform(put("/test-cors/put")
+                .perform(put("/test/cors-put")
                         .header("Access-Control-Request-Method", "PUT")
                         .header("Origin", "*"))
                 .andDo(print())
@@ -74,7 +74,7 @@ public class SecurityConfigTest {
     @DisplayName("cors delete test")
     public void testCorsDelete() throws Exception {
         this.mockMvc
-                .perform(delete("/test-cors/delete")
+                .perform(delete("/test/cors-delete")
                         .header("Access-Control-Request-Method", "DELETE")
                         .header("Origin", "*"))
                 .andDo(print())

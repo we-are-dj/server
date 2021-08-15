@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Slf4j
-@RequiredArgsConstructor
+@RequestMapping("/test")
 @RestController
 public class ResponseController {
 
-    @GetMapping("/test-response")
+    @GetMapping("/response")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDTO<MemberResponseDTO>> testResponseDTO() {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()

@@ -24,7 +24,8 @@ public class JwtConfig implements WebMvcConfigurer {
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/",
             "/v1/login/oauth2/kakao",
-            "/error"
+            "/error",
+            "/test/**"
     };
 
     @Override

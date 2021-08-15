@@ -5,6 +5,7 @@ import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
 import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
 import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
+import com.dj.server.common.exception.member.MemberCrudErrorCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -61,10 +62,10 @@ public class MemberController {
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }
     
-    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
+    @ApiOperation(value = "logout", notes = "로그아웃")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
+            @ApiResponse(code = 404, message = "회원이 존재하지 않습니다")
     })
     @DeleteMapping("/logout")
     public ResponseDTO<String> signOut() {

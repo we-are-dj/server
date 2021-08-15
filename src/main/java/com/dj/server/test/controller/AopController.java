@@ -5,12 +5,10 @@ import com.dj.server.test.dto.MemberResponseDTO;
 import com.dj.server.test.dto.MemberTestRequestDTO;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@ToString
+
+@RequestMapping("/test")
 @RestController
 public class AopController {
 
@@ -20,7 +18,7 @@ public class AopController {
      * @param memberTestRequestDTO
      * @return
      */
-    @GetMapping("/test-aop/get")
+    @GetMapping("/aop-get")
     @ResponseStatus(HttpStatus.OK)
     public ResponseDTO<MemberResponseDTO> testAop(@RequestBody MemberTestRequestDTO memberTestRequestDTO) {
         return new ResponseDTO<>(MemberResponseDTO.builder().memberSnsId(memberTestRequestDTO.getMemberSnsId())
