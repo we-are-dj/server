@@ -2,6 +2,8 @@ package com.dj.server.common.dummy.member;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.enums.MemberRole;
+import com.dj.server.api.member.entity.enums.SocialType;
+import com.dj.server.api.member.entity.enums.StatusType;
 
 /**
  *
@@ -20,6 +22,8 @@ public class MemberDummy {
     private final String memberSnsId = "kakaoId123";
     private final String memberNickName = "홍길동";
     private final MemberRole memberRole = MemberRole.USER;
+    private final SocialType socialType = SocialType.KAKAO;
+    private final StatusType statusType = StatusType.NORMAL;
 
     private static final MemberDummy instance = new MemberDummy();
 
@@ -48,9 +52,12 @@ public class MemberDummy {
 
     public Member toEntity() {
         return Member.builder()
+                .memberName(memberNickName)
                 .memberSnsId(memberSnsId)
                 .memberNickName(memberNickName)
+                .memberSts(statusType)
                 .memberRole(memberRole)
+                .socialType(socialType)
                 .build();
     }
 

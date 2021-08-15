@@ -2,14 +2,15 @@ package com.dj.server.api.member.entity;
 
 import com.dj.server.api.member.entity.enums.MemberRole;
 import com.dj.server.api.member.entity.enums.SocialType;
+import com.dj.server.api.member.entity.enums.StatusType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@DynamicUpdate
 @Table
 @Entity
 public class Member {
@@ -41,11 +43,11 @@ public class Member {
     private String memberNickName;
 
     @NotNull
-    @ColumnDefault("0")
+    @Enumerated(EnumType.STRING)
     @Column
-    private boolean memberSts;
+    private StatusType memberSts;
 
-    @Column(length = 200)
+    @Column(length = 200, insertable = false)
     private String refreshToken;
 
     @NotNull
@@ -53,6 +55,7 @@ public class Member {
     @Column
     private MemberRole memberRole;
 
+    @NotNull
     @Column
     @Enumerated(EnumType.STRING)
     private SocialType socialType;
@@ -69,13 +72,15 @@ public class Member {
     private String memberName;
 
     @Builder
-    public Member(String memberSnsId, String memberNickName, MemberRole memberRole, SocialType socialType, String memberName) {
+    public Member(String memberSnsId, String memberNickName, StatusType memberSts, MemberRole memberRole, SocialType socialType, String memberName) {
         this.memberSnsId = memberSnsId;
         this.memberNickName = memberNickName;
+        this.memberSts = memberSts;
         this.memberRole = memberRole;
         this.socialType = socialType;
         this.memberName = memberName;
     }
+
 
     public void updateNickName(String nickName) {
         this.memberNickName = nickName;
@@ -86,9 +91,13 @@ public class Member {
         return this;
     }
 
-    public Member saveRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
+    public Member invalidateRefreshToken() {
+        this.refreshToken = null;
         return this;
+    }
+
+    public void saveRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }

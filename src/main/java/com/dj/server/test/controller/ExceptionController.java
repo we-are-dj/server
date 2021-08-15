@@ -6,17 +6,18 @@ import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import lombok.ToString;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@ToString
+@RequestMapping("/test")
 @RestController
 public class ExceptionController {
-    @GetMapping("/test-permit-exception")
+    @GetMapping("permit-exception")
     public String sendAuthorityError() {
         throw new MemberException(MemberPermitErrorCode.INVALID_MEMBER);
     }
 
-    @GetMapping("/test-crud-exception")
+    @GetMapping("crud-exception")
     public String sendCrudError() {
         throw new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER);
     }

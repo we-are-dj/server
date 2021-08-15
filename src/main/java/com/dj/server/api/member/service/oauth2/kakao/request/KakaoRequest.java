@@ -1,8 +1,8 @@
 package com.dj.server.api.member.service.oauth2.kakao.request;
 
 
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoProfile;
-import com.dj.server.api.member.service.oauth2.kakao.vo.KakaoToken;
+import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
+import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +47,7 @@ public class KakaoRequest {
      * 2. 프론트엔트 서버는 인가코드 및 자신의 서버 주소를 백엔드 서버로 전송합니다.
      * 3. getKakaoAccessToken에서 인가코드를 사용하여 카카오로 액세스토큰을 요청합니다.
      * 4. 카카오에 액세스토큰을 요청할 때 액세스토큰을 포함한 다른 정보들이 함께 포함되어 반환되므로
-     *    이 정보들을 담기 위한 KakaoToken가 필요합니다.
+     *    이 정보들을 담기 위한 KakaoToken vo class가 필요합니다.
      *
      * @param code 카카오 인가코드
      * @param uri 카카오로부터 인가코드를 받은 서버의 주소. 즉 redirect uri.

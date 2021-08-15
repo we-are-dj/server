@@ -46,7 +46,7 @@ public class ResponseDTOTests {
     @Test
     @DisplayName("Common Response DTO Test")
     public void commonResponseDTOTest() throws Exception {
-        this.mockMvc.perform(get("/test-response"))
+        this.mockMvc.perform(get("/test/response"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.memberSnsId").value("kakao123"))

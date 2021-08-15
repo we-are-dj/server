@@ -1,7 +1,7 @@
 package com.dj.server.test.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.member.dto.response.MemberResponseDTO;
+import com.dj.server.test.dto.MemberResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @Slf4j
-@RequiredArgsConstructor
+@RequestMapping("/test")
 @RestController
 public class ResponseController {
 
-    @GetMapping("/test-response")
+    @GetMapping("/response")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDTO<MemberResponseDTO>> testResponseDTO() {
         MemberResponseDTO memberResponseDTO = MemberResponseDTO.builder()
