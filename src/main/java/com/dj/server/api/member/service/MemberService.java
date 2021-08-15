@@ -116,26 +116,8 @@ public class MemberService {
      *
      * @since 0.0.1
      */
-
-    /**
-     * 추가 사항 해당 주석은 확인 후 제거해주시길 바랍니다.
-     *
-     * 회원의 save 를 하여 저장하는것이 아닌
-     * jpa 에서 영속성에서 변화된 객체를 감지하여
-     * 해당 변화를 update 시켜주는 더티 체킹을 활성화 시켜
-     * refresh 토큰을 제거하는게 올바르다 생각하여
-     * 해당 메소드를 변경하겠습니다.
-     *
-     * + queryDSL 문법가 findBY 문법이 같아보입니다.
-     *
-     * queryDSL Impl 에서 구현해두신 소스는 그대로 둘테니
-     * 확인하시고 제거해주시길 바랍니다.
-     *
-     */
     @Transactional(rollbackFor = RuntimeException.class)
     public void invalidateRefreshToken() {
         memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).invalidateRefreshToken();
-
-//        memberRepository.save(memberRepository.invalidateRefreshToken(getMemberId()));
     }
 }

@@ -1,11 +1,12 @@
 package com.dj.server.api.musiclist;
 
 
-import com.dj.server.api.playlist.MemberPlayList;
-import javax.persistence.*;
+import com.dj.server.api.playlist.entity.PlayList;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 /**
  * 재생목록에 대한 노래를 수록하는 Entity
@@ -27,7 +28,7 @@ public class MusicList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private MemberPlayList memberPlayList;
+    private PlayList memberPlayList;
 
     @Column
     private Integer musicNo;

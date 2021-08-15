@@ -1,7 +1,7 @@
 package com.dj.server.common.dummy.playlist;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.playlist.MemberPlayList;
+import com.dj.server.api.playlist.entity.PlayList;
 
 /**
  *
@@ -38,8 +38,8 @@ public class MemberPlayListDummy {
         return playListName;
     }
 
-    public MemberPlayList toEntity(Member member) {
-        return MemberPlayList.builder()
+    public PlayList toEntity(Member member) {
+        return PlayList.builder()
                 .member(member)
                 .playListName(this.playListName)
                 .build();

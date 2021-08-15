@@ -6,10 +6,7 @@ import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
 import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -40,21 +37,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @ApiOperation(value = "test", notes = "테스트!")
-    @ApiResponses({
+    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
+    @ApiResponses({ // 리스폰스 코드 설명
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @GetMapping("/api/test")
-    public String test() {
-        return "123";
-    }
+    @ApiImplicitParams({ // 파라미터 설명
 
-
-    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 404, message = "Not Found")
     })
     @PostMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> signUp(MemberSaveRequestDTO memberSaveRequestDTO) {
