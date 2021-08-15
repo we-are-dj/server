@@ -23,23 +23,15 @@ public class JwtConfig implements WebMvcConfigurer {
 
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/",
-            "/signUp",
-            "/signIn",
-            "/signUp/**",
-            "/signIn/**",
+            "/v1/login/oauth2/kakao",
+            "/error",
+            "/test/**"
     };
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
-                //.addPathPatterns("/**") // URI 전체를 인터셉터로 제어
+               // .addPathPatterns("/**") // URI 전체를 인터셉터로 제어
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }
-
-
-/*   @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new MemberArgumentResolver());
-    }*/
-
 }

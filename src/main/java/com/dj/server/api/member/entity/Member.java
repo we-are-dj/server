@@ -91,6 +91,11 @@ public class Member {
         return this;
     }
 
+    public Member invalidateRefreshToken() {
+        this.refreshToken = null;
+        return this;
+    }
+
     public void saveRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }

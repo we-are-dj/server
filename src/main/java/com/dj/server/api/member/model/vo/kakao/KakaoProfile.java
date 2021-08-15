@@ -1,4 +1,4 @@
-package com.dj.server.api.member.service.oauth2.kakao.vo;
+package com.dj.server.api.member.model.vo.kakao;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.enums.MemberRole;
@@ -23,12 +23,6 @@ public class KakaoProfile {
 
     private Long id;
     private KakaoAccount kakao_account;
-
-    @Builder
-    public KakaoProfile(Long id, KakaoAccount kakaoAccount) {
-        this.id = id;
-        this.kakao_account = kakaoAccount;
-    }
 
     /**
      * @see com.dj.server.api.member.service.MemberService
