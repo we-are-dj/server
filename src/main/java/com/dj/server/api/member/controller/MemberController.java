@@ -60,14 +60,15 @@ public class MemberController {
         KakaoProfile kakaoProfile = memberService.getKakaoProfile(memberSaveRequestDTO);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }
-
-
+    
+    @ApiOperation(value = "signUp", notes = "회원가입 및 로그인")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
     @DeleteMapping("/logout")
     public ResponseDTO<String> signOut() {
         memberService.invalidateRefreshToken();
-//        response.setHeader("access_token", null);
-//        response.setHeader("refresh_token", null);
-
         return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
 
