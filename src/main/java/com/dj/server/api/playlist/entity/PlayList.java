@@ -60,10 +60,6 @@ public class PlayList {
         this.use = use;
     }
 
-    //private boolean use;
-    @Builder
-
-
     public void updatePlayListName(String playListName) {
         this.playListName = playListName;
     }

@@ -42,6 +42,7 @@ public class MemberPlayListDummy {
         return PlayList.builder()
                 .member(member)
                 .playListName(this.playListName)
+                .use("Y")
                 .build();
     }
 
