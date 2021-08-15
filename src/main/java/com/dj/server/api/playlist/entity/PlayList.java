@@ -53,6 +53,7 @@ public class PlayList {
     @Column(length = 1)
     private String use;
 
+    @Builder
     public PlayList(Member member, String playListName, String use) {
         this.member = member;
         this.playListName = playListName;
