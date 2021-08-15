@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
-@ToString
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class MemberReqeustDTO {
+public class MemberSaveRequestDTO {
 
-    private final String nickName;
-    private final String memberSnsId;
+    private final String code;
+    private final String redirectUri;
 
 }

@@ -1,6 +1,7 @@
 package com.dj.server.api.member.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
+import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
 import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
 import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
@@ -55,16 +56,17 @@ public class MemberController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @PostMapping("/login/oauth2/kakao")
-    public ResponseDTO<ResponseTokenDTO> signUp(@RequestParam("code") String code, @RequestParam("redirect_uri") String uri) {
-        KakaoProfile kakaoProfile = memberService.getKakaoProfile(code, uri);
+    public ResponseDTO<ResponseTokenDTO> signUp(MemberSaveRequestDTO memberSaveRequestDTO) {
+        KakaoProfile kakaoProfile = memberService.getKakaoProfile(memberSaveRequestDTO);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }
 
+
     @DeleteMapping("/logout")
-    public ResponseDTO<String> signOut(HttpServletResponse response) {
+    public ResponseDTO<String> signOut() {
         memberService.invalidateRefreshToken();
-        response.setHeader("access_token", null);
-        response.setHeader("refresh_token", null);
+//        response.setHeader("access_token", null);
+//        response.setHeader("refresh_token", null);
 
         return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
