@@ -5,7 +5,7 @@ import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
-import com.dj.server.common.dummy.playlist.MemberPlayListDummy;
+import com.dj.server.common.dummy.playlist.PlayListDummy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ public class MusicListTests {
     private MusicListRepository musicListRepository;
 
     private final MemberDummy memberDummy = MemberDummy.getInstance();
-    private final MemberPlayListDummy memberPlayListDummy = MemberPlayListDummy.getInstance();
+    private final PlayListDummy memberPlayListDummy = PlayListDummy.getInstance();
 
 //    @BeforeEach
 //    public void setUp() {

@@ -108,7 +108,7 @@ public class MemberService {
      * @return member 고유 아이디
      */
     public Long getMemberId() {
-        return Long.parseLong(jwtUtil.getMemberId());
+        return jwtUtil.getMemberId();
     }
 
     /**

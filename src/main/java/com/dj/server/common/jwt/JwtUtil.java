@@ -44,7 +44,9 @@ public class JwtUtil {
     private final MemberRepository memberRepository;
     private String memberId;
 
-    public String getMemberId() { return memberId; }
+    public Long getMemberId() {
+        return Long.parseLong(memberId);
+    }
     public void setTokenIngredient(String memberId) {
         this.memberId = memberId;
     }

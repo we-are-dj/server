@@ -15,16 +15,21 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
-@NoArgsConstructor
-public class MemberPlayListResponseDTO {
-    
+public class PlayAllListResponseDTO {
+
+    //재생목록 고유 번호
+    private final Long playListId;
+
     // 재생목록 이름
-    private String playListName;
-    private String use;
+    private final String playListName;
+    //사용여부
+    private final String use;
 
     @Builder
-    public MemberPlayListResponseDTO(String playListName, String use) {
+    public PlayAllListResponseDTO(Long playListId, String playListName, String use) {
+        this.playListId = playListId;
         this.playListName = playListName;
         this.use = use;
     }
+
 }
