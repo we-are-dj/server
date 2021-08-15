@@ -3,6 +3,7 @@ package com.dj.server.api.playlist.entity;
 
 import com.dj.server.api.member.entity.Member;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -48,12 +49,19 @@ public class PlayList {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    //private boolean use;
-    @Builder
-    public PlayList(Member member, String playListName) {
+    @NotNull
+    @Column(length = 1)
+    private String use;
+
+    public PlayList(Member member, String playListName, String use) {
         this.member = member;
         this.playListName = playListName;
+        this.use = use;
     }
+
+    //private boolean use;
+    @Builder
+
 
     public void updatePlayListName(String playListName) {
         this.playListName = playListName;

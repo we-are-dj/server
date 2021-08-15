@@ -1,8 +1,11 @@
 package com.dj.server.api.playlist.repository;
 
+import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.playlist.entity.PlayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  *
@@ -15,4 +18,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayListRepository extends JpaRepository<PlayList, Long> {
+
+    List<PlayList> findByMember(Member member);
+
 }
