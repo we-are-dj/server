@@ -60,7 +60,7 @@ public class PlayListServiceTest {
 
         final String playListName = "아이유 노래 모음";
 
-        Member member = memberRepository.save(memberDummy.serverTestEntity("아이유"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity("아이유"));
 
         PlayListSaveRequestDTO playListSaveRequestDTO = new PlayListSaveRequestDTO(playListName);
 
@@ -76,7 +76,7 @@ public class PlayListServiceTest {
 
         final String modifyPlayListName = "임창정 노래모음";
 
-        Member member = memberRepository.save(memberDummy.serverTestEntity("임창정"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity("임창정"));
 
         Long playListId = playListRepository.save(playListDummy.toEntity(member)).getPlayListId();
 
@@ -100,7 +100,7 @@ public class PlayListServiceTest {
         final String useYes = "Y";
         final String useNo = "N";
 
-        Member member = memberRepository.save(memberDummy.serverTestEntity("모모랜드"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity("모모랜드"));
 
         //사용중 객체 하나 생성
         Long firstId = playListRepository.save(playListDummy.toEntity(member)).getPlayListId();

@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PlayListSaveResponseDTO {
 
+    private final Long playListId;
     private final String playListName;
     private final String use;
 

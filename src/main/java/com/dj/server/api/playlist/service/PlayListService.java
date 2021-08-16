@@ -91,6 +91,7 @@ public class PlayListService {
         //DTO 로 변환
 
         return PlayListSaveResponseDTO.builder()
+                .playListId(playList.getPlayListId())
                 .playListName(playList.getPlayListName())
                 .use(playList.getUse()).build();
     }

@@ -61,7 +61,7 @@ public class MemberDummy {
                 .build();
     }
 
-    public Member serverTestEntity(String memberNickName) {
+    public Member customNameToEntity(String memberNickName) {
         return Member.builder()
                 .memberName(memberNickName)
                 .memberSnsId(memberSnsId)
