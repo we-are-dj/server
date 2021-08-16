@@ -134,7 +134,7 @@ public class PlayListControllerTest {
 
         final String playListName = "임창정 노래 모음";
 
-        final String memberName = "임창정";
+        final String memberName = "임창정V2";
 
         //given
         Member member = memberRepository.save(memberDummy.customNameToEntity(memberName));
