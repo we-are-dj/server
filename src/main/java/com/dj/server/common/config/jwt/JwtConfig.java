@@ -25,13 +25,13 @@ public class JwtConfig implements WebMvcConfigurer {
             "/",
             "/v1/login/oauth2/kakao",
             "/error",
-            "/test/**"
+          //  "/test/**"
     };
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
-                .addPathPatterns("/v1/**")
+                .addPathPatterns("/**")
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }
 }
