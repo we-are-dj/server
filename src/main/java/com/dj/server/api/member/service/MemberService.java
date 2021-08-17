@@ -92,8 +92,7 @@ public class MemberService {
      * KakaoProfile의 getKakaoProfile 메서드가 반환하는 결과값을 리턴합니다.
      *
      * @see KakaoProfile
-     * @param code 카카오 인가코드
-     * @param uri redirect uri
+     * @param memberSaveRequestDTO : code 카카오 인가코드, uri redirect uri
      * @return 카카오 액세스 토큰을 사용하여 카카오로부터 받은 유저의 프로필 정보
      */
     public KakaoProfile getKakaoProfile(MemberSaveRequestDTO memberSaveRequestDTO) {

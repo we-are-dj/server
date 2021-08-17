@@ -43,7 +43,6 @@ public class MemberController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @ApiImplicitParams({ // 파라미터 설명
-
     })
     @PostMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> signUp(MemberSaveRequestDTO memberSaveRequestDTO) {

@@ -12,8 +12,8 @@ import com.dj.server.api.playlist.model.dto.response.PlayListSaveResponseDTO;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
 import com.dj.server.common.exception.member.MemberException;
-import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
-import com.dj.server.common.exception.playlist.PlayListException;
+import com.dj.server.common.exception.musicList.MusicListCrudErrorCode;
+import com.dj.server.common.exception.musicList.MusicListException;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +110,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
 
 
         //변경 하려는 값이  사용값인지 확인
@@ -145,7 +145,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
 
         playListRepository.delete(playList);
 
