@@ -31,7 +31,7 @@ public class JwtConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
-               // .addPathPatterns("/**") // URI 전체를 인터셉터로 제어
+                .addPathPatterns("/v1/**")
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }
 }

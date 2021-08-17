@@ -1,9 +1,11 @@
-package com.dj.server.api.playlist;
+package com.dj.server.api.playlist.entity;
 
 
 import com.dj.server.api.member.entity.Member;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
+import com.dj.server.api.playlist.model.dto.request.PlayListModifyRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table
 @Entity
-public class MemberPlayList {
+public class PlayList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,15 +50,34 @@ public class MemberPlayList {
     @UpdateTimestamp
     private LocalDateTime updateAt;
 
-    //private boolean use;
+    @NotNull
+    @Column(length = 1)
+    private String use;
+
     @Builder
-    public MemberPlayList(Member member, String playListName) {
+    public PlayList(Member member, String playListName, String use) {
         this.member = member;
         this.playListName = playListName;
+        this.use = use;
     }
 
-    public void updatePlayListName(String playListName) {
-        this.playListName = playListName;
+    public void updatePlayList(PlayListModifyRequestDTO playListModifyRequestDTO) {
+
+        if(playListModifyRequestDTO.getModifyPlayListName() != null) {
+            this.playListName = playListModifyRequestDTO.getModifyPlayListName();
+        }
+
+        if(playListModifyRequestDTO.getUse() != null) {
+            this.use = playListModifyRequestDTO.getUse();
+        }
     }
+
+    //사용안함으로 변경합니다.
+    public PlayList updateUseNo() {
+        this.use = "N";
+        return this;
+    }
+
+
 
 }

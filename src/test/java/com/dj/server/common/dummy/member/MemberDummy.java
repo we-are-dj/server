@@ -61,4 +61,15 @@ public class MemberDummy {
                 .build();
     }
 
+    public Member customNameToEntity(String memberNickName) {
+        return Member.builder()
+                .memberName(memberNickName)
+                .memberSnsId(memberSnsId)
+                .memberNickName(memberNickName)
+                .memberSts(statusType)
+                .memberRole(memberRole)
+                .socialType(socialType)
+                .build();
+    }
+
 }

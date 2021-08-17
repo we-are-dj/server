@@ -2,10 +2,10 @@ package com.dj.server.api.musiclist;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
-import com.dj.server.api.playlist.MemberPlayList;
-import com.dj.server.api.playlist.MemberPlayListRepository;
+import com.dj.server.api.playlist.entity.PlayList;
+import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
-import com.dj.server.common.dummy.playlist.MemberPlayListDummy;
+import com.dj.server.common.dummy.playlist.PlayListDummy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,13 +23,13 @@ public class MusicListTests {
     private MemberRepository memberRepository;
 
     @Autowired
-    private MemberPlayListRepository memberPlayListRepository;
+    private PlayListRepository memberPlayListRepository;
 
     @Autowired
     private MusicListRepository musicListRepository;
 
     private final MemberDummy memberDummy = MemberDummy.getInstance();
-    private final MemberPlayListDummy memberPlayListDummy = MemberPlayListDummy.getInstance();
+    private final PlayListDummy memberPlayListDummy = PlayListDummy.getInstance();
 
 //    @BeforeEach
 //    public void setUp() {
@@ -53,7 +53,7 @@ public class MusicListTests {
 
         Member member = memberRepository.save(memberDummy.toEntity());
 
-        MemberPlayList memberPlayList = memberPlayListRepository.save(memberPlayListDummy.toEntity(member));
+        PlayList memberPlayList = memberPlayListRepository.save(memberPlayListDummy.toEntity(member));
 
         Long id8 = null;
 

@@ -1,7 +1,7 @@
 package com.dj.server.common.dummy.playlist;
 
 import com.dj.server.api.member.entity.Member;
-import com.dj.server.api.playlist.MemberPlayList;
+import com.dj.server.api.playlist.entity.PlayList;
 
 /**
  *
@@ -16,19 +16,19 @@ import com.dj.server.api.playlist.MemberPlayList;
  * @since 0.0.1
  */
 
-public class MemberPlayListDummy {
+public class PlayListDummy {
 
     private final String playListName = "발라드 모음";
 
-    private static final MemberPlayListDummy instance = new MemberPlayListDummy();
+    private static final PlayListDummy instance = new PlayListDummy();
 
-    private MemberPlayListDummy() {
+    private PlayListDummy() {
 
     }
 
-    public static MemberPlayListDummy getInstance() {
+    public static PlayListDummy getInstance() {
         if(instance == null) {
-            return new MemberPlayListDummy();
+            return new PlayListDummy();
         }
 
         return instance;
@@ -38,10 +38,19 @@ public class MemberPlayListDummy {
         return playListName;
     }
 
-    public MemberPlayList toEntity(Member member) {
-        return MemberPlayList.builder()
+    public PlayList toEntity(Member member) {
+        return PlayList.builder()
                 .member(member)
                 .playListName(this.playListName)
+                .use("Y")
+                .build();
+    }
+
+    public PlayList toEntityList(Member member, String playListName) {
+        return PlayList.builder()
+                .member(member)
+                .playListName(playListName)
+                .use("Y")
                 .build();
     }
 
