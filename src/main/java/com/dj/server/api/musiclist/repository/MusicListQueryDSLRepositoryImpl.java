@@ -24,17 +24,11 @@ public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport i
     @Override
     public List<MusicAllListResponseDTO> findByMusicList(Long playListId) {
 
-        return from(musicList) // todo!!!!!  musicList.memberPlayList -> musicList.playListId
+        return from(musicList)
                 .innerJoin(playList).on(musicList.playListId.eq(playList))
                 .where(playList.playListId.eq(playListId))
                 .select(Projections.constructor(MusicAllListResponseDTO.class,
                         musicList.musicId, musicList.musicNo, musicList.musicUrl ))
                 .fetch();
     }
-
-    @Override
-    public Optional<MusicList> findByMusicIdAndPlayListId(Long musicId, PlayList playList) {
-        return Optional.empty();
-    }
-
 }

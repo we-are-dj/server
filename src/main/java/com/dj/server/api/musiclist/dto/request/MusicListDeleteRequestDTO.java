@@ -17,7 +17,11 @@ import javax.validation.constraints.NotNull;
 @Getter
 @RequiredArgsConstructor
 public class MusicListDeleteRequestDTO {
+    @ApiModelProperty(required = true, value = "삭제할 음악목록의 재생목록 번호를 보내주세요")
+    @NotNull
+    private final Long playListId;
+
     @ApiModelProperty(required = true, value = "삭제할 음악목록 고유번호를 보내주세요")
     @NotNull
-    private Long musicId;
+    private final Long musicId;
 }

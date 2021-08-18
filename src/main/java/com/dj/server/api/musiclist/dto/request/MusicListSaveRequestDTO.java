@@ -15,20 +15,18 @@ import javax.validation.constraints.NotNull;
  * @created 2021-08-17
  * @since 0.0.1
  */
-
 @Getter
 @RequiredArgsConstructor
 public class MusicListSaveRequestDTO {
 
-    @ApiModelProperty(required = true, value = "재생 순서")
+    @ApiModelProperty(required = true, value = "재생목록의 고유아이디")
     @NotNull
-    private final Integer musicNo;
+    private final Long playListId;
 
     public MusicList toEntity(PlayList playList) {
         return MusicList.builder()
                 .playListId(playList)
-                .musicNo(musicNo)
+                .musicNo(playListId.intValue() + 1)
                 .build();
     }
-
 }
