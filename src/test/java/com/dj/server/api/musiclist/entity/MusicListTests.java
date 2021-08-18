@@ -1,4 +1,4 @@
-package com.dj.server.api.musiclist;
+package com.dj.server.api.musiclist.entity;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;

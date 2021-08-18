@@ -61,9 +61,13 @@ public class MusicListService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MusicListSaveResponseDTO saveMusicList(MusicListSaveRequestDTO musicListSaveRequestDTO) {
-
+        //재생목록이 존재하는지 확인
         PlayList playList = fetchPlayList(musicListSaveRequestDTO.getPlayListId());
-        MusicList musicList = musicListRepository.save(musicListSaveRequestDTO.toEntity(playList));
+
+        //현재 재생목록의 마지막 번호를 가져옴
+        Integer musicNo = musicListRepository.findByPlayListLastMusicNo(playList.getPlayListId());
+
+        MusicList musicList = musicListRepository.save(musicListSaveRequestDTO.toEntity(playList, musicNo));
 
         return MusicListSaveResponseDTO.builder()
                 .musicId(musicList.getMusicId())
@@ -84,7 +88,7 @@ public class MusicListService {
         PlayList playList = fetchPlayList(musicListModifyRequestDTO.getPlayListId());
 
         MusicList musicList = musicListRepository
-                .findByMusicIdAndPlayListId(musicListModifyRequestDTO.getMusicId(), playList)
+                .findByMusicIdAndPlayList(musicListModifyRequestDTO.getMusicId(), playList)
                 .orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
 
         if(musicListModifyRequestDTO.getMusicNo() != null) {
@@ -117,7 +121,7 @@ public class MusicListService {
 
         PlayList playList = fetchPlayList(musicListDeleteRequestDTO.getPlayListId());
         MusicList musicList = musicListRepository
-                .findByMusicIdAndPlayListId(musicListDeleteRequestDTO.getMusicId(), playList)
+                .findByMusicIdAndPlayList(musicListDeleteRequestDTO.getMusicId(), playList)
                 .orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
 
         musicListRepository.delete(musicList);

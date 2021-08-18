@@ -41,7 +41,7 @@ public class MusicListController {
             @ApiResponse(code = 200, message = "OK")
     })
     @GetMapping("/musicList")
-    public ResponseDTO<List<MusicAllListResponseDTO>> fetchAllMusicList(@RequestParam("play_list_id") Long playListId) {
+    public ResponseDTO<List<MusicAllListResponseDTO>> fetchAllMusicList(@RequestParam("playListId") Long playListId) {
         return new ResponseDTO<>(musicListService.fetchAllMusicList(playListId), "SUCCESS", HttpStatus.OK);
     }
 

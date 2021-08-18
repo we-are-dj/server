@@ -2,6 +2,7 @@ package com.dj.server.api.musiclist.dto.request;
 
 import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.playlist.entity.PlayList;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,24 @@ public class MusicListSaveRequestDTO {
     @NotNull
     private final Long playListId;
 
-    public MusicList toEntity(PlayList playList) {
+    @ApiModelProperty(required = true, value = "유튜브 노래 링크 주소")
+    @NotNull
+    private final String musicUrl;
+
+    @ApiModelProperty(required = true, value = "유튜브 노래 썸네일")
+    @NotNull
+    private final String thumbnail;
+
+    @ApiModelProperty(value = "플레이 타임")
+    private final String playtime;
+
+    public MusicList toEntity(PlayList playList, Integer musicNo) {
         return MusicList.builder()
-                .playListId(playList)
-                .musicNo(playListId.intValue() + 1)
+                .playList(playList)
+                .musicNo(musicNo)
+                .musicUrl(musicUrl)
+                .thumbnail(thumbnail)
+                .playtime(playtime)
                 .build();
     }
 }

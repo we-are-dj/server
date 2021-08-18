@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * 재생될 음악리스트를 담는 엔터티
@@ -30,11 +31,13 @@ public class MusicList {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private PlayList playListId;
+    private PlayList playList;
 
+    @NotNull
     @Column
     private Integer musicNo;
 
+    @NotNull
     @Column(length = 100)
     private String musicUrl;
 
@@ -45,11 +48,15 @@ public class MusicList {
     private String playtime;
 
     @Builder
-    public MusicList(PlayList playListId, Integer musicNo, String musicUrl) {
-        this.playListId = playListId;
+    public MusicList(PlayList playList, Integer musicNo, String musicUrl, String thumbnail, String playtime) {
+        this.playList = playList;
         this.musicNo = musicNo;
         this.musicUrl = musicUrl;
+        this.thumbnail = thumbnail;
+        this.playtime = playtime;
     }
+
+
 
     public void updateMusicList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
         if(musicListModifyRequestDTO.getMusicNo() != null) {

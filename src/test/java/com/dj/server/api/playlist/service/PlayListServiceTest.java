@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@DisplayName("재생목록 테스트 클랙스 입니다.")
+@DisplayName("재생목록 테스트 클래스 입니다.")
 @SpringBootTest
 public class PlayListServiceTest {
 
