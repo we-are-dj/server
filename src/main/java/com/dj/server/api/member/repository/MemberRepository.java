@@ -19,5 +19,5 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long>, MemberQueryDSLRepository {
     Optional<Member> findByMemberSnsId(String memberSnsId);
-    int countByMemberIdAndMemberNickName(Long memberId, String nickname);
+    int countByMemberNickName(String nickname);
 }
