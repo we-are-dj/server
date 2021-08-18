@@ -62,7 +62,7 @@ public class JwtUtil {
     public String createAccessToken() {
         return JWT.create()
                 .withIssuer(ISSUER)
-                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusMinutes(1).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime()))
+                .withExpiresAt(Timestamp.valueOf(LocalDateTime.now().plusHours(6).atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime()))
                 .withClaim("memberId", memberId)
                 .sign(Algorithm.HMAC256(memberId));
     }
