@@ -2,6 +2,8 @@ package com.dj.server.api.musiclist;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.api.musiclist.entity.MusicList;
+import com.dj.server.api.musiclist.repository.MusicListRepository;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
