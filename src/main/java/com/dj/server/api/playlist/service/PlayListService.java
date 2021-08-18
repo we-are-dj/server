@@ -110,7 +110,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
 
 
         //변경 하려는 값이  사용값인지 확인
@@ -145,7 +145,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
 
         playListRepository.delete(playList);
 
