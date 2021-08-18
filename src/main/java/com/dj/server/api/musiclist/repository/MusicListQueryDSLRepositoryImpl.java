@@ -45,10 +45,14 @@ public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport i
      */
     @Override
     public Integer findByPlayListLastMusicNo(Long playListId) {
-        return from(musicList)
-                .innerJoin(playList).on(musicList.playList.eq(playList))
-                .where(playList.playListId.eq(playListId))
-                .orderBy(musicList.musicNo.desc())
-                .fetchFirst().getMusicNo();
+        try {  // NPE 떠서 추가.
+            return from(musicList)
+                    .innerJoin(playList).on(musicList.playList.eq(playList))
+                    .where(playList.playListId.eq(playListId))
+                    .orderBy(musicList.musicNo.desc())
+                    .fetchFirst().getMusicNo();
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 }

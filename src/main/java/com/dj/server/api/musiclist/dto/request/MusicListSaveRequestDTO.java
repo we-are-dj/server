@@ -4,6 +4,7 @@ import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.playlist.entity.PlayList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,7 @@ import javax.validation.constraints.NotNull;
  * @since 0.0.1
  */
 @Getter
+@Builder
 @RequiredArgsConstructor
 public class MusicListSaveRequestDTO {
 
@@ -38,7 +40,7 @@ public class MusicListSaveRequestDTO {
     public MusicList toEntity(PlayList playList, Integer musicNo) {
         return MusicList.builder()
                 .playList(playList)
-                .musicNo(musicNo)
+                .musicNo(musicNo + 1)
                 .musicUrl(musicUrl)
                 .thumbnail(thumbnail)
                 .playtime(playtime)

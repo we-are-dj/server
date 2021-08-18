@@ -73,6 +73,8 @@ public class MusicListService {
                 .musicId(musicList.getMusicId())
                 .musicNo(musicList.getMusicNo())
                 .musicUrl(musicList.getMusicUrl())
+                .thumbnail(musicList.getThumbnail())
+                .playtime(musicList.getPlaytime())
                 .build();
     }
 
