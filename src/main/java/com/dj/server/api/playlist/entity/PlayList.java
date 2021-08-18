@@ -35,7 +35,7 @@ public class PlayList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long playListId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Member member;
 
