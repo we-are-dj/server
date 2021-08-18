@@ -81,19 +81,18 @@ public class Member {
         this.memberName = memberName;
     }
 
-
-    public void updateNickName(String nickName) {
-        this.memberNickName = nickName;
-    }
-
     public Member updateName(String name) {
         this.memberName = name;
         return this;
     }
 
-    public Member invalidateRefreshToken() {
-        this.refreshToken = null;
+    public Member updateNickName(String nickName) {
+        this.memberNickName = nickName;
         return this;
+    }
+
+    public void invalidateRefreshToken() {
+        this.refreshToken = null;
     }
 
     public void saveRefreshToken(String refreshToken) {

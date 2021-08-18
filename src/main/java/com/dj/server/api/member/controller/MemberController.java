@@ -61,4 +61,14 @@ public class MemberController {
         return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "updateNickName", notes = "닉네임 변경")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "회원이 존재하지 않습니다")
+    })
+    @PatchMapping("/members/nickname")
+    public ResponseDTO<String> updateNickName(@RequestParam("nickname") String nickName) {
+       return new ResponseDTO<>(memberService.updateNickName(nickName), "SUCCESS", HttpStatus.OK);
+    }
+
 }
