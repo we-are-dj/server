@@ -6,7 +6,6 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +21,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
 
-    private final String TOKEN_KEY = "dj_token";
+    private final String ACCESS_TOKEN_KEY = "access_token";
+    private final String REFRESH_TOKEN_KEY = "refresh_token";
     private final JwtUtil jwtUtil;
 
     @Override
@@ -35,9 +35,10 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         }
 
         try {
-            String token = request.getHeader(TOKEN_KEY);
-            String newToken = jwtUtil.verifyToken(token);
-            response.setHeader(TOKEN_KEY, newToken);
+            String accessToken = request.getHeader(ACCESS_TOKEN_KEY);
+            String refreshToken = request.getHeader(REFRESH_TOKEN_KEY);
+            String newAccessToken = jwtUtil.verifyToken(accessToken, refreshToken);
+            response.addHeader(ACCESS_TOKEN_KEY, newAccessToken);
         } catch (InternalAuthenticationServiceException | JWTVerificationException | MemberException jwte) {
             log.error(jwte.getMessage());
             response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
@@ -48,7 +49,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     }
 
     private boolean doesHeaderhaveToken(HttpServletRequest request) {
-        return request.getHeader(TOKEN_KEY) != null || request.getHeader(TOKEN_KEY).length() > 4; // jwt needs 5 words at least. exampl: f.s.a
+        return request.getHeader(ACCESS_TOKEN_KEY) != null || request.getHeader(REFRESH_TOKEN_KEY) != null;
     }
 
 }

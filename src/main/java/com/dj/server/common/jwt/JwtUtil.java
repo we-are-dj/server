@@ -13,7 +13,6 @@ import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Component;
 
+import java.beans.ConstructorProperties;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -86,11 +85,17 @@ public class JwtUtil {
      */
     @Getter
     @ToString
-    @RequiredArgsConstructor
     private static class AccessTokenPayLoad {
         private final String iss;
         private final long exp;
         private final String memberId;
+
+        @ConstructorProperties({ "iss", "exp", "memberId" })
+        public AccessTokenPayLoad(String iss, long exp, String memberId) {
+            this.iss = iss;
+            this.exp = exp;
+            this.memberId = memberId;
+        }
     }
 
     /**
@@ -124,19 +129,22 @@ public class JwtUtil {
      * 1. 액세스 토큰의 페이로드를 해석하여 비공개 클레임인 memberId를 꺼내와 setTokenIngredient을 수행합니다.
      *
      * if (액세스토큰이 유효하면)
-     *   새로운 액세스 토큰 발급 및 반환
+     *   검사 결과: 유효한 토큰이므로 검증을 종료
      *
      * else if (액세스 토큰이 유효하지 않으면)
      *    리프레시 토큰 검증
      *
      * @param accessToken 유저가 전달한 액세스 토큰
-     * @return createAccessToken(), 즉 새로운 액세스 토큰 생성하고 반환
+     * @param refreshToken 액세스 토큰이 만료되었을시 전달받게 되는 토큰.
+     *                     액세스 토큰이 만료상태가 아니라면 null이 되어야 함.
      */
-    public String verifyToken(String accessToken) {
+    public String verifyToken(String accessToken, String refreshToken) {
         setTokenIngredient(decodePayload(accessToken));
 
-        if (verifyAccessToken(accessToken)) return createAccessToken();
-        else return verifyRefreshToken();
+        if (!(isValidAccessToken(accessToken, refreshToken))) {
+            return verifyRefreshToken(refreshToken);
+        }
+        return accessToken;
     }
 
     /**
@@ -146,12 +154,13 @@ public class JwtUtil {
      * @see JWTVerifier
      * JWTVerifier.verify는 토큰이 유효한 형식의 jwt인지를 검증 및
      * 발급자 일치성 및 해당 회원의 고유 id로 액세스 토큰이 생성된 것인지 검증합니다.
-     **
+     *
      * if (검증 결과 불일치 사항 발생)
      *    유효하지 않은 토큰임을 알리는 예외처리 수행 (아무것도 반환하지 않음)
      *
      * else if (검증이 성공했으나 액세스 토큰의 유효기간이 지남)
-     *    return false
+     *    return false || 유저로부터 refresh token을 전달받지 못했다면 예외 발생
+     *
      *
      * else if (검증이 성공하고 액세스 토큰 유효기간도 만료되지 않음)
      *    return true
@@ -159,26 +168,23 @@ public class JwtUtil {
      * @return 토큰 유효기간이 남아있음: true / 토큰 유효기간이 지남: false
      * @since 0.0.1
      */
-    private boolean verifyAccessToken(String accessToken) {
-        if (getMemberId() == 0) return false;
+    private boolean isValidAccessToken(String accessToken, String refreshToken) {
+        if (getMemberId() == null || getMemberId() == 0L) return false;
 
         try {
-            log.info("verifyAccessToken(): 1");
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(memberId))
                     .withClaim("memberId", memberId)
                     .withIssuer(ISSUER)
                     .build();
             verifier.verify(accessToken);
-            log.info("verifyAccessToken(): 2");
         } catch (TokenExpiredException expired) {
-            log.info("verifyAccessToken(): 3");
-            return false;
+            if (refreshToken != null) return false;
+            else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());
             throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
         }
-        log.info("verifyAccessToken(): 3-1");
         return true;
     }
 
@@ -203,14 +209,12 @@ public class JwtUtil {
      * @return 액세스 토큰
      * @since 0.0.1
      */
-    private String verifyRefreshToken() {
-        log.info("verifyRefreshToken(): 1");
-        System.out.println("memberId: " + memberId);
+    private String verifyRefreshToken(String refreshToken) {
+
         Member member = memberRepository.findById(Long.parseLong(memberId))
                                     .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
         String savedRefreshToken = member.getRefreshToken();
-        log.info("verifyRefreshToken(): 2");
-        if (savedRefreshToken == null) throw new MemberException(MemberPermitErrorCode.TOKEN_EXPIRED);
+        if (savedRefreshToken == null) throw new MemberException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
 
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(memberId))
@@ -220,12 +224,16 @@ public class JwtUtil {
 
         } catch (TokenExpiredException expired) {
             log.error("리프레시 토큰이 만료되었습니다. 재로그인이 요구됩니다.");
-            throw new MemberException(MemberPermitErrorCode.TOKEN_EXPIRED);
+            throw new MemberException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("리프레시 토큰 검증에 실패했습니다. 유효하지 않은 리프레시 토큰입니다.");
             throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
         }
-        log.info("verifyRefreshToken(): 3");
-        return createAccessToken();
+
+        if (savedRefreshToken.equals(refreshToken)) return createAccessToken();
+        else {
+            log.error("데이터베이스에 저장된 리프레시 토큰과 유저가 전달한 토큰 값이 서로 다릅니다.");
+            throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
+        }
     }
 }
