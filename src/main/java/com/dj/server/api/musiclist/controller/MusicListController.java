@@ -65,7 +65,4 @@ public class MusicListController {
         return new ResponseDTO<>(playListService.modifyMusicList(jwtUtil.getMemberId(), musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-
-
-
 }
