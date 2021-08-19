@@ -16,6 +16,8 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -59,6 +61,18 @@ public class MemberController {
     public ResponseDTO<String> signOut() {
         memberService.invalidateRefreshToken();
         return new ResponseDTO<>("로그아웃되었습니다.", "SUCCESS", HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "updateNickName", notes = "닉네임 변경")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "회원이 존재하지 않습니다")
+    })
+    @PatchMapping("/members/nickname")
+    public ResponseDTO<Map<String, String>> updateNickName(@RequestParam("nickname") String nickName) {
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", memberService.updateNickName(nickName));
+        return new ResponseDTO<>(map, "SUCCESS", HttpStatus.OK);
     }
 
 }
