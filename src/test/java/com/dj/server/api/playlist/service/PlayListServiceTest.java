@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -59,8 +60,9 @@ public class PlayListServiceTest {
     public void playListSave() {
 
         final String playListName = "아이유 노래 모음";
+        final UUID nickName = UUID.randomUUID();
 
-        Member member = memberRepository.save(memberDummy.customNameToEntity("아이유"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
 
         PlayListSaveRequestDTO playListSaveRequestDTO = new PlayListSaveRequestDTO(playListName);
 
@@ -75,8 +77,9 @@ public class PlayListServiceTest {
     public void modifyPlayListName() {
 
         final String modifyPlayListName = "임창정 노래모음";
+        final UUID nickName = UUID.randomUUID();
 
-        Member member = memberRepository.save(memberDummy.customNameToEntity("임창정"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
 
         Long playListId = playListRepository.save(playListDummy.toEntity(member)).getPlayListId();
 
@@ -99,8 +102,9 @@ public class PlayListServiceTest {
 
         final String useYes = "Y";
         final String useNo = "N";
+        final UUID nickName = UUID.randomUUID();
 
-        Member member = memberRepository.save(memberDummy.customNameToEntity("모모랜드"));
+        Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
 
         //사용중 객체 하나 생성
         Long firstId = playListRepository.save(playListDummy.toEntity(member)).getPlayListId();

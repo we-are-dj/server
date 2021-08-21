@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -64,14 +66,13 @@ public class MusicControllerTest {
     public void saveMusicListTests() throws Exception {
 
         //given
-        final String memberName = "김철수";
         final String playListName = "발라드";
         final String musicUrl = "watch?v=6RQ-bBdASvk";
         final String thumbnail = "thumbnail123";
         final String playtime = "22:08";
+        final UUID nickName = UUID.randomUUID();
 
-
-        Member member = memberRepository.save(memberDummy.customNameToEntity(memberName));
+        Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
 
         PlayList playList = playListRepository.save(playListDummy.toEntityList(member, playListName));
 
