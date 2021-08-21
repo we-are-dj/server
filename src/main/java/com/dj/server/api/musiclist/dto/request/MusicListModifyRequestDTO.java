@@ -31,7 +31,4 @@ public class MusicListModifyRequestDTO {
     @ApiModelProperty(value = "변경될 음악 플레이 순서")
     private final Integer musicNo;
 
-    @ApiModelProperty(value = "변경될 유튜브 링크")
-    private final String musicUrl;
-
 }

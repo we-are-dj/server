@@ -55,15 +55,16 @@ public class MusicListController {
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-    @ApiOperation(value = "modifyMusicList",
-            notes = "음악목록을 업데이트합니다")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK")
-    })
-    @PatchMapping("/musicList")
-    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
-        return new ResponseDTO<>(musicListService.modifyMusicList(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
-    }
+//    @ApiOperation(value = "modifyMusicList",
+//            notes = "음악목록을 업데이트합니다")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK")
+//    })
+//    @PatchMapping("/musicList")
+//    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicList(@RequestBody List<MusicListModifyRequestDTO> musicListModifyRequestDTOList) {
+//        return new ResponseDTO<>(musicListService.modifyMusicList(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
+//    }
+
 
     @ApiOperation(value = "deleteMusicList",
             notes = "음악목록을 삭제합니다")
