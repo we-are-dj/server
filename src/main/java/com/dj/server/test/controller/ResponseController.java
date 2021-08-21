@@ -33,4 +33,9 @@ public class ResponseController {
         ResponseDTO<MemberResponseDTO> responseDTOResponseDTO = new ResponseDTO<>(memberResponseDTO, "Ok", HttpStatus.OK);
         return new ResponseEntity<>(responseDTOResponseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/simple")
+    public String test() {
+        return "123";
+    }
 }

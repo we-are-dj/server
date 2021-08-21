@@ -43,9 +43,9 @@ public class MemberService {
      * else if (신규 로그인 유저라면)
      *    카카오부터 받은 유저정보를 모두 Database에 저장합니다.
      *
-     * @created 0.0.1
      * @param profile 카카오에서 제공하는 액세스 토큰을 사용하여
      * @return 서버에서 생성한 액세스 토큰과 리프레시 토큰
+     * @since 0.0.1
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public ResponseTokenDTO getGeneratedTokens(KakaoProfile profile) {
@@ -66,6 +66,7 @@ public class MemberService {
      *
      * @param member Database에 저장된 Member 정보
      * @return 서버에서 생성한 액세스 토큰과 리프레시 토큰
+     * @since 0.0.1
      */
 
     private ResponseTokenDTO createToken(Member member) {
@@ -94,6 +95,7 @@ public class MemberService {
      * @see KakaoProfile
      * @param memberSaveRequestDTO : code 카카오 인가코드, uri redirect uri
      * @return 카카오 액세스 토큰을 사용하여 카카오로부터 받은 유저의 프로필 정보
+     * @since 0.0.1
      */
     public KakaoProfile getKakaoProfile(MemberSaveRequestDTO memberSaveRequestDTO) {
         KakaoToken kakaoToken = kakaoRequest.getKakaoAccessToken(memberSaveRequestDTO.getCode(), memberSaveRequestDTO.getRedirectUri());
@@ -101,10 +103,11 @@ public class MemberService {
     }
 
     /**
-     * 액세스 토큰의 페이로드를 복호화할 때, 그 안에 포함되었던 memberId를
+     * 액세스 토큰의 페이로드를 복호화할 때, 페이로드 안에 포함되어있던 memberId를
      * JwtUtil은 저장해두고 있습니다. 그 값을 가져옵니다.
      *
      * @return member 고유 아이디
+     * @since 0.0.1
      */
     public Long getMemberId() {
         return jwtUtil.getMemberId();
@@ -118,5 +121,18 @@ public class MemberService {
     @Transactional(rollbackFor = RuntimeException.class)
     public void invalidateRefreshToken() {
         memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).invalidateRefreshToken();
+    }
+
+    /**
+     * 회원의 닉네임을 변경하고, 변경된 닉네임을 반환합니다.
+     *
+     * @since 0.0.1
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public String updateNickName(String wantToChange) {
+       int count = memberRepository.countByMemberNickName(wantToChange);
+       if (count > 0) throw new MemberException(MemberCrudErrorCode.DUPLICATED_NICKNAME);
+       Member member = memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).updateNickName(wantToChange);
+       return member.getMemberNickName();
     }
 }

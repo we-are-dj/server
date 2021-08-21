@@ -75,4 +75,5 @@ public class MusicListController {
     public ResponseDTO<String> deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
         return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
+
 }
