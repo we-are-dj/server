@@ -22,6 +22,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.UUID;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -68,8 +70,9 @@ public class PlayListControllerTest {
     public void fetchMemberAllPlayListTests() throws Exception {
         //given
         final String memberName = "김철수";
-        Member member = memberRepository.save(memberDummy.customNameToEntity(memberName));
+        final UUID nickName = UUID.randomUUID();
 
+        Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
         for(String playListName : playArr) {
             playListRepository.save(playListDummy.toEntityList(member, playListName));
         }

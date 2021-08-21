@@ -9,5 +9,7 @@ import java.util.Optional;
 
 public interface MusicListQueryDSLRepository {
     List<MusicAllListResponseDTO> findByMusicList(Long playListId);
-    Optional<MusicList> findByMusicIdAndPlayListId(Long musicId, PlayList playList);
+
+    Integer findByPlayListLastMusicNo(Long playListId);
+
 }

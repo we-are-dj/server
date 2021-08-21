@@ -19,4 +19,6 @@ public class MusicListSaveResponseDTO {
     private final Long musicId;
     private final Integer musicNo;
     private final String musicUrl;
+    private final String thumbnail;
+    private final String playtime;
 }

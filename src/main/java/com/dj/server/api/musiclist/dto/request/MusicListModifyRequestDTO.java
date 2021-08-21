@@ -20,14 +20,15 @@ import javax.validation.constraints.NotNull;
 @RequiredArgsConstructor
 public class MusicListModifyRequestDTO {
 
+    @ApiModelProperty(required = true, value = "플레이리스트의 고유번호")
+    @NotNull
+    private final Long playListId;
+
     @ApiModelProperty(required = true, value = "음악목록의 고유번호")
     @NotNull
     private final Long musicId;
 
     @ApiModelProperty(value = "변경될 음악 플레이 순서")
     private final Integer musicNo;
-
-    @ApiModelProperty(value = "변경될 유튜브 링크")
-    private final String musicUrl;
 
 }

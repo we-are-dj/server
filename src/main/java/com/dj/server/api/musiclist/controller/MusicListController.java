@@ -1,6 +1,7 @@
 package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
+import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
 import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
@@ -32,37 +33,47 @@ import java.util.List;
 @RestController
 public class MusicListController {
 
-    private final MusicListService playListService;
-    private final JwtUtil jwtUtil;
+    private final MusicListService musicListService;
 
     @ApiOperation(value = "fetchAllMusicList",
-            notes = "회원의 모든 재생목록을 조회합니다 토큰만 전송해주세요")
+            notes = "재생목록에 포함된 전체 음악목록을 반환합니다. 재생목록 번호를 보내주세요.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
     @GetMapping("/musicList")
-    public ResponseDTO<List<MusicAllListResponseDTO>> fetchMemberAllPlayList() {
-        return new ResponseDTO<>(playListService.fetchAllMusicList(jwtUtil.getMemberId()), "SUCCESS", HttpStatus.OK);
+    public ResponseDTO<List<MusicAllListResponseDTO>> fetchAllMusicList(@RequestParam("playListId") Long playListId) {
+        return new ResponseDTO<>(musicListService.fetchAllMusicList(playListId), "SUCCESS", HttpStatus.OK);
     }
 
     @ApiOperation(value = "saveMusicList",
-            notes = "재생목록을 생성합니다")
+            notes = "음악목록을 생성합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
     @PostMapping("/musicList")
-    public ResponseDTO<MusicListSaveResponseDTO> playListSave(MusicListSaveRequestDTO musicListSaveRequestDTO) {
-        return new ResponseDTO<>(playListService.playListSave(jwtUtil.getMemberId(), musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
+    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(MusicListSaveRequestDTO musicListSaveRequestDTO) {
+        return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-    @ApiOperation(value = "modifyMusicList",
-            notes = "재생목록을 업데이트 합니다")
+//    @ApiOperation(value = "modifyMusicList",
+//            notes = "음악목록을 업데이트합니다")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "OK")
+//    })
+//    @PatchMapping("/musicList")
+//    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicList(@RequestBody List<MusicListModifyRequestDTO> musicListModifyRequestDTOList) {
+//        return new ResponseDTO<>(musicListService.modifyMusicList(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
+//    }
+
+
+    @ApiOperation(value = "deleteMusicList",
+            notes = "음악목록을 삭제합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
-    @PatchMapping("/musicList")
-    public ResponseDTO<MusicListModifyResponseDTO> modifyPlayList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
-        return new ResponseDTO<>(playListService.modifyMusicList(jwtUtil.getMemberId(), musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
+    @DeleteMapping("/musicList")
+    public ResponseDTO<String> deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
+        return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
 }

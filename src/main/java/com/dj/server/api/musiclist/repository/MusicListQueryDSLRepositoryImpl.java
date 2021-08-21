@@ -24,17 +24,35 @@ public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport i
     @Override
     public List<MusicAllListResponseDTO> findByMusicList(Long playListId) {
 
-        return from(musicList) // todo!!!!!  musicList.memberPlayList -> musicList.playListId
-                .innerJoin(playList).on(musicList.playListId.eq(playList))
+        return from(musicList)
+                .innerJoin(playList).on(musicList.playList.eq(playList))
                 .where(playList.playListId.eq(playListId))
                 .select(Projections.constructor(MusicAllListResponseDTO.class,
                         musicList.musicId, musicList.musicNo, musicList.musicUrl ))
                 .fetch();
     }
 
-    @Override
-    public Optional<MusicList> findByMusicIdAndPlayListId(Long musicId, PlayList playList) {
-        return Optional.empty();
-    }
 
+    /**
+     *
+     * 해당 재생목록의 마지막 번호를 리턴합니다
+     * select music_no from music m inner join playlist p on m.play_list_id = p.play_list_id
+     * where p.play_list_id = ?
+     * order by b.music_no desc
+     *
+     * @param playListId
+     * @return Integer
+     */
+    @Override
+    public Integer findByPlayListLastMusicNo(Long playListId) {
+        try {  // NPE 떠서 추가.
+            return from(musicList)
+                    .innerJoin(playList).on(musicList.playList.eq(playList))
+                    .where(playList.playListId.eq(playListId))
+                    .orderBy(musicList.musicNo.desc())
+                    .fetchFirst().getMusicNo();
+        } catch (NullPointerException e) {
+            return 0;
+        }
+    }
 }
