@@ -62,10 +62,6 @@ public class MusicList {
         if(musicListModifyRequestDTO.getMusicNo() != null) {
             this.musicNo = musicListModifyRequestDTO.getMusicNo();
         }
-
-        if(musicListModifyRequestDTO.getMusicUrl() != null) {
-            this.musicUrl = musicListModifyRequestDTO.getMusicUrl();
-        }
     }
 
 
