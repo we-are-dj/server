@@ -98,11 +98,6 @@ public class MusicListService {
             musicListRepository.findByMusicIdAndMusicNo(musicList, musicNo).map((e) -> musicList.updateMusicNo(musicNo));
         }
 
-        if(musicListModifyRequestDTO.getMusicUrl() != null) {
-            final String musicUrl = musicListModifyRequestDTO.getMusicUrl();
-            musicListRepository.findByMusicIdAndMusicUrl(musicList, musicUrl).map((e) -> musicList.updateMusicUrl(musicUrl));
-        }
-
         musicList.updateMusicList(musicListModifyRequestDTO);
 
         return MusicListModifyResponseDTO.builder()
