@@ -1,6 +1,8 @@
 package com.dj.server.common.exception.playlist;
 
 
+import lombok.Getter;
+
 /**
  * 서버 실행중 발생하는 PlayList Entity와 관련된 에러를 예외처리하기 위한 클래스.
  *
@@ -8,6 +10,7 @@ package com.dj.server.common.exception.playlist;
  * @author Informix
  * @created 2021-08-03 Tue
  */
+@Getter
 public class PlayListException extends RuntimeException {
 
     /**
@@ -27,10 +30,5 @@ public class PlayListException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    /**
-     * @return PlayList Entity와 관련된 에러 정보
-     */
-    public PlayListErrorCode getErrorCode() {
-        return errorCode;
-    }
+
 }

@@ -19,16 +19,4 @@ public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport impl
                 .where(member.memberNickName.eq(nickName))
                 .fetchOne();
     }
-
-    @Override
-    public Member invalidateRefreshToken(Long memberId) {
-        final QMember member = QMember.member;
-        Member wantToSignOutMember = from(member)
-                                       .where(member.memberId.eq(memberId))
-                                       .fetchOne();
-        if (wantToSignOutMember != null) {
-           return wantToSignOutMember.invalidateRefreshToken();
-        }
-        throw new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER);
-    }
 }

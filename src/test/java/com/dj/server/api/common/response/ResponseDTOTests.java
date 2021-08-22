@@ -12,6 +12,7 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -24,6 +25,9 @@ public class ResponseDTOTests {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private WebApplicationContext context;
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -32,14 +36,14 @@ public class ResponseDTOTests {
     @Autowired
     private KakaoRequest kakaoRequest;
 
-    @Autowired
-    private WebApplicationContext context;
+
 
     @BeforeEach
     public void setup() {
 //        this.mockMvc = MockMvcBuilders.standaloneSetup(new KakaoOauth2Controller(memberService, kakaoRequest)).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
+                .addFilters(new CharacterEncodingFilter("UTF-8",true))
                 .build();
     }
 

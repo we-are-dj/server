@@ -29,9 +29,10 @@ public class KakaoProfile {
      * @return 신규 로그인 유저 정보
      */
     public Member toEntity() {
+        String time = String.valueOf(System.currentTimeMillis()).substring(8);
         return Member.builder()
                 .memberSnsId(String.valueOf(id))
-                .memberNickName(kakao_account.getProfile().getNickname())
+                .memberNickName(kakao_account.getProfile().getNickname() + "_" + time)
                 .memberName(kakao_account.getProfile().getNickname())
                 .memberSts(StatusType.NORMAL)
                 .memberRole(MemberRole.USER)

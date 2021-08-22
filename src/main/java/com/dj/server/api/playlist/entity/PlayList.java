@@ -5,6 +5,7 @@ import com.dj.server.api.member.entity.Member;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.dj.server.api.playlist.model.dto.request.PlayListModifyRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -60,8 +61,23 @@ public class PlayList {
         this.use = use;
     }
 
-    public void updatePlayListName(String playListName) {
-        this.playListName = playListName;
+    public void updatePlayList(PlayListModifyRequestDTO playListModifyRequestDTO) {
+
+        if(playListModifyRequestDTO.getModifyPlayListName() != null) {
+            this.playListName = playListModifyRequestDTO.getModifyPlayListName();
+        }
+
+        if(playListModifyRequestDTO.getUse() != null) {
+            this.use = playListModifyRequestDTO.getUse();
+        }
     }
+
+    //사용안함으로 변경합니다.
+    public PlayList updateUseNo() {
+        this.use = "N";
+        return this;
+    }
+
+
 
 }
