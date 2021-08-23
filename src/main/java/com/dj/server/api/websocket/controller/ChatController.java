@@ -1,17 +1,23 @@
 package com.dj.server.api.websocket.controller;
 
-import com.dj.server.api.websocket.model.ChatMessage;
+import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.api.websocket.entity.ChatMessage;
+import com.dj.server.api.websocket.repository.ChatMessageRepository;
+import com.dj.server.api.websocket.service.ChatRoomService;
+import com.dj.server.api.websocket.service.ChatService;
+import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.MemberException;
+import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
+import java.util.List;
+
 
 /**
  * 실시간 채팅 컨트롤러
@@ -19,56 +25,46 @@ import java.util.Objects;
  * @author Informix
  * @created 2021-08-23
  */
+@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/chat")
+@RequestMapping("/pub")
 public class ChatController {
 
-    private final SimpMessagingTemplate webSocket;
+    private final JwtUtil jwtUtil;
+    private final ChatRoomService chatRoomService;
+    private final ChatService chatService;
+    private final MemberRepository memberRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     /**
-     * MessageMapping: client webSocket에서 "sendMessage" 함수를 사용하여 메시지를 보냈을 경우
-     *                 서버에서 그 이벤트를 트리거하는 애너테이션
+     * websocket "/pub/chat/message"로 들어오는 메시지를 처리합니다
+     */
+    @GetMapping("/message/{roomId}")
+    public List<ChatMessage> loadMessage(@PathVariable String roomId) {
+        return chatMessageRepository.findAllByRoomIdOrderByTimenowDesc(roomId);
+    }
+
+    /**
+     * 웹소켓으로 들어오는 메시지 발행 처리 -> 클라이언트에서는 /pub/chat/message로 발행 요청
      *
-     * SendTo: 해당 topics를 수신하는 Client webSocket에 메시지를 전달합니다. SendTo 애너테이션을 사용할 경우
-     *         해당 메서드는 반드시 리턴 타입이 있어야 합니다.
-     *         비교: @see SendTemplateMessage method
-     *
-     * @param chatMessage 유저가 보낸 채팅 메시지
+     * @param message pub으로 들어온 메시지
+     * @param accessToken 액세스토큰
      */
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")
-    public ChatMessage SendToMessage(@Payload ChatMessage chatMessage) {
-        return chatMessage;
-    }
+    @MessageMapping("/chat/message")
+    public void message(@RequestBody ChatMessage message, @Header("access_token") String accessToken) {
 
-    /**
-     * SimpMessagingTemplate을 사용하면 SendTo 어노테이션을 사용하지 않고 응답 메시지를 보낼 수 있습니다.
-     * 이때 반환값은 없어야 합니다. (반드시 void 타입의 메서드여야 합니다.)
-     * convertAndSend 메서드는 특정 유저에게만 메시지를 보낼 수 있는 기능입니다.
-     */
-    @MessageMapping("/template")
-    public void SendTemplateMessage() {
-        webSocket.convertAndSend("/topics/template", "Template");
-    }
+        if (!jwtUtil.isValidAccessToken(accessToken)) throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
 
-    /**
-     * 웹소켓과는 상관없이, 외부의 GET 질의에 대한 이벤트를 트리거할 수 있습니다.
-     */
-    @GetMapping(value = "/api")
-    public void SendAPI() {
-        webSocket.convertAndSend("/topics/api", "WE-ARE-DJ WEBSOCKET CHAT API");
-    }
+        Long memberId = jwtUtil.getMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
+        message.setMemberNickName(member.getMemberNickName());
 
-    /**
-     * @param chatMessage 유저가 보낸 채팅 메시지
-     * @param headerAccessor 헤더 매핑
-     * @return 채팅 메시지
-     */
-    @MessageMapping("/chat.addUser")
-    @SendTo("/topic/public")
-    public ChatMessage addUser(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor headerAccessor) {
-        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", chatMessage.getSender());
-        return chatMessage;
+        // 채팅방 인원수 세팅
+        message.setUserCount(chatRoomService.getUserCount(message.getRoomId()));
+
+        // Websocket에 발행된 메시지를 redis로 발행(publish)
+        chatService.sendChatMessage(message); // 메서드 일원화
+        chatMessageRepository.save(message);
     }
 }
