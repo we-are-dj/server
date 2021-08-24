@@ -3,6 +3,8 @@ package com.dj.server.api.websocket.service;
 import com.dj.server.api.websocket.entity.ChatRoom;
 import com.dj.server.api.websocket.model.dto.ChatRoomDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -18,16 +20,11 @@ public class ChatRoomService {
 
     // Redis CacheKeys
     private static final String CHAT_ROOMS = "CHAT_ROOM"; // 채팅룸 저장
-    public static final String USER_COUNT = "USER_COUNT"; // 채팅룸에 입장한 클라이언트수 저장
-    public static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
+    private static final String USER_COUNT = "USER_COUNT"; // 채팅룸에 입장한 클라이언트수 저장
+    private static final String ENTER_INFO = "ENTER_INFO"; // 채팅룸에 입장한 클라이언트의 sessionId와 채팅룸 id를 맵핑한 정보 저장
 
-    @Resource(name = "redisTemplate")
     private HashOperations<String, String, ChatRoom> hashOpsChatRoom;
-
-    @Resource(name = "redisTemplate")
     private HashOperations<String, String, String> hashOpsEnterInfo;
-
-    @Resource(name = "redisTemplate")
     private ValueOperations<String, String> valueOps;
 
     // 모든 채팅방 조회
@@ -40,7 +37,6 @@ public class ChatRoomService {
         return hashOpsChatRoom.get(CHAT_ROOMS, id);
     }
 
-    // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다. -> 이것으로 채팅방은 지워지지 않음
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다. -> 이것으로 채팅방은 지워지지 않음
     public ChatRoom createChatRoom(ChatRoomDTO chatRoomDTO) {
         ChatRoom chatRoom = ChatRoom.createChatRoom(chatRoomDTO);

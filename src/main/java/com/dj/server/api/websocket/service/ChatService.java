@@ -21,7 +21,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class ChatService {
 
-    private final ChannelTopic channelTopic;
+    private ChannelTopic channelTopic;
     private final RedisTemplate<?, ?> redisTemplate;
     private final ChatRoomService chatRoomService;
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
