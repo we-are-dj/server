@@ -7,6 +7,7 @@ import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
 import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.jwt.JwtUtil;
@@ -120,7 +121,7 @@ public class MemberService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public void invalidateRefreshToken() {
-        memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).invalidateRefreshToken();
+        memberRepository.findById(getMemberId()).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).invalidateRefreshToken();
     }
 
     /**
