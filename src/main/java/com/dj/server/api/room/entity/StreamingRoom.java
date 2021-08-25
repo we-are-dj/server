@@ -1,4 +1,4 @@
-package com.dj.server.api.streaming.entity;
+package com.dj.server.api.room.entity;
 
 
 import com.dj.server.api.member.entity.Member;
