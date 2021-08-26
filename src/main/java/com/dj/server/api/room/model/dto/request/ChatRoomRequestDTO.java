@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class ChatRoomRequestDTO {
+public class ChatRoomRequestDTO implements Serializable {
+
+    private static final long serialVersionUID = 6494678977089006639L;
 
     private String roomId;
 
@@ -28,7 +31,7 @@ public class ChatRoomRequestDTO {
             sessions.add(session);
             chatMessageRequestDTO.setMessage(chatMessageRequestDTO.getSender() + " 님이 입장했습니다.");
         }
-
+        sendMessage(chatMessageRequestDTO, roomService);
 
     }
 

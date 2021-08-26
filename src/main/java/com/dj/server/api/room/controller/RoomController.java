@@ -20,6 +20,17 @@ public class RoomController extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private final RoomService roomService;
 
+    /**
+     *
+     * WebSocket Controller
+     *
+     * WebSocketConfig 에서 등록된 모든 값들이 이쪽으로 들어옵니다.
+     *
+     * @param session
+     * @param message
+     * @throws Exception
+     */
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 

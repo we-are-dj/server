@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ *
+ * 웹소켓 정보를 얻는 컨트롤러
+ * 프로토콜 : HTTP
+ *
+ */
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/chat")

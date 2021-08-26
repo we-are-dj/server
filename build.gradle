@@ -49,6 +49,9 @@ dependencies {
 
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket:2.5.4'
+    implementation 'org.webjars:sockjs-client:1.5.1'
+    implementation 'org.webjars:stomp-websocket:2.3.4'
+
 
     //swagger
     implementation 'io.springfox:springfox-swagger2:2.9.2'

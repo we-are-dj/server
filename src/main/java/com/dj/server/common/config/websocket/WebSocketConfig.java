@@ -12,11 +12,18 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final RoomController streamingController;
+    private final RoomController roomController;
 
 
+    /**
+     *
+     * 웹 소켓 프로토콜로 들어오는 URL 을 컨트롤 합니다
+     *
+     * @param registry
+     */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(streamingController, "/ws/chat").setAllowedOrigins("*");
+        registry.addHandler(roomController, "/ws/chat").setAllowedOrigins("*").
+                addHandler(roomController ,"/create/chat").setAllowedOrigins("*");
     }
 }
