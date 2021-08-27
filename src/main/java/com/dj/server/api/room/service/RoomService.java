@@ -1,8 +1,7 @@
 package com.dj.server.api.room.service;
 
 
-import com.dj.server.api.room.model.dto.request.ChatMessageRequestDTO;
-import com.dj.server.api.room.model.dto.request.ChatRoomRequestDTO;
+import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,24 +19,24 @@ import java.util.*;
 public class RoomService {
 
     private final ObjectMapper objectMapper;
-    private Map<String , ChatRoomRequestDTO> chatRoomRequestDTOMap;
+    private Map<String , ChatRoomDTO> chatRoomRequestDTOMap;
 
     @PostConstruct
     private void init() {
         chatRoomRequestDTOMap = new LinkedHashMap<>();
     }
 
-    public List<ChatRoomRequestDTO> findAllRoom() {
+    public List<ChatRoomDTO> findAllRoom() {
         return new ArrayList<>(chatRoomRequestDTOMap.values());
     }
 
-    public ChatRoomRequestDTO findRoomById(String roomId) {
+    public ChatRoomDTO findRoomById(String roomId) {
         return chatRoomRequestDTOMap.get(roomId);
     }
 
-    public ChatRoomRequestDTO createRoom(String name) {
+    public ChatRoomDTO createRoom(String name) {
         String randomId = UUID.randomUUID().toString();
-        ChatRoomRequestDTO chatRoomRequestDTO = ChatRoomRequestDTO.builder()
+        ChatRoomDTO chatRoomRequestDTO = ChatRoomDTO.builder()
                 .roomId(randomId)
                 .name(name)
                 .build();

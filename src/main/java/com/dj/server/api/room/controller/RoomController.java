@@ -1,8 +1,8 @@
 package com.dj.server.api.room.controller;
 
 
-import com.dj.server.api.room.model.dto.request.ChatMessageRequestDTO;
-import com.dj.server.api.room.model.dto.request.ChatRoomRequestDTO;
+import com.dj.server.api.room.model.dto.request.ChatMessageDTO;
+import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
 import com.dj.server.api.room.service.RoomService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +39,9 @@ public class RoomController extends TextWebSocketHandler {
 //        TextMessage textMessage = new TextMessage("hi");
 //        session.sendMessage(textMessage);
 
-        ChatMessageRequestDTO chatMessageRequestDTO = objectMapper.readValue(payload, ChatMessageRequestDTO.class);
-        ChatRoomRequestDTO roomRequestDTO = roomService.findRoomById(chatMessageRequestDTO.getRoomId());
-        roomRequestDTO.handleActions(session, chatMessageRequestDTO,  roomService);
+        ChatMessageDTO chatMessageDTO = objectMapper.readValue(payload, ChatMessageDTO.class);
+        ChatRoomDTO roomRequestDTO = roomService.findRoomById(chatMessageDTO.getRoomId());
+        roomRequestDTO.handleActions(session, chatMessageDTO,  roomService);
 
     }
 }
