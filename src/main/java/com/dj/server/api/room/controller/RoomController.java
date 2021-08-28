@@ -2,46 +2,35 @@ package com.dj.server.api.room.controller;
 
 
 import com.dj.server.api.room.model.dto.request.ChatMessageDTO;
-import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
-import com.dj.server.api.room.service.RoomService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
+import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
-public class RoomController extends TextWebSocketHandler {
+@Controller
+public class RoomController {
 
-    private final ObjectMapper objectMapper;
-    private final RoomService roomService;
 
-    /**
-     *
-     * WebSocket Controller
-     *
-     * WebSocketConfig 에서 등록된 모든 값들이 이쪽으로 들어옵니다.
-     *
-     * @param session
-     * @param message
-     * @throws Exception
-     */
+    private final SimpMessageSendingOperations messageSendingOperations;
 
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public ChatMessageDTO message(ChatMessageDTO messageDTO, @Header("access_token") String header12) {
+        if (ChatMessageDTO.MessageType.JOIN.equals(messageDTO.getType())) {
+            messageDTO.setMessage(messageDTO.getSender() + " 님이 입장하셨습니다.");
+        }
 
-        String payload = message.getPayload();
-        log.info("payload {}", payload);
-//        TextMessage textMessage = new TextMessage("hi");
-//        session.sendMessage(textMessage);
-
-        ChatMessageDTO chatMessageDTO = objectMapper.readValue(payload, ChatMessageDTO.class);
-        ChatRoomDTO roomRequestDTO = roomService.findRoomById(chatMessageDTO.getRoomId());
-        roomRequestDTO.handleActions(session, chatMessageDTO,  roomService);
-
+        log.info(header12);
+        
+        messageDTO.setMessage("통신완료");
+        
+//        messageSendingOperations.convertAndSend("/sub/chat/room/" + messageDTO.getRoomId(), messageDTO);
+        return messageDTO;
     }
+
 }

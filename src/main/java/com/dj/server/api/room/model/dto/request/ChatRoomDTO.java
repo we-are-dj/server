@@ -9,6 +9,7 @@ import org.springframework.web.socket.WebSocketSession;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  *
@@ -27,28 +28,13 @@ public class ChatRoomDTO implements Serializable {
     private static final long serialVersionUID = 6494678977089006639L;
 
     private String roomId;
-
     private String name;
 
-    private Set<WebSocketSession> sessions = new HashSet<>();
-
-    @Builder
-    public ChatRoomDTO(String roomId, String name) {
-        this.roomId = roomId;
-        this.name = name;
-    }
-
-    public void handleActions(WebSocketSession session, ChatMessageDTO chatMessageDTO, RoomService roomService) {
-        if(chatMessageDTO.getType().equals(ChatMessageDTO.MessageType.ENTER)) {
-            sessions.add(session);
-            chatMessageDTO.setMessage(chatMessageDTO.getSender() + " 님이 입장했습니다.");
-        }
-        sendMessage(chatMessageDTO, roomService);
-
-    }
-
-    public <T> void sendMessage(T message, RoomService roomService) {
-        sessions.parallelStream().forEach(session -> roomService.sendMessage(session, message));
-    }
+   public static ChatRoomDTO create(String name) {
+       ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
+       chatRoomDTO.roomId = UUID.randomUUID().toString();
+       chatRoomDTO.name = name;
+       return chatRoomDTO;
+   }
 
 }

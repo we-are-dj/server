@@ -21,14 +21,21 @@ public class ChatController {
 
     private final RoomService roomService;
 
-    @PostMapping
-    public ChatRoomDTO createRoom(@RequestParam String name) {
-        return roomService.createRoom(name);
-    }
 
-    @GetMapping
-    public List<ChatRoomDTO> findAllRoom() {
+    @GetMapping("/rooms")
+    public List<ChatRoomDTO> findByAllRoom() {
         return roomService.findAllRoom();
     }
+
+    @PostMapping("/room")
+    public ChatRoomDTO createRoom(@RequestParam String name) {
+        return roomService.createChatRoom(name);
+    }
+
+    @GetMapping("/room/{roomId}")
+    public ChatRoomDTO roomInfo(@PathVariable String roomId) {
+        return roomService.findByRoomId(roomId);
+    }
+
 
 }

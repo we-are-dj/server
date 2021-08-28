@@ -18,38 +18,29 @@ import java.util.*;
 @Service
 public class RoomService {
 
-    private final ObjectMapper objectMapper;
-    private Map<String , ChatRoomDTO> chatRoomRequestDTOMap;
+    private Map<String , ChatRoomDTO> chatRoomDTOMap;
 
     @PostConstruct
     private void init() {
-        chatRoomRequestDTOMap = new LinkedHashMap<>();
+        chatRoomDTOMap = new LinkedHashMap<>();
     }
 
     public List<ChatRoomDTO> findAllRoom() {
-        return new ArrayList<>(chatRoomRequestDTOMap.values());
+
+        List<ChatRoomDTO> chatRoomList = new ArrayList<>(chatRoomDTOMap.values());
+        Collections.reverse(chatRoomList);
+        return chatRoomList;
     }
 
-    public ChatRoomDTO findRoomById(String roomId) {
-        return chatRoomRequestDTOMap.get(roomId);
+    public ChatRoomDTO findByRoomId(String id) {
+        return chatRoomDTOMap.get(id);
     }
 
-    public ChatRoomDTO createRoom(String name) {
-        String randomId = UUID.randomUUID().toString();
-        ChatRoomDTO chatRoomRequestDTO = ChatRoomDTO.builder()
-                .roomId(randomId)
-                .name(name)
-                .build();
-        chatRoomRequestDTOMap.put(randomId, chatRoomRequestDTO);
-        return chatRoomRequestDTO;
+    public ChatRoomDTO createChatRoom(String name) {
+        ChatRoomDTO chatRoomDTO = ChatRoomDTO.create(name);
+        chatRoomDTOMap.put(chatRoomDTO.getRoomId(), chatRoomDTO);
+        return chatRoomDTO;
     }
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
 
 }

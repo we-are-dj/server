@@ -141,7 +141,7 @@ public class JwtUtil {
     public String verifyToken(String accessToken, String refreshToken) {
         setTokenIngredient(decodePayload(accessToken));
 
-        if (!(isValidAccessToken(accessToken, refreshToken))) {
+        if (!isValidAccessToken(accessToken)) {
             return verifyRefreshToken(refreshToken);
         }
         return accessToken;
@@ -158,17 +158,16 @@ public class JwtUtil {
      * if (검증 결과 불일치 사항 발생)
      *    유효하지 않은 토큰임을 알리는 예외처리 수행 (아무것도 반환하지 않음)
      *
-     * else if (검증이 성공했으나 액세스 토큰의 유효기간이 지남)
-     *    return false || 유저로부터 refresh token을 전달받지 못했다면 예외 발생
+     * else if (액세스 토큰의 유효기간이 지남)
+     *    return false
      *
-     *
-     * else if (검증이 성공하고 액세스 토큰 유효기간도 만료되지 않음)
+     * else if (검증 결과 유효한 토큰임이 밝혀지고 액세스 토큰 유효기간도 만료되지 않음)
      *    return true
      *
      * @return 토큰 유효기간이 남아있음: true / 토큰 유효기간이 지남: false
      * @since 0.0.1
      */
-    private boolean isValidAccessToken(String accessToken, String refreshToken) {
+    public boolean isValidAccessToken(String accessToken) {
         if (getMemberId() == null || getMemberId() == 0L) return false;
 
         try {
@@ -178,8 +177,8 @@ public class JwtUtil {
                     .build();
             verifier.verify(accessToken);
         } catch (TokenExpiredException expired) {
-            if (refreshToken != null) return false;
-            else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
+            return false;
+            //else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());
@@ -212,7 +211,7 @@ public class JwtUtil {
     private String verifyRefreshToken(String refreshToken) {
 
         Member member = memberRepository.findById(Long.parseLong(memberId))
-                                    .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
         String savedRefreshToken = member.getRefreshToken();
         if (savedRefreshToken == null) throw new MemberException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
 
