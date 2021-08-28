@@ -15,7 +15,9 @@ function setConnected(connected) {
 function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClient.connect({
+        "access_token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJXRV9BUkVfREoiLCJleHAiOjE2MzAxODYwMjYsIm1lbWJlcklkIjoiMzMifQ.szQbUCwR0pDYG3JcrBo2pN0-9Xvc0dNNuVVhAeVSkgw"
+    }, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
@@ -35,7 +37,7 @@ function disconnect() {
 
 function sendName() {
     stompClient.send("/app/hello", {
-        "access_token" : "qosaokdeoe"
+        "access_token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJXRV9BUkVfREoiLCJleHAiOjE2MzAxODYwMjYsIm1lbWJlcklkIjoiMzMifQ.szQbUCwR0pDYG3JcrBo2pN0-9Xvc0dNNuVVhAeVSkgw"
     }, JSON.stringify({
         "type":"JOIN",
         "roomId":"5947ee76-d5c1-4cb6-9a9e-e68f1fefdc74",

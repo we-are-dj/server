@@ -25,45 +25,22 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final WebsocketInterceptor webContentInterceptor;
 
-//    /**
-//     * websocket 의 prefix를 설정합니다.
-//     *
-//     * @param config
-//     */
-//
-//    @Override
-//    public void configureMessageBroker(MessageBrokerRegistry config) {
-//        config.enableSimpleBroker("/sub");
-//        config.setApplicationDestinationPrefixes("/pub");
-//    }
-//
-//    /**
-//     * 웹소켓의 EndPoint 를 설정합니다
-//     * <p>
-//     * http://baseUrl:port/addEndpoint
-//     *
-//     * @param registry
-//     */
-//    @Override
-//    public void registerStompEndpoints(StompEndpointRegistry registry) {
-//        registry.addEndpoint("/ws-stomp").setAllowedOrigins("*").withSockJS();
-//    }
-@Override
-public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/topic");
-    config.setApplicationDestinationPrefixes("/app");
-}
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/topic");
+        config.setApplicationDestinationPrefixes("/app");
+    }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("http://127.0.0.1:5500").withSockJS();
     }
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(webContentInterceptor);
     }
-
 
 
 }

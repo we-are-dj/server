@@ -29,7 +29,7 @@ public class RoomController {
         
         messageDTO.setMessage("통신완료");
         
-//        messageSendingOperations.convertAndSend("/sub/chat/room/" + messageDTO.getRoomId(), messageDTO);
+        messageSendingOperations.convertAndSend("/greetings" + messageDTO.getRoomId(), messageDTO);
         return messageDTO;
     }
 

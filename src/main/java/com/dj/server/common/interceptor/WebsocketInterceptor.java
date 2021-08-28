@@ -26,10 +26,12 @@ public class WebsocketInterceptor implements ChannelInterceptor {
         String accessToken = accessor.getFirstNativeHeader("access_token");
 
         if (StompCommand.CONNECT == accessor.getCommand()) {
+            log.info("Connect");
             validateWebSocketToken(accessToken);
         } else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
 
         } else if(StompCommand.SEND == accessor.getCommand()) {
+            log.info("SEND");
             validateWebSocketToken(accessToken);
         }
         return message;

@@ -139,7 +139,7 @@ public class JwtUtil {
      *                     액세스 토큰이 만료상태가 아니라면 null이 되어야 함.
      */
     public String verifyToken(String accessToken, String refreshToken) {
-        setTokenIngredient(decodePayload(accessToken));
+//        setTokenIngredient(decodePayload(accessToken));
 
         if (!isValidAccessToken(accessToken)) {
             return verifyRefreshToken(refreshToken);
@@ -168,6 +168,8 @@ public class JwtUtil {
      * @since 0.0.1
      */
     public boolean isValidAccessToken(String accessToken) {
+        setTokenIngredient(decodePayload(accessToken));
+
         if (getMemberId() == null || getMemberId() == 0L) return false;
 
         try {
