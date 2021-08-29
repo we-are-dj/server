@@ -9,7 +9,6 @@ import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -132,8 +131,8 @@ public class MemberService {
     @Transactional(rollbackFor = RuntimeException.class)
     public String updateNickName(String wantToChange) {
        int count = memberRepository.countByMemberNickName(wantToChange);
-       if (count > 0) throw new MemberException(MemberCrudErrorCode.DUPLICATED_NICKNAME);
-       Member member = memberRepository.findById(getMemberId()).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).updateNickName(wantToChange);
+       if (count > 0) throw new BizException(MemberCrudErrorCode.DUPLICATED_NICKNAME);
+       Member member = memberRepository.findById(getMemberId()).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).updateNickName(wantToChange);
        return member.getMemberNickName();
     }
 }

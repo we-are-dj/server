@@ -7,8 +7,8 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
+import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,7 +109,7 @@ public class JwtUtil {
         try {
             if (!isValidTokenFormat.matcher(accessToken).matches()) {
                 log.error("정상적인 토큰이 아닙니다. 클라이언트가 변조된 토큰을 전달했을 가능성이 있습니다.");
-                throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
+                throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
             }
             Base64.Decoder decoder = Base64.getDecoder();
             String base64Payload = accessToken.split("\\.")[1];
@@ -179,11 +179,11 @@ public class JwtUtil {
             verifier.verify(accessToken);
         } catch (TokenExpiredException expired) {
             if (refreshToken != null) return false;
-            else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
+            else throw new BizException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());
-            throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
         return true;
     }
@@ -212,9 +212,9 @@ public class JwtUtil {
     private String verifyRefreshToken(String refreshToken) {
 
         Member member = memberRepository.findById(Long.parseLong(memberId))
-                                    .orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
+                                    .orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
         String savedRefreshToken = member.getRefreshToken();
-        if (savedRefreshToken == null) throw new MemberException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
+        if (savedRefreshToken == null) throw new BizException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
 
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(memberId))
@@ -224,16 +224,16 @@ public class JwtUtil {
 
         } catch (TokenExpiredException expired) {
             log.error("리프레시 토큰이 만료되었습니다. 재로그인이 요구됩니다.");
-            throw new MemberException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
+            throw new BizException(MemberPermitErrorCode.REFRESH_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("리프레시 토큰 검증에 실패했습니다. 유효하지 않은 리프레시 토큰입니다.");
-            throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
         if (savedRefreshToken.equals(refreshToken)) return createAccessToken();
         else {
             log.error("데이터베이스에 저장된 리프레시 토큰과 유저가 전달한 토큰 값이 서로 다릅니다.");
-            throw new MemberException(MemberPermitErrorCode.TOKEN_INVALID);
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
     }
 }
