@@ -24,15 +24,15 @@ public class WebsocketInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String accessToken = accessor.getFirstNativeHeader("access_token");
-
+        log.info("인터셉터");
         if (StompCommand.CONNECT == accessor.getCommand()) {
-            log.info("Connect");
-            validateWebSocketToken(accessToken);
+//            log.info("Connect");
+//            validateWebSocketToken(accessToken);
         } else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
 
         } else if(StompCommand.SEND == accessor.getCommand()) {
-            log.info("SEND");
-            validateWebSocketToken(accessToken);
+//            log.info("SEND");
+//            validateWebSocketToken(accessToken);
         }
         return message;
     }

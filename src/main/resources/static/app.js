@@ -13,14 +13,14 @@ function setConnected(connected) {
 }
 
 function connect() {
-    var socket = new SockJS('/gs-guide-websocket');
+    var socket = new SockJS('/ws_stomp');
     stompClient = Stomp.over(socket);
     stompClient.connect({
         "access_token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJXRV9BUkVfREoiLCJleHAiOjE2MzAxODYwMjYsIm1lbWJlcklkIjoiMzMifQ.szQbUCwR0pDYG3JcrBo2pN0-9Xvc0dNNuVVhAeVSkgw"
     }, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
+        stompClient.subscribe('/sub/room', function (greeting) {
             console.log(greeting)
             showGreeting(JSON.parse(greeting.body).message);
         });
@@ -36,7 +36,7 @@ function disconnect() {
 }
 
 function sendName() {
-    stompClient.send("/app/hello", {
+    stompClient.send("/pub/chat/message", {
         "access_token" : "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJXRV9BUkVfREoiLCJleHAiOjE2MzAxODYwMjYsIm1lbWJlcklkIjoiMzMifQ.szQbUCwR0pDYG3JcrBo2pN0-9Xvc0dNNuVVhAeVSkgw"
     }, JSON.stringify({
         "type":"JOIN",

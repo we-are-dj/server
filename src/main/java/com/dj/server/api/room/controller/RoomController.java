@@ -1,36 +1,41 @@
 package com.dj.server.api.room.controller;
 
-
-import com.dj.server.api.room.model.dto.request.ChatMessageDTO;
+import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
+import com.dj.server.api.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@Slf4j
+import java.util.List;
+
+/**
+ *
+ * 웹소켓 정보를 얻는 컨트롤러
+ * 프로토콜 : HTTP
+ *
+ */
+
 @RequiredArgsConstructor
-@Controller
+@RestController
+@RequestMapping("/chat")
 public class RoomController {
 
+    private final RoomService roomService;
 
-    private final SimpMessageSendingOperations messageSendingOperations;
 
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public ChatMessageDTO message(ChatMessageDTO messageDTO, @Header("access_token") String header12) {
-        if (ChatMessageDTO.MessageType.JOIN.equals(messageDTO.getType())) {
-            messageDTO.setMessage(messageDTO.getSender() + " 님이 입장하셨습니다.");
-        }
-
-        log.info(header12);
-        
-        messageDTO.setMessage("통신완료");
-        
-        messageSendingOperations.convertAndSend("/greetings" + messageDTO.getRoomId(), messageDTO);
-        return messageDTO;
+    @GetMapping("/rooms")
+    public List<ChatRoomDTO> findByAllRoom() {
+        return roomService.findAllRoom();
     }
+
+    @PostMapping("/room")
+    public ChatRoomDTO createRoom(@RequestParam String name) {
+        return roomService.createChatRoom(name);
+    }
+
+    @GetMapping("/room/{roomId}")
+    public ChatRoomDTO roomInfo(@PathVariable String roomId) {
+        return roomService.findByRoomId(roomId);
+    }
+
 
 }

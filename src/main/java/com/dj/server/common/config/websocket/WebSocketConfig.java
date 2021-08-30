@@ -25,17 +25,40 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final WebsocketInterceptor webContentInterceptor;
 
-
+    /**
+     *
+     * enableSimpleBroker : 해당 prefix 로 요청이 들어오면 브로커가 관련된 모든 구독자에게 메세지를 보내줍니다.
+     * ex) /sub/room/ + roomId -> 현재 roomId 방에 있는 모든 사람들에게
+     *
+     * setApplicationDestinationPrefixes : 해당 prefix 로 요청이 들어오면 MessageMapping 과 매핑을 시켜줍니다.
+     *
+     * @param config
+     */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
+        config.enableSimpleBroker("/sub");
+        config.setApplicationDestinationPrefixes("/pub");
     }
 
+    /**
+     *
+     * addEndPoint : 서버와 연결할 소켓 HTTP URL 입니다
+     *
+     * withSockJS : stomp 환경으로 변경합니다.
+     *
+     * @param registry
+     */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").setAllowedOrigins("http://127.0.0.1:5500").withSockJS();
+        registry.addEndpoint("/we-are-dj").setAllowedOrigins("http://127.0.0.1:5500").withSockJS();
     }
+
+    /**
+     *
+     * 소켓 컨트롤러 인터셉터
+     *
+     * @param registration
+     */
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
