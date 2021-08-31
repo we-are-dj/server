@@ -39,6 +39,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.5.4'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
 
+    //redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.5.4'
+
     //querydsl
     implementation group: 'com.querydsl', name: 'querydsl-jpa', version: querydslVersion
     annotationProcessor group: 'com.querydsl', name: 'querydsl-apt', version: querydslVersion
