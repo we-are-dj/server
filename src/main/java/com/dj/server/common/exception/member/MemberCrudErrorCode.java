@@ -1,5 +1,6 @@
 package com.dj.server.common.exception.member;
 
+import com.dj.server.common.exception.common.ErrorCode;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -9,7 +10,7 @@ import org.springframework.http.HttpStatus;
  * @created 2021-08-04
  * @since 0.0.1
  */
-public enum MemberCrudErrorCode implements MemberErrorCode {
+public enum MemberCrudErrorCode implements ErrorCode {
     NOT_FOUND_MEMBER(HttpStatus.NOT_FOUND, 404, "회원이 존재하지 않습니다"),
     DUPLICATED_NICKNAME(HttpStatus.FORBIDDEN, 403, "이 닉네임은 이미 사용중이기 때문에 등록할 수 없습니다.");
 
