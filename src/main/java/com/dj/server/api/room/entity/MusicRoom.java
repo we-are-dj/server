@@ -22,11 +22,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Table
 @Entity
-public class StreamingRoom {
+public class MusicRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roomId;
 
     @NotNull
     @Column(length = 100)
