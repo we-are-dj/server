@@ -10,10 +10,9 @@ import com.dj.server.api.playlist.model.dto.response.PlayAllListResponseDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayListModifyResponseDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayListSaveResponseDTO;
 import com.dj.server.api.playlist.repository.PlayListRepository;
+import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
-import com.dj.server.common.exception.playlist.PlayListException;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class PlayListService {
 
     //회원을 자주 조회할거 같아서 공통 메소드로 추가
     private Member fetchMember(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
+        return memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
     }
 
     /**
@@ -110,7 +109,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListModifyRequestDTO.getPlayListId(), member).orElseThrow(() -> new BizException(PlayListCrudErrorCode.NOT_FOUND));
 
 
         //변경 하려는 값이  사용값인지 확인
@@ -145,7 +144,7 @@ public class PlayListService {
         Member member = fetchMember(memberId);
 
         //PlayList Entity 를 가져옵니다.
-        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
+        PlayList playList = playListRepository.findByPlayListIdAndMember(playListDeleteRequestDTO.getPlayListId(), member).orElseThrow(() -> new BizException(PlayListCrudErrorCode.NOT_FOUND));
 
         playListRepository.delete(playList);
 

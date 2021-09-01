@@ -6,6 +6,7 @@ import com.dj.server.api.member.entity.enums.StatusType;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.member.entity.enums.MemberRole;
 import com.dj.server.common.dummy.member.MemberDummy;
+import com.dj.server.common.exception.common.BizException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class MemberExceptionTest {
+class BizExceptionTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -33,7 +34,7 @@ class MemberExceptionTest {
     @DisplayName("회원의 데이터를 생성합니다. 첫번째로 실행됩니다.")
     @Transactional(readOnly = true)
     @ExceptionHandler()
-    public void createMemberEntity() throws MemberException {
+    public void createMemberEntity() throws BizException {
 
         String kakaoId = "kakaoId123";
         String nickName = "홍길동";
