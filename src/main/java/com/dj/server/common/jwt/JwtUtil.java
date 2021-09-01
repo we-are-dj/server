@@ -141,7 +141,7 @@ public class JwtUtil {
     public String verifyToken(String accessToken, String refreshToken) {
         setTokenIngredient(decodePayload(accessToken));
 
-        if (!(isValidAccessToken(accessToken, refreshToken))) {
+        if (!(isValidAccessToken(accessToken))) {
             return verifyRefreshToken(refreshToken);
         }
         return accessToken;
@@ -168,7 +168,9 @@ public class JwtUtil {
      * @return 토큰 유효기간이 남아있음: true / 토큰 유효기간이 지남: false
      * @since 0.0.1
      */
-    private boolean isValidAccessToken(String accessToken, String refreshToken) {
+    public boolean isValidAccessToken(String accessToken) {
+        setTokenIngredient(decodePayload(accessToken));
+
         if (getMemberId() == null || getMemberId() == 0L) return false;
 
         try {
@@ -178,8 +180,8 @@ public class JwtUtil {
                     .build();
             verifier.verify(accessToken);
         } catch (TokenExpiredException expired) {
-            if (refreshToken != null) return false;
-            else throw new BizException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
+            return false;
+            //else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());

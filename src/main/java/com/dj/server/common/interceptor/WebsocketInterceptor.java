@@ -1,6 +1,7 @@
 package com.dj.server.common.interceptor;
 
 
+import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
@@ -37,7 +38,7 @@ public class WebsocketInterceptor implements ChannelInterceptor {
 
     private void validateWebSocketToken(String accessToken) {
         if (!jwtUtil.isValidAccessToken(accessToken))
-            throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
+            throw new BizException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
     }
 
 
