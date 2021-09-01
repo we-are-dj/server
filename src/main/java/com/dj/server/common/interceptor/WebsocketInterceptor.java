@@ -2,7 +2,6 @@ package com.dj.server.common.interceptor;
 
 
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberException;
 import com.dj.server.common.exception.member.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +27,9 @@ public class WebsocketInterceptor implements ChannelInterceptor {
 
         if (StompCommand.CONNECT == accessor.getCommand()) {
             validateWebSocketToken(accessToken);
-        } else if(StompCommand.SUBSCRIBE == accessor.getCommand()) {
+        } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
 
-        } else if(StompCommand.SEND == accessor.getCommand()) {
+        } else if (StompCommand.SEND == accessor.getCommand()) {
             validateWebSocketToken(accessToken);
         }
         return message;
@@ -40,7 +39,6 @@ public class WebsocketInterceptor implements ChannelInterceptor {
         if (!jwtUtil.isValidAccessToken(accessToken))
             throw new BizException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
     }
-
 
 
 }
