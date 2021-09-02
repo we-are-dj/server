@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class MusicRoomRole {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roomRoleId;
