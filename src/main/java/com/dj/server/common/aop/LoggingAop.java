@@ -38,13 +38,13 @@ public class LoggingAop {
      * Around 는 target 메서드를 감싸는 Advice 입니다.
      * 즉, 앞과 뒤에 모두 영향을 미칠 수 있습니다.
      * 또한 Around 는 target 을 실행할 지 아니면 바로 반환할지도 정할 수 있습니다.
-     * 
+     *
      * @param proceedingJoinPoint
      * @return
      * @throws Throwable
      */
 
-    @Around("execution(* *..controller.*.*(..))")
+    @Around("execution(* com.dj.server.api..*Controller.*(..)) && !execution(* com.dj.server.api.room..*Controller.*(..))")
     public Object loggingParameters(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         StringBuilder logBuilder = new StringBuilder();
@@ -64,7 +64,7 @@ public class LoggingAop {
 
         //원래 실행해야 하는 메소드 실행
         Object object = proceedingJoinPoint.proceed();
-        
+
         log.info(object.toString());
 
         return object;

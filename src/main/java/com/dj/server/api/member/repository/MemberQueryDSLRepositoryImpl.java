@@ -2,8 +2,6 @@ package com.dj.server.api.member.repository;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.entity.QMember;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 public class MemberQueryDSLRepositoryImpl extends QuerydslRepositorySupport implements MemberQueryDSLRepository {

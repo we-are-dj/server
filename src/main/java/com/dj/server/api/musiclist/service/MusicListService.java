@@ -10,10 +10,9 @@ import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.musiclist.repository.MusicListRepository;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
+import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.musicList.MusicListCrudErrorCode;
-import com.dj.server.common.exception.musicList.MusicListException;
 import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
-import com.dj.server.common.exception.playlist.PlayListException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class MusicListService {
 
     private PlayList fetchPlayList(Long playListId) {
         return playListRepository.findById(playListId)
-                .orElseThrow(() -> new PlayListException(PlayListCrudErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BizException(PlayListCrudErrorCode.NOT_FOUND));
     }
 
     /**
@@ -91,7 +90,7 @@ public class MusicListService {
 
         MusicList musicList = musicListRepository
                 .findByMusicIdAndPlayList(musicListModifyRequestDTO.getMusicId(), playList)
-                .orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
 
         if(musicListModifyRequestDTO.getMusicNo() != null) {
             final Integer musicNo = musicListModifyRequestDTO.getMusicNo();
@@ -119,7 +118,7 @@ public class MusicListService {
         PlayList playList = fetchPlayList(musicListDeleteRequestDTO.getPlayListId());
         MusicList musicList = musicListRepository
                 .findByMusicIdAndPlayList(musicListDeleteRequestDTO.getMusicId(), playList)
-                .orElseThrow(() -> new MusicListException(MusicListCrudErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
 
         musicListRepository.delete(musicList);
 
