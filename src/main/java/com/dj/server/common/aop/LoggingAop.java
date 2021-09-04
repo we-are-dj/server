@@ -1,6 +1,7 @@
 package com.dj.server.common.aop;
 
 import com.dj.server.api.common.request.LoggingSupport;
+import com.dj.server.common.interceptor.JwtAuthInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -71,28 +72,8 @@ public class LoggingAop {
     }
 
     private void setUserIP() {
-
         HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-
-        String ip = request.getHeader("X-Forwarded-For");
-
-        if (ip == null) {
-            ip = request.getHeader("Proxy-Client-IP");
-        }
-        if (ip == null) {
-            ip = request.getHeader("WL-Proxy-Client-IP"); // 웹로직
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_CLIENT_IP");
-        }
-        if (ip == null) {
-            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-        }
-
-        loggingSupport.setUserIp(ip);
+        loggingSupport.setUserIp(JwtAuthInterceptor.getClientIp(request));
     }
 
 }

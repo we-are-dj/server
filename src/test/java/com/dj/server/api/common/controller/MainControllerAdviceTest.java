@@ -1,18 +1,20 @@
 package com.dj.server.api.common.controller;
 
-import com.dj.server.api.member.controller.MemberController;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.util.Objects;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,21 +23,25 @@ class MainControllerAdviceTest {
     public MockMvc mockMvc;
 
     @InjectMocks
-    private MemberController memberController;
+    private MainController mainController;
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(memberController)
+        mockMvc = MockMvcBuilders.standaloneSetup(mainController)
                 .setControllerAdvice(new MainControllerAdvice())
                 .build();
     }
 
     @Test
-    @Order(1)
-    @DisplayName("지원되지 않는 http method로 요청이 왔을 경우")
-    public void httpRequestMethodNotSupported() throws Exception {
-        this.mockMvc.perform(get("/v1/login/oauth2/kakao"))
-                    .andDo(print())
-                    .andExpect(status().isMethodNotAllowed());
+    @DisplayName("존재하지 않는 url로 요청이 올 경우")
+    public void noURLexisted() throws Exception {
+        this.mockMvc.perform(get("/DOES_NOT_EXIST_URL"))
+                                            .andDo(print())
+                                            .andExpect(status().isNotFound())
+                .andExpect(result -> assertThat(getApiResultExceptionClass(result)).isAssignableFrom(NoHandlerFoundException.class));
+    }
+
+    private Class<? extends Exception> getApiResultExceptionClass(MvcResult result) {
+        return Objects.requireNonNull(result.getResolvedException()).getClass();
     }
 }

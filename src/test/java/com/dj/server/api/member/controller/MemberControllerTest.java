@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -83,5 +84,14 @@ public class MemberControllerTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("지원되지 않는 http method로 요청이 왔을 경우")
+    public void httpRequestMethodNotSupported() throws Exception {
+        this.mockMvc.perform(get("/v1/login/oauth2/kakao"))
+                .andDo(print())
+                .andExpect(status().isMethodNotAllowed());
     }
 }

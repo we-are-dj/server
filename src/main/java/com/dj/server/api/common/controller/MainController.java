@@ -10,7 +10,7 @@ public class MainController {
 
     @GetMapping("/")
     public String redirectSwagger() {
-        return "redirect:/swagger-ui.html";
+        return "redirect:/api/swagger-ui.html";
     }
 
     @GetMapping("/index")
