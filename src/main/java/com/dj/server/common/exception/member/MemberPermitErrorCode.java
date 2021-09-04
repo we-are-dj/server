@@ -16,7 +16,7 @@ public enum MemberPermitErrorCode implements ErrorCode {
     NOT_SIGNED(HttpStatus.UNAUTHORIZED, 401, "해당 사용자는 로그인이 되어 있지 않습니다."),
     ACCESS_TOKEN_EXPIRED(HttpStatus.NOT_ACCEPTABLE, 406, "액세스 토큰이 만료되었습니다. 리프레시토큰과 함께 다시 보내주세요."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 401, "리프레시 토큰이 만료되었습니다. 재로그인이 필요합니다."),
-    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, 401, "사용자의 Token이 유효하지 않습니다.");
+    TOKEN_INVALID(HttpStatus.UNAUTHORIZED, 401, "사용자의 로그인 정보가 유효하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String msg;

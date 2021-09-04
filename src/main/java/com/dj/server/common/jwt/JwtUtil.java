@@ -181,7 +181,6 @@ public class JwtUtil {
             verifier.verify(accessToken);
         } catch (TokenExpiredException expired) {
             return false;
-            //else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());

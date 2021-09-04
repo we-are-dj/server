@@ -42,7 +42,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             response.addHeader(ACCESS_TOKEN_KEY, newAccessToken);
         } catch (InternalAuthenticationServiceException | JWTVerificationException | BizException jwte) {
             log.error(jwte.getMessage());
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
+            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode(), MemberPermitErrorCode.TOKEN_INVALID.getMsg());
             return false;
         }
 

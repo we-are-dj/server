@@ -52,17 +52,18 @@ public class MainControllerAdvice {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                                             .errorCode(HttpStatus.METHOD_NOT_ALLOWED.value())
                                             .message(e.getMessage())
+                                            .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
                                             .build();
 
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     /**
-     * () -> throw new BizException(...)
+     * () -> throw new BizException(e)
      * 등의 방식으로 작성하면, 이 메서드가 이 예외처리에 대한 에러를 핸들링하게 됩니다.
      *
      * @param e throw new BizException(e)에서의 e
-     * @return new BizException(e)에서 생성자로 전달된 e를 반환
+     * @return new BizException(e)에서 생성자로 전달된 e의 정보를 반환
      */
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponseDTO> catchBizException(BizException e) {
