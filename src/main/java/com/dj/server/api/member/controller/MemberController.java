@@ -5,7 +5,7 @@ import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
 import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
 import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
-import com.dj.server.common.exception.member.InvalidMemberParameterException;
+import com.dj.server.common.exception.member.handler.InvalidMemberParameterException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

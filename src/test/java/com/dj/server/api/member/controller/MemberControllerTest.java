@@ -1,6 +1,6 @@
 package com.dj.server.api.member.controller;
 
-import com.dj.server.common.exception.member.InvalidMemberParameterException;
+import com.dj.server.common.exception.member.handler.InvalidMemberParameterException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
