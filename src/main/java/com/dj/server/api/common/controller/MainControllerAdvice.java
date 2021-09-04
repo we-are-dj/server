@@ -61,7 +61,7 @@ public class MainControllerAdvice {
      * () -> throw new BizException(...)
      * 등의 방식으로 작성하면, 이 메서드가 이 예외처리에 대한 에러를 핸들링하게 됩니다.
      *
-     * @param e throw new BizException("""e""")
+     * @param e throw new BizException(e)에서의 e
      * @return new BizException(e)에서 생성자로 전달된 e를 반환
      */
     @ExceptionHandler(BizException.class)

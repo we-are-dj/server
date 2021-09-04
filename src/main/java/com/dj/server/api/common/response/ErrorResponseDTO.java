@@ -92,7 +92,7 @@ public class ErrorResponseDTO {
      */
     @Getter
     @RequiredArgsConstructor
-    private static class CustomFieldError {
+    public static class CustomFieldError {
         private final String field;
         private final Object value;
         private final String reason;
