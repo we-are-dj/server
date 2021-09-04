@@ -3,13 +3,10 @@ package com.dj.server.api.room.controller;
 
 import com.dj.server.api.room.model.dto.request.ChatMessageDTO;
 import com.dj.server.api.room.service.RedisPublisher;
-import com.dj.server.api.room.service.RoomService;
+import com.dj.server.api.room.service.MusicRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -24,19 +21,19 @@ import org.springframework.stereotype.Controller;
 public class SocketController {
 
     private final RedisPublisher redisPublisher;
-    private final RoomService roomService;
+    private final MusicRoomService musicRoomService;
 
     /**
      * 구독자들에게 메세지를 보내줄 도우미
      */
     @MessageMapping("/chat/message")
-    public void message(ChatMessageDTO messageDTO, @Header(value = "access_token" , required = false) String header12) {
+    public void message(ChatMessageDTO messageDTO) {
         if (ChatMessageDTO.MessageType.JOIN.equals(messageDTO.getType())) {
-            roomService.enterChatRoom(messageDTO.getRoomId());
+            musicRoomService.enterChatRoom(messageDTO.getRoomId());
             messageDTO.setMessage(messageDTO.getSender() + " 님이 입장하셨습니다.");
         }
 
-        redisPublisher.publish(roomService.getTopic(messageDTO.getRoomId()), messageDTO);
+        redisPublisher.publish(musicRoomService.getTopic(messageDTO.getRoomId()), messageDTO);
     }
 
 

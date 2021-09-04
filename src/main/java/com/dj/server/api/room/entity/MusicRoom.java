@@ -4,6 +4,7 @@ package com.dj.server.api.room.entity;
 import com.dj.server.api.member.entity.Member;
 import javax.persistence.*;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +37,9 @@ public class MusicRoom {
     @JoinColumn
     private Member roomMaster;
 
+    @Builder
+    public MusicRoom(String roomName, Member roomMaster) {
+        this.roomName = roomName;
+        this.roomMaster = roomMaster;
+    }
 }

@@ -44,7 +44,7 @@ public class LoggingAop {
      * @throws Throwable
      */
 
-    @Around("execution(* com.dj.server.api..*Controller.*(..)) && !execution(* com.dj.server.api.room..*Controller.*(..))")
+    @Around("execution(* com.dj.server.api..*Controller.*(..)) && !execution(* com.dj.server.api.room.controller.SocketController.*(..))")
     public Object loggingParameters(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         StringBuilder logBuilder = new StringBuilder();
