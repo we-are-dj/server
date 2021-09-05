@@ -2,7 +2,7 @@ package com.dj.server.common.interceptor;
 
 
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

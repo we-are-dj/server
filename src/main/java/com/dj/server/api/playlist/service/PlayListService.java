@@ -11,7 +11,7 @@ import com.dj.server.api.playlist.model.dto.response.PlayListModifyResponseDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayListSaveResponseDTO;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
 import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;

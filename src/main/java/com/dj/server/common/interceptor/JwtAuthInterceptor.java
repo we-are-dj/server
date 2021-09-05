@@ -4,7 +4,7 @@ package com.dj.server.common.interceptor;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             response.addHeader(ACCESS_TOKEN_KEY, newAccessToken);
         } catch (InternalAuthenticationServiceException | JWTVerificationException | BizException jwte) {
             log.error(jwte.getMessage());
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
+            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode(), MemberPermitErrorCode.TOKEN_INVALID.getMsg());
             return false;
         }
 
