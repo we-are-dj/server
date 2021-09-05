@@ -37,3 +37,4 @@ public class LoggingSupport<T> {
         return new Gson().toJson(this);
     }
 }
+

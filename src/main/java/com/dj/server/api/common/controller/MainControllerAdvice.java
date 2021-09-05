@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 /**
  * 전역 에러 핸들링
@@ -32,9 +34,22 @@ public class MainControllerAdvice {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                                             .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                                             .message(e.getMessage())
+                                            .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                                             .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponseDTO> handle404Exception(NoHandlerFoundException e) {
+        ErrorResponseDTO response = ErrorResponseDTO.builder()
+                                            .errorCode(HttpStatus.NOT_FOUND.value())
+                                            .message(e.getMessage())
+                                            .httpStatus(HttpStatus.NOT_FOUND)
+                                            .build();
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     /**

@@ -18,6 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * 클라이언트가 전달하는 json web token이 유효한지 검증하는 클래스.
+ *
+ * @author informix
+ * @created 2021-08-07
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
@@ -31,7 +37,8 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
         if (!doesHeaderhaveToken(request)) {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
+            log.error("catch ip: " + getClientIp(request));
+            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode(), MemberPermitErrorCode.TOKEN_INVALID.getMsg());
             return false;
         }
 
@@ -53,4 +60,13 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         return request.getHeader(ACCESS_TOKEN_KEY) != null || request.getHeader(REFRESH_TOKEN_KEY) != null;
     }
 
+    public static String getClientIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) ip = request.getHeader("Proxy-Client-IP");
+        if (ip == null) ip = request.getHeader("WL-Proxy-Client-IP");
+        if (ip == null) ip = request.getHeader("HTTP_CLIENT_IP");
+        if (ip == null) ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        if (ip == null) ip = request.getRemoteAddr();
+        return ip;
+    }
 }
