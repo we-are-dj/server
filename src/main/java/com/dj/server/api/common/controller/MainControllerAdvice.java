@@ -81,6 +81,7 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponseDTO> catchBizException(BizException e) {
+        log.error(e.getMessage());
 
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                 .errorCode(e.getErrorCode())

@@ -33,6 +33,7 @@ import java.util.Objects;
 public class ErrorResponseDTO {
     private String message;
     private Integer errorCode;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private HttpStatus httpStatus;
     /**
      * errors(BindingResult result)와 같은 방식을 통해 customFieldErrors에 값을 설정하면

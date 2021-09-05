@@ -38,8 +38,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         if (!doesHeaderhaveToken(request)) {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
             log.error("catch ip: " + getClientIp(request));
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode(), MemberPermitErrorCode.TOKEN_INVALID.getMsg());
-            return false;
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
         try {
@@ -49,8 +48,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             response.addHeader(ACCESS_TOKEN_KEY, newAccessToken);
         } catch (InternalAuthenticationServiceException | JWTVerificationException | BizException jwte) {
             log.error(jwte.getMessage());
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode(), MemberPermitErrorCode.TOKEN_INVALID.getMsg());
-            return false;
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
         return true;
