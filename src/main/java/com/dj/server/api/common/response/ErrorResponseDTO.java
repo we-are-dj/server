@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,9 +32,12 @@ import java.util.Objects;
  */
 @Getter
 public class ErrorResponseDTO {
+    @JsonProperty("timestamp")
+    private LocalDateTime now;
     private String message;
     private Integer errorCode;
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("status")
     private HttpStatus httpStatus;
     /**
      * errors(BindingResult result)와 같은 방식을 통해 customFieldErrors에 값을 설정하면
@@ -46,6 +50,7 @@ public class ErrorResponseDTO {
     private ErrorResponseDTO() {}
 
     private ErrorResponseDTO(String message, Integer errorCode, HttpStatus httpStatus, List<CustomFieldError> customFieldErrors) {
+        this.now = LocalDateTime.now();
         this.message = message;
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
@@ -106,7 +111,7 @@ public class ErrorResponseDTO {
             }
         }
 
-        public ErrorResponseDTO build() { return new ErrorResponseDTO(this.message,this.errorCode, this.httpStatus, this.customFieldErrors); }
+        public ErrorResponseDTO build() { return new ErrorResponseDTO(this.message, this.errorCode, this.httpStatus, this.customFieldErrors); }
     }
 
     /**

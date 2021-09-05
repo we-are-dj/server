@@ -13,9 +13,4 @@ public class MainController {
         return "redirect:/api/swagger-ui.html";
     }
 
-    @GetMapping("/index")
-    public String test() {
-        return "index.html";
-    }
-
 }

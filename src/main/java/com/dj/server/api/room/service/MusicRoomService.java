@@ -8,7 +8,7 @@ import com.dj.server.api.room.entity.MusicRoomRepository;
 import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -83,10 +83,11 @@ public class MusicRoomService {
      *
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis Hash 에 저장
      *
-     * @param name
+     * @param memberId
+     * @param musicRoomSaveRequestDTO
      * @return
      */
-    public ChatRoomDTO createChatRoom(Long memberId , MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
+    public ChatRoomDTO createChatRoom(Long memberId, MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
 
         //회원 조회
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));

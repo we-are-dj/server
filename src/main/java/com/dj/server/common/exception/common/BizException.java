@@ -10,7 +10,6 @@ public class BizException extends RuntimeException {
     private final Integer errorCode;
     private final HttpStatus httpStatus;
 
-
     public BizException(ErrorCode code) {
         super(code.getMsg(), new Throwable(code.getHttpStatus().toString()));
         this.message = code.getMsg();

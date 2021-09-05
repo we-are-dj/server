@@ -6,10 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import java.net.MalformedURLException;
 
 /**
  * 전역 에러 핸들링
@@ -40,16 +44,35 @@ public class MainControllerAdvice {
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> handle404Exception(NoHandlerFoundException e) {
+    /**
+     * 잘못된 인수가 포함된 요청이 왔을 경우 처리합니다.
+     * 예시: localhost:8080/index.php?s=/Index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=HelloThinkPHP21
+     *
+     * @return 400
+     */
+    @ExceptionHandler({IllegalArgumentException.class, MalformedURLException.class})
+    protected ResponseEntity<ErrorResponseDTO> handleException(IllegalArgumentException iae, MalformedURLException mue) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                            .errorCode(HttpStatus.NOT_FOUND.value())
-                                            .message(e.getMessage())
-                                            .httpStatus(HttpStatus.NOT_FOUND)
-                                            .build();
+                .errorCode(HttpStatus.BAD_REQUEST.value())
+                .message(iae != null ? iae.getMessage() : mue.getMessage())
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .build();
 
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 404 에러가 발생할 경우 기본 지정된 에러페이지로 리다이렉트시킵니다.
+     *
+     * 반드시 아래의 설정을 yml 또는 properties에 해두어야 정상적으로 동작합니다.
+     * spring.mvc.throw-exception-if-no-handler-found: true
+     * spring.web.resources.add-mappings: false
+     *
+     * @return 404 뷰페이지
+     */
+    @ExceptionHandler({NoHandlerFoundException.class})
+    protected ModelAndView handle404() {
+        return new ModelAndView("redirect:/errors/404.html", HttpStatus.NOT_FOUND);
     }
 
     /**
