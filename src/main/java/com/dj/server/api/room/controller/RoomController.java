@@ -1,7 +1,9 @@
 package com.dj.server.api.room.controller;
 
 import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
-import com.dj.server.api.room.service.RoomService;
+import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
+import com.dj.server.api.room.service.MusicRoomService;
+import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,26 +17,27 @@ import java.util.List;
  */
 
 @RequiredArgsConstructor
+@RequestMapping("/v1")
 @RestController
-@RequestMapping("/chat")
 public class RoomController {
 
-    private final RoomService roomService;
+    private final MusicRoomService musicRoomService;
+    private final JwtUtil jwtUtil;
 
 
     @GetMapping("/rooms")
     public List<ChatRoomDTO> findByAllRoom() {
-        return roomService.findAllRoom();
+        return musicRoomService.findAllRoom();
     }
 
     @PostMapping("/room")
-    public ChatRoomDTO createRoom(@RequestParam String name) {
-        return roomService.createChatRoom(name);
+    public ChatRoomDTO createRoom(MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
+        return musicRoomService.createChatRoom(jwtUtil.getMemberId() ,musicRoomSaveRequestDTO);
     }
 
     @GetMapping("/room/{roomId}")
     public ChatRoomDTO roomInfo(@PathVariable String roomId) {
-        return roomService.findByRoomId(roomId);
+        return musicRoomService.findByRoomId(roomId);
     }
 
 
