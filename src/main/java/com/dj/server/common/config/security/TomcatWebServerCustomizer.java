@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
 public class TomcatWebServerCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
 
     /**
-     * (특수문자가 포함되어) 잘못된 Query Param으로 요청이 들어올 경우
-     * 발생하는 IllgalArgumentException을 ControllerAdvice로 처리하기 위하여
+     * (특수문자가 포함되어) 잘못된 url 경로 또는 (특수문자가 포함되어) 잘못된 Query Param를 실어보내는 요청이 들어올 경우에
+     * 발생하는 IllegalArgumentException을 ControllerAdvice로 처리하기 위하여
      * 톰캣에 해당 특수문자를 제거하는 옵션을 추가합니다.
      *
      * 이 옵션이 없다면 톰캣의 Bad Request 에러 메시지가

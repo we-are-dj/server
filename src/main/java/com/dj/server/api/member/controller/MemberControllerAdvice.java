@@ -19,6 +19,7 @@ public class MemberControllerAdvice {
      * // @Valid 또는 @Validated 애너테이션을 사용하는 컨트롤러 메서드에 대한 예외 응답 처리시
      *    errors 인자값을 설정하면, 보다 자세한 에러메시지를 클라이언트에 전달할 수 있습니다.
      *
+     * @see ErrorResponseDTO
      * @param e InvalidParameterException
      * @return 400 (Bad Request: invalid parameter error)
      */

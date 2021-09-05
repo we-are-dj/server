@@ -1,6 +1,5 @@
 package com.dj.server.common.exception.member.handler;
 
-
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import lombok.Getter;

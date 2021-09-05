@@ -27,7 +27,6 @@ import java.util.Map;
  * @since 0.0.1
  *
  */
-
 @Slf4j
 @Api(value = "MemberController V1")
 @RequestMapping("/v1")

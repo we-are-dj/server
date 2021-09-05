@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
  *
  *
  * @author JaeHyun
- * @create 2021-08-15
+ * @created 2021-08-15
  * @since 0.0.1
  */
 

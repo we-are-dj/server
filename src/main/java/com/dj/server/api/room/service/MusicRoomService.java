@@ -9,7 +9,7 @@ import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -17,11 +17,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -61,7 +58,7 @@ public class MusicRoomService {
      *
      * 모든 채팅방을 조회합니다.
      *
-     * @return
+     * @return redis에서 조회
      */
     public List<ChatRoomDTO> findAllRoom() {
         return operations.values(CHAT_ROOMS);
@@ -72,8 +69,8 @@ public class MusicRoomService {
      *
      * 채팅방 key + CHAT_ROOM_ID 로 하나 의 채팅방의 정보만 조회합니다.
      *
-     * @param id
-     * @return
+     * @param id 유저 아이디
+     * @return 특정 방의 roomId를 이용해 redis에서 조회한 해당 채팅방의 정보
      */
     public ChatRoomDTO findByRoomId(String id) {
         return operations.get(CHAT_ROOMS, id);
@@ -83,9 +80,9 @@ public class MusicRoomService {
      *
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis Hash 에 저장
      *
-     * @param memberId
-     * @param musicRoomSaveRequestDTO
-     * @return
+     * @param memberId 방을 만드는 유저의 아이디
+     * @param musicRoomSaveRequestDTO 방이름 및 방장(기본: 방 생성자 == 방장) 정보
+     * @return 생성된 방의 정보 (방의 고유 id와 방 이름)
      */
     public ChatRoomDTO createChatRoom(Long memberId, MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
 
@@ -104,7 +101,7 @@ public class MusicRoomService {
      *
      * 서버가 여러대면 각 서버별로 토픽을 저장합니다.
      *
-     * @param roomId
+     * @param roomId 특정 방의 고유 id
      */
     public void enterChatRoom(String roomId) {
         ChannelTopic topic = topics.get(roomId);
@@ -119,8 +116,8 @@ public class MusicRoomService {
      *
      * 채널 관련 데이터를 불러옵니다.
      *
-     * @param roomId
-     * @return
+     * @param roomId 특정 방의 고유 id
+     * @return 채널 정보
      */
     public ChannelTopic getTopic(String roomId) {
         return topics.get(roomId);
