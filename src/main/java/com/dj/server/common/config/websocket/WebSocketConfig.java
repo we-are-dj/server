@@ -1,6 +1,6 @@
 package com.dj.server.common.config.websocket;
 
-import com.dj.server.common.interceptor.WebSocketInterceptor;
+import com.dj.server.common.interceptor.WebsocketInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -9,58 +9,61 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+
 /**
- * @EnableWebSocketMessageBroker WebSocket 서버 활성화
- * WebSocketMessageBrokerConfigurer 웹 소켓 연결을 구성하기 위한 메서드 구현 및 제공
- *
- * @author Informix
- * @created 2021-08-23
- * @since 0.0.1
+ * pub / sub 방식을 구현합니다
+ * pub / sub 방식을 이용하면 구독자 관리가 알아서 되므로
+ * 웹소켓 세션 관리가 필요 없어 집니다.
+ * 또한 발송의 구현도 알아서 해결되므로 일일이 클라이언트에게 메시지를 발송하지 않아도 됩니다.
  */
+
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
-@RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final WebSocketInterceptor webSocketInterceptor;
+
+    private final WebsocketInterceptor webContentInterceptor;
 
     /**
-     * 클라이언트가 웹소켓 서버에 연결하는 데 사용할 웹 소켓 엔드포인트를 등록하는 메서드.
      *
-     * withSockJS(): 웹소켓을 지원하지 않는 브라우저에 Fallback 활성화.
-     *               (sock.js를 통해 낮은 버전의 브라우저에서도 ws를 사용할 수 있도록 설정합니다.)
+     * enableSimpleBroker : 해당 prefix 로 요청이 들어오면 브로커가 관련된 모든 구독자에게 메세지를 보내줍니다.
+     * ex) /sub/room/ + roomId -> 현재 roomId 방에 있는 모든 사람들에게
      *
-     * @param registry Stomp 엔드포인트 설정을 돕는 파라메터.
-     */
-    @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
-    }
-
-    /**
-     * 한 클라이언트에서 다른 클라이언트로 메시지를 라우팅하는데 사용될 메시지 브로커를 구성하는 메서드.
+     * setApplicationDestinationPrefixes : 해당 prefix 로 요청이 들어오면 MessageMapping 과 매핑을 시켜줍니다.
      *
-     * config.setApplicationDestinationPrefixes("/pub")
-     * -   서버가 클라이언트로부터 넘어온 메시지를 받을 controller의 prefix를 "/pub"으로 설정합니다.
-     *
-     * registry.enableSimpleBroker("/sub")
-     * -  "/sub"으로 시작되는 메시지가 메시지 브로커로 라우팅 되도록 정의합니다.
-     *     메시지 브로커는 특정 주제를 구독중인, 연결된 모든 클라이언트에게 메시지를 broadcast하는 역할을 맡습니다.
-     *
-     * @param config 메시지 브로커를 구성하는 것을 돕는 파라메터.
+     * @param config
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes("/pub");
         config.enableSimpleBroker("/sub");
+        config.setApplicationDestinationPrefixes("/pub");
     }
 
     /**
-     * // WebSocketInterceptor가 Websocket 앞단에서 token을 체크할 수 있도록 설정합니다.
-     * @param registration 채널 구성을 돕는 파라메터
+     *
+     * addEndPoint : 서버와 연결할 소켓 HTTP URL 입니다
+     *
+     * withSockJS : stomp 환경으로 변경합니다.
+     *
+     * @param registry
      */
     @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(webSocketInterceptor);
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/we-are-dj").setAllowedOriginPatterns("*").withSockJS();
     }
+
+    /**
+     *
+     * 소켓 컨트롤러 인터셉터
+     *
+     * @param registration
+     */
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(webContentInterceptor);
+    }
+
+
 }

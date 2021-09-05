@@ -26,7 +26,6 @@ public class JwtConfig implements WebMvcConfigurer {
             "/v1/login/oauth2/kakao",
             "/error",
             "/test/**",
-            "/chat"
     };
 
     @Override

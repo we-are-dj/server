@@ -1,4 +1,4 @@
-package com.dj.server.api.streaming.entity;
+package com.dj.server.api.room.entity;
 
 
 import com.dj.server.api.member.entity.Member;
@@ -22,11 +22,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Table
 @Entity
-public class StreamingRoom {
+public class MusicRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long roomId;
 
     @NotNull
     @Column(length = 100)
