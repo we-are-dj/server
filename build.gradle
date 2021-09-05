@@ -59,13 +59,10 @@ dependencies {
     implementation 'org.webjars:jquery:3.1.1-1'
 
 
-<<<<<<< HEAD
-
     // redis
     implementation 'org.springframework.data:spring-data-redis:2.5.4'
 
-=======
->>>>>>> cb0bc8e469fd037428de82bed38e3dd410b1eea4
+
     //swagger
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'

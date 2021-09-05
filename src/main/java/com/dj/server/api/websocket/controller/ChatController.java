@@ -6,9 +6,9 @@ import com.dj.server.api.websocket.entity.ChatMessage;
 import com.dj.server.api.websocket.repository.ChatMessageRepository;
 import com.dj.server.api.websocket.service.ChatRoomService;
 import com.dj.server.api.websocket.service.ChatService;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.common.BizException;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,10 +54,10 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(@RequestBody ChatMessage message, @Header("access_token") String accessToken) {
 
-        if (!jwtUtil.isValidAccessToken(accessToken)) throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
+        if (!jwtUtil.isValidAccessToken(accessToken)) throw new BizException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
 
         Long memberId = jwtUtil.getMemberId();
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
         message.setMemberNickName(member.getMemberNickName());
 
         // 채팅방 인원수 세팅
