@@ -9,12 +9,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.webjars.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 전역 에러 핸들링
@@ -36,13 +40,7 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDTO> handleException(Exception e) {
-        ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                    .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                                    .message(e.getMessage())
-                                                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                                                    .build();
-
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return handleGeneralException(HttpStatus.INTERNAL_SERVER_ERROR, e);
     }
 
     /**
@@ -54,13 +52,7 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler({IllegalArgumentException.class, MalformedURLException.class})
     protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae, MalformedURLException mue) {
-        ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                    .errorCode(HttpStatus.BAD_REQUEST.value())
-                                                    .message(iae != null ? iae.getMessage() : mue.getMessage())
-                                                    .httpStatus(HttpStatus.BAD_REQUEST)
-                                                    .build();
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return handleGeneralException(HttpStatus.BAD_REQUEST, iae, mue);
     }
 
     /**
@@ -89,14 +81,31 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ErrorResponseDTO> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return handleGeneralException(HttpStatus.METHOD_NOT_ALLOWED, e);
+    }
 
-        ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                    .errorCode(HttpStatus.METHOD_NOT_ALLOWED.value())
-                                                    .message(e.getMessage())
-                                                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
-                                                    .build();
+    /**
+     * 프로토콜 비정상 에러 처리
+     * 잘못된 프로토콜 연결을 시도했거나 프로토콜 연결에 장애가 발생했을 때 동작합니다.
+     *
+     * @param e BadGateway 502
+     * @return 502
+     */
+    @ExceptionHandler(HttpServerErrorException.BadGateway.class)
+    protected ResponseEntity<ErrorResponseDTO> handleBadGateway(HttpServerErrorException.BadGateway e) {
+        return handleGeneralException(HttpStatus.BAD_GATEWAY, e);
+    }
 
-        return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    /**
+     * 서버 접속자가 많아서 서버가 처리하지 못하고 있거나
+     * 서버에 장애가 발생하여 요청을 정상 처리하지 못할 경우 동작합니다.
+     *
+     * @param e Service Unavailable 503
+     * @return 503
+     */
+    @ExceptionHandler(HttpServerErrorException.ServiceUnavailable.class)
+    protected ResponseEntity<ErrorResponseDTO> handleServiceUnavailable(HttpServerErrorException.ServiceUnavailable e) {
+        return handleGeneralException(HttpStatus.SERVICE_UNAVAILABLE, e);
     }
 
     /**
@@ -108,15 +117,26 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponseDTO> catchBizException(BizException e) {
-
         log.error(e.getMessage());
+        return handleGeneralException(e.getHttpStatus(), e);
+    }
 
+    /**
+     * 정형화된 에러 응답메시지 포맷을 생성합니다.
+     *
+     * @param httpStatus 발생한 에러
+     * @param e 익셉션 목록
+     * @return ResponseEntity<ErrorResponseDTO>
+     */
+    private ResponseEntity<ErrorResponseDTO> handleGeneralException(HttpStatus httpStatus, Exception ...e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                    .errorCode(e.getErrorCode())
-                                                    .message(e.getMessage())
-                                                    .httpStatus(e.getHttpStatus())
+                                                    .errorCode(httpStatus.value())
+                                                    .httpStatus(httpStatus)
+                                                    .message(Arrays.stream(e)
+                                                            .filter(Objects::nonNull).findFirst()
+                                                            .map(Exception::getMessage)
+                                                            .orElse(httpStatus.toString()))
                                                     .build();
-
-        return new ResponseEntity<>(response, response.getHttpStatus());
+        return new ResponseEntity<>(response, httpStatus);
     }
 }
