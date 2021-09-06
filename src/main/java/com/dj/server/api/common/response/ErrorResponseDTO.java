@@ -121,7 +121,7 @@ public class ErrorResponseDTO {
     }
 
     /**
-     *  // @Valid 또는 @Validated 에 의한 parameter 검증에 통과하지 못한 필드가 담긴 클래스.
+     * # @Valid 또는 @Validated 에 의한 parameter 검증에 통과하지 못한 필드가 담긴 클래스.
      */
     @Getter
     @RequiredArgsConstructor

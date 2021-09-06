@@ -16,8 +16,6 @@ import org.webjars.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Objects;
 
 import static com.dj.server.api.common.controller.GeneralControllerAdvice.handleGeneralException;
 
