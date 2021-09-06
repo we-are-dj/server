@@ -4,6 +4,7 @@ import com.dj.server.api.common.response.ErrorResponseDTO;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.common.ValidParameterException;
 import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +20,7 @@ import java.util.Objects;
  * @created 2021-09-07
  * @since 0.0.1
  */
+@Slf4j
 public class GeneralControllerAdvice {
 
     /**
@@ -37,7 +39,7 @@ public class GeneralControllerAdvice {
                         .map(Exception::getMessage)
                         .orElse(httpStatus.toString()))
                 .build();
-
+        log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);
     }
 
@@ -63,7 +65,7 @@ public class GeneralControllerAdvice {
                               .orElseThrow(() -> new BizException(MemberPermitErrorCode.INVALID_MEMBER))
                               .getErrors())
                 .build();
-
+        log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);
     }
 
