@@ -36,10 +36,10 @@ public class MainControllerAdvice {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponseDTO> handleException(Exception e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                            .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                                            .message(e.getMessage())
-                                            .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                                            .build();
+                                                    .errorCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                                                    .message(e.getMessage())
+                                                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                                                    .build();
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -54,10 +54,10 @@ public class MainControllerAdvice {
     @ExceptionHandler({IllegalArgumentException.class, MalformedURLException.class})
     protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae, MalformedURLException mue) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                .errorCode(HttpStatus.BAD_REQUEST.value())
-                .message(iae != null ? iae.getMessage() : mue.getMessage())
-                .httpStatus(HttpStatus.BAD_REQUEST)
-                .build();
+                                                    .errorCode(HttpStatus.BAD_REQUEST.value())
+                                                    .message(iae != null ? iae.getMessage() : mue.getMessage())
+                                                    .httpStatus(HttpStatus.BAD_REQUEST)
+                                                    .build();
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
@@ -90,10 +90,10 @@ public class MainControllerAdvice {
     protected ResponseEntity<ErrorResponseDTO> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
 
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                            .errorCode(HttpStatus.METHOD_NOT_ALLOWED.value())
-                                            .message(e.getMessage())
-                                            .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
-                                            .build();
+                                                    .errorCode(HttpStatus.METHOD_NOT_ALLOWED.value())
+                                                    .message(e.getMessage())
+                                                    .httpStatus(HttpStatus.METHOD_NOT_ALLOWED)
+                                                    .build();
 
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
@@ -107,13 +107,14 @@ public class MainControllerAdvice {
      */
     @ExceptionHandler(BizException.class)
     public ResponseEntity<ErrorResponseDTO> catchBizException(BizException e) {
+
         log.error(e.getMessage());
 
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                .errorCode(e.getErrorCode())
-                .message(e.getMessage())
-                .httpStatus(e.getHttpStatus())
-                .build();
+                                                    .errorCode(e.getErrorCode())
+                                                    .message(e.getMessage())
+                                                    .httpStatus(e.getHttpStatus())
+                                                    .build();
 
         return new ResponseEntity<>(response, response.getHttpStatus());
     }
