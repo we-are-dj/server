@@ -38,6 +38,7 @@ public class GeneralControllerAdvice {
 
     /**
      * 정형화된 에러 응답메시지 포맷을 생성합니다.
+     * 이 메서드는 @Valid 검증을 통해 BindingResult 정보를 가져오는 익셉션을 위해 사용됩니다.
      *
      * @param httpStatus 발생한 에러
      * @param e @Valid 또는 @Validated 검증을 하는 익셉션 목록

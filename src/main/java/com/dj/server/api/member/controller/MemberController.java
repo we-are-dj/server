@@ -45,7 +45,6 @@ public class MemberController {
     })
     @PostMapping("/login/oauth2/kakao")
     public ResponseDTO<ResponseTokenDTO> signUp(@Valid MemberSaveRequestDTO memberSaveRequestDTO, BindingResult result) {
-        System.out.println(1111);
         if (result.hasErrors()) throw new InvalidMemberParameterException(result);
 
         KakaoProfile kakaoProfile = memberService.getKakaoProfile(memberSaveRequestDTO);
