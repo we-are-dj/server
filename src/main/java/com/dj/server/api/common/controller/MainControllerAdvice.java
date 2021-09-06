@@ -7,10 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -48,12 +46,13 @@ public class MainControllerAdvice {
 
     /**
      * 잘못된 인수가 포함된 요청이 왔을 경우 처리합니다.
-     * 예시: localhost:8080/index.php?s=/Index/\think\app/invokefunction&function=call_user_func_array&vars[0]=md5&vars[1][]=HelloThinkPHP21
+     * 예시: StrangeProtocol://server.wearedj.club/...
+     * 예시2: "http://"가 없는 server.wearedj.club/ 요청
      *
      * @return 400
      */
     @ExceptionHandler({IllegalArgumentException.class, MalformedURLException.class})
-    protected ResponseEntity<ErrorResponseDTO> handleException(IllegalArgumentException iae, MalformedURLException mue) {
+    protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae, MalformedURLException mue) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                 .errorCode(HttpStatus.BAD_REQUEST.value())
                 .message(iae != null ? iae.getMessage() : mue.getMessage())
