@@ -5,6 +5,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
+import com.dj.server.common.filter.CountryFilter;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,11 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
 
         if (!doesHeaderhaveToken(request)) {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
-            log.error("catch ip: " + getClientIp(request));
+            log.error("catch ip: " + CountryFilter.getClientIp(request));
             throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
@@ -58,13 +59,5 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         return request.getHeader(ACCESS_TOKEN_KEY) != null || request.getHeader(REFRESH_TOKEN_KEY) != null;
     }
 
-    public static String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null) ip = request.getHeader("Proxy-Client-IP");
-        if (ip == null) ip = request.getHeader("WL-Proxy-Client-IP");
-        if (ip == null) ip = request.getHeader("HTTP_CLIENT_IP");
-        if (ip == null) ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        if (ip == null) ip = request.getRemoteAddr();
-        return ip;
-    }
+
 }

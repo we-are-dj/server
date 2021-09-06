@@ -28,18 +28,23 @@ public class StaticResourceConfig implements WebMvcConfigurer {
         registry.addRedirectViewController("/static/api/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
         registry.addRedirectViewController("/static/api/swagger-resources", "/swagger-resources");
     }
+
+    private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+            "classpath:/static/",
+    };
+
     /**
      *  addResourceHandler("/files/**")
      * '/files' 이하의 모든 요청을 정적 자원에 대한 요청으로 인식하게 합니다.
      *
      * .addResourceLocations("classpath:/static/")
-     * 정적 자원이 위치한 디렉토리를 설정합니다. 예를 들어
-     * [GET] /files/foo.txt' 요청이라면 'classpath:/static/foo.txt' 를 의미합니다.
+     * 정적 자원이 위치한 디렉토리를 설정합니다.
+     *
+     * 예시: addResourceHandler("/files/**") 로 설정해서
+     * [GET] /files/foo.txt' 요청이 가능해졌다면 'classpath:/static/foo.txt'의 자원을 가져오게 됩니다.
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/api/**").addResourceLocations("classpath:/static/api/").setCachePeriod(60 * 60);
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/").setCachePeriod(60 * 60);
-        registry.addResourceHandler("/errors/**").addResourceLocations("classpath:/static/errors/").setCachePeriod(60 * 60);
+        registry.addResourceHandler("/static/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS).setCachePeriod(60 * 60);
     }
 }

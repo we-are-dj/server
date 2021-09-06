@@ -1,7 +1,7 @@
 package com.dj.server.common.aop;
 
 import com.dj.server.api.common.request.LoggingSupport;
-import com.dj.server.common.interceptor.JwtAuthInterceptor;
+import com.dj.server.common.filter.CountryFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  * 컨트롤러의 앞 뒤의 로그를 기록하는
  * Logging Aop 클래스
  *
- * @create 2021-08-06
+ * @created 2021-08-06
  * @author JaeHyun
  * @since 0.0.1
  *
@@ -34,21 +34,14 @@ public class LoggingAop {
     private final LoggingSupport<Object> loggingSupport;
 
     /**
-     *
-     *
      * Around 는 target 메서드를 감싸는 Advice 입니다.
      * 즉, 앞과 뒤에 모두 영향을 미칠 수 있습니다.
      * 또한 Around 는 target 을 실행할 지 아니면 바로 반환할지도 정할 수 있습니다.
-     *
-     * @param proceedingJoinPoint
-     * @return
-     * @throws Throwable
      */
-
     @Around("execution(* com.dj.server.api..*Controller.*(..)) && !execution(* com.dj.server.api.room.controller.SocketController.*(..))")
     public Object loggingParameters(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-        StringBuilder logBuilder = new StringBuilder();
+        // StringBuilder logBuilder = new StringBuilder();
 
         String className = proceedingJoinPoint.getTarget().getClass().getName();
         String methodName = proceedingJoinPoint.getSignature().getName();
@@ -73,7 +66,7 @@ public class LoggingAop {
 
     private void setUserIP() {
         HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        loggingSupport.setUserIp(JwtAuthInterceptor.getClientIp(request));
+        loggingSupport.setUserIp(CountryFilter.getClientIp(request));
     }
 
 }
