@@ -17,8 +17,9 @@ import org.webjars.NotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
+
+import static com.dj.server.api.common.controller.GeneralControllerAdvice.handleGeneralException;
 
 /**
  * 전역 에러 핸들링
@@ -121,22 +122,5 @@ public class MainControllerAdvice {
         return handleGeneralException(e.getHttpStatus(), e);
     }
 
-    /**
-     * 정형화된 에러 응답메시지 포맷을 생성합니다.
-     *
-     * @param httpStatus 발생한 에러
-     * @param e 익셉션 목록
-     * @return ResponseEntity<ErrorResponseDTO>
-     */
-    private ResponseEntity<ErrorResponseDTO> handleGeneralException(HttpStatus httpStatus, Exception ...e) {
-        ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                    .errorCode(httpStatus.value())
-                                                    .httpStatus(httpStatus)
-                                                    .message(Arrays.stream(e)
-                                                            .filter(Objects::nonNull).findFirst()
-                                                            .map(Exception::getMessage)
-                                                            .orElse(httpStatus.toString()))
-                                                    .build();
-        return new ResponseEntity<>(response, httpStatus);
-    }
+
 }

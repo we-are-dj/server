@@ -1,17 +1,13 @@
 package com.dj.server.common.exception.member.handler;
 
-import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
+import com.dj.server.common.exception.common.ValidParameterException;
 import lombok.Getter;
 import org.springframework.validation.Errors;
 
-@Getter
-public class InvalidMemberParameterException extends BizException {
-
-    private final Errors errors;
+public class InvalidMemberParameterException extends ValidParameterException {
 
     public InvalidMemberParameterException(Errors errors) {
-        super(MemberPermitErrorCode.INVALID_MEMBER);
-        this.errors = errors;
+        super(errors);
     }
+
 }

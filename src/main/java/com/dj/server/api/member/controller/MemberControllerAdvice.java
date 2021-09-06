@@ -3,12 +3,12 @@ package com.dj.server.api.member.controller;
 import com.dj.server.api.common.response.ErrorResponseDTO;
 import com.dj.server.common.exception.member.handler.InvalidMemberParameterException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import static com.dj.server.api.common.controller.GeneralControllerAdvice.handleValidParamemterException;
 
 @Slf4j
 @RestControllerAdvice
@@ -25,14 +25,6 @@ public class MemberControllerAdvice {
      */
     @ExceptionHandler(InvalidMemberParameterException.class)
     protected ResponseEntity<ErrorResponseDTO> handleInvalidMemberParameterException(InvalidMemberParameterException e) {
-        ErrorResponseDTO response = ErrorResponseDTO.builder()
-                                                .errorCode(HttpStatus.BAD_REQUEST.value())
-                                                .message(e.getMessage())
-                                                .errors(e.getErrors())
-                                                .build();
-        HttpHeaders resHeaders = new HttpHeaders();
-        resHeaders.add("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8");
-
-        return new ResponseEntity<>(response, resHeaders, HttpStatus.BAD_REQUEST);
+        return handleValidParamemterException(HttpStatus.BAD_REQUEST, e);
     }
 }
