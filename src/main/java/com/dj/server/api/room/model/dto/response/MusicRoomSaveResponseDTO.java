@@ -1,5 +1,6 @@
-package com.dj.server.api.room.model.dto.request;
+package com.dj.server.api.room.model.dto.response;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,20 +17,17 @@ import java.util.UUID;
  *
  */
 
-@Setter
 @Getter
-public class ChatRoomDTO implements Serializable {
+public class MusicRoomSaveResponseDTO implements Serializable {
 
     private static final long serialVersionUID = 6494678977089006639L;
 
-    private String roomId;
-    private String name;
+    private final Long roomId;
+    private final String roomName;
 
-   public static ChatRoomDTO create(String name) {
-       ChatRoomDTO chatRoomDTO = new ChatRoomDTO();
-       chatRoomDTO.roomId = UUID.randomUUID().toString();
-       chatRoomDTO.name = name;
-       return chatRoomDTO;
-   }
-
+    @Builder
+    public MusicRoomSaveResponseDTO(Long roomId, String roomName) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+    }
 }

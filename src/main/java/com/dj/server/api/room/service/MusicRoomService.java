@@ -5,11 +5,11 @@ import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.room.entity.MusicRoom;
 import com.dj.server.api.room.entity.MusicRoomRepository;
-import com.dj.server.api.room.model.dto.request.ChatRoomDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.dj.server.common.exception.room.RoomCrudErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
@@ -17,11 +17,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.*;
 
 @Slf4j
@@ -29,7 +27,11 @@ import java.util.*;
 @Service
 public class MusicRoomService {
 
-    // 채팅방에 발행되는 메시지를 처리할 Listner
+    //나중에 DB로 옮길값
+    private final static int CHAT_ROOM_LIMIT = 5;
+
+
+   // 채팅방에 발행되는 메시지를 처리할 Listner
     private final RedisMessageListenerContainer redisMessageListenerContainer;
 
     //구독 처리
@@ -42,7 +44,7 @@ public class MusicRoomService {
     //Redis Hash Description
     //Redis Hash <Key , HashKey , HashValue>
     // <CHAT_ROOM , CHAT_ROOM_ID, chatRoomDTO> // CHAT_ROOM 이라는 키값에 ROOM_ID HashKey , CHAT ROOM INFO 이렇게 들어감.
-    private HashOperations<String, String, ChatRoomDTO> operations;
+    private HashOperations<String, Long, MusicRoomSaveResponseDTO> operations;
 
     private Map<String, ChannelTopic> topics;
 
@@ -63,7 +65,7 @@ public class MusicRoomService {
      *
      * @return
      */
-    public List<ChatRoomDTO> findAllRoom() {
+    public List<MusicRoomSaveResponseDTO> findAllRoom() {
         return operations.values(CHAT_ROOMS);
     }
 
@@ -75,28 +77,36 @@ public class MusicRoomService {
      * @param id
      * @return
      */
-    public ChatRoomDTO findByRoomId(String id) {
-        return operations.get(CHAT_ROOMS, id);
+    public MusicRoomSaveResponseDTO findByRoomId(String id) {
+        try {
+            return operations.get(CHAT_ROOMS, id);
+        } catch (NullPointerException e) { // NPE 에러 대비.
+            throw new BizException(RoomCrudErrorCode.NOT_FOUND);
+        }
     }
 
     /**
      *
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis Hash 에 저장
      *
-     * @param name
+     * @param memberId
+     * @param musicRoomSaveRequestDTO
      * @return
      */
-    public ChatRoomDTO createChatRoom(Long memberId , MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
+    @Transactional(rollbackFor = RuntimeException.class)
+    public MusicRoomSaveResponseDTO createChatRoom(Long memberId , MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
 
         //회원 조회
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
 
+        if(musicRoomRepository.countByRoomMaster(member) >= CHAT_ROOM_LIMIT) throw new BizException(RoomCrudErrorCode.BAD_REQUEST);
+
         //방 정보 rdb 에 저장
         MusicRoom musicRoom = musicRoomSaveRequestDTO.toEntity(member);
 
-        ChatRoomDTO chatRoomDTO = ChatRoomDTO.create(musicRoom.getRoomName());
-        operations.put(CHAT_ROOMS, chatRoomDTO.getRoomId(), chatRoomDTO);
-        return chatRoomDTO;
+        MusicRoomSaveResponseDTO musicRoomSaveResponseDTO = MusicRoomSaveResponseDTO.builder().roomId(musicRoom.getRoomId()).roomName(musicRoom.getRoomName()).build();
+        operations.put(CHAT_ROOMS, musicRoomSaveResponseDTO.getRoomId(), musicRoomSaveResponseDTO);
+        return musicRoomSaveResponseDTO;
     }
 
     /**

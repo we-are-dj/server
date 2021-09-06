@@ -31,7 +31,6 @@ import java.util.Map;
  */
 
 @Slf4j
-@Api(value = "MemberController V1")
 @RequestMapping("/v1")
 @RequiredArgsConstructor
 @RestController
