@@ -15,7 +15,8 @@ spring:
   mvc:
     # enable NoHandlerFoundException
     throw-exception-if-no-handler-found: true
-    static-path-pattern: "/**"
+    dispatch-options-request: false
+    dispatch-trace-request: false
   web:
     resources:
       # disable spring's default resources/static directory path setting

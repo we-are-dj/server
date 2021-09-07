@@ -2,7 +2,6 @@ package com.dj.server.api.common.controller;
 
 import com.dj.server.api.common.response.ErrorResponseDTO;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.filter.CountryFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,11 +9,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.webjars.NotFoundException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 
 import static com.dj.server.api.common.controller.GeneralControllerAdvice.handleGeneralException;
@@ -49,9 +46,14 @@ public class MainControllerAdvice {
      *
      * @return 400
      */
-    @ExceptionHandler({IllegalArgumentException.class, MalformedURLException.class})
-    protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae, MalformedURLException mue) {
-        return handleGeneralException(HttpStatus.BAD_REQUEST, iae, mue);
+    @ExceptionHandler({IllegalArgumentException.class})
+    protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae) {
+        return handleGeneralException(HttpStatus.BAD_REQUEST, iae);
+    }
+
+    @ExceptionHandler({MalformedURLException.class})
+    protected ResponseEntity<ErrorResponseDTO> handleMalformedURLException(MalformedURLException mue) {
+        return handleGeneralException(HttpStatus.BAD_REQUEST, mue);
     }
 
     /**
@@ -63,11 +65,16 @@ public class MainControllerAdvice {
      *
      * @return 404 뷰페이지
      */
-    @ExceptionHandler({NoHandlerFoundException.class, NotFoundException.class})
-    protected ModelAndView handle404(HttpServletRequest request) {
+    @ExceptionHandler(NoHandlerFoundException.class)
+    protected ResponseEntity<ErrorResponseDTO> handle404(NoHandlerFoundException nhfe) {
         log.error("어떤 유저가 존재하지 않는 url로 자원을 요청했습니다.");
-        log.error("catch ip: " + CountryFilter.getClientIp(request));
-        return new ModelAndView("redirect:/errors/404.html", HttpStatus.NOT_FOUND);
+        return handleGeneralException(HttpStatus.NOT_FOUND, nhfe);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    protected ResponseEntity<ErrorResponseDTO> handle404(NotFoundException nfe) {
+        log.error("어떤 유저가 존재하지 않는 url로 자원을 요청했습니다.");
+        return handleGeneralException(HttpStatus.NOT_FOUND, nfe);
     }
 
     /**
