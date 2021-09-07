@@ -17,7 +17,7 @@ public enum MemberPermitErrorCode implements ErrorCode {
     ACCESS_TOKEN_EXPIRED(HttpStatus.NOT_ACCEPTABLE, 406, "액세스 토큰이 만료되었습니다. 리프레시토큰과 함께 다시 보내주세요."),
     REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, 401, "리프레시 토큰이 만료되었습니다. 재로그인이 필요합니다."),
     TOKEN_INVALID(HttpStatus.UNAUTHORIZED, 401, "사용자의 로그인 정보가 유효하지 않습니다."),
-    NO_PERMIT_COUNTRY(HttpStatus.FORBIDDEN, 403, "허용되지 않는 국가에서 사용자의 요청이 왔습니다.");
+    NO_PERMIT_COUNTRY(HttpStatus.FORBIDDEN, 403, "해당 사이트는 한국과 미국에서만 서비스되고 있습니다.");
 
     private final HttpStatus httpStatus;
     private final String msg;

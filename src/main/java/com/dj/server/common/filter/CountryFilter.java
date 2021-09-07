@@ -11,6 +11,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 국가제한 필터
@@ -25,9 +28,11 @@ public class CountryFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (!isAcceptableCountry(request.getLocale().toString())) {
-            log.info("한국 또는 미국 외의 다른 국가에서 접속한 유저가 있습니다.");
-            log.info("catch ip: " + getClientIp((HttpServletRequest) request));
-            log.info("catch locale: " + request.getLocale().toString());
+            log.info("한국 또는 미국 외의 다른 국가에서 접속을 시도했습니다.");
+            log.info("ip:     " + getClientIp((HttpServletRequest) request));
+            LocalDateTime time = LocalDateTime.now();
+            log.info("time:   " + time.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            log.info("locale: " + request.getLocale().toString());
             setErrorResponse(HttpStatus.FORBIDDEN, (HttpServletResponse) response, new BizException(MemberPermitErrorCode.NO_PERMIT_COUNTRY));
             return;
         }
@@ -53,7 +58,7 @@ public class CountryFilter implements Filter {
      * 허용할 국가 목록을 설정합니다.
      */
     private boolean isAcceptableCountry(String locale) {
-        return locale.equals("ko_KR") || locale.equals("en_US") || locale.equals("ko") || locale.equals("en");
+        return locale.equals("ko_KR") || locale.equals("en_US")  || locale.equals("en");
     }
 
     /**
