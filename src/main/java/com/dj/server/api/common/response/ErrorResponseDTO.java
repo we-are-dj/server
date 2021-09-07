@@ -19,22 +19,20 @@ import java.util.Objects;
  * # @Valid, @Validated 애너테이션 처리를 지원합니다.
  * builder를 통해 ErrorResposeDTO를 생성할 때
  * errors 변수에 BindingResult 객체를 전달하면
- *
+ * <p>
  * # @NotBlank 등에서 에러가 발생했을 때
  * BindingResult.getFieldErrors() 즉 field, value, error reason 등을 클라이언트에 전달할 수 있습니다.
  * 간단한 예제가 아래의 클래스와 메서드에서 사용되었습니다.
  *
+ * @author informix
  * @see com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO
  * @see com.dj.server.api.member.controller.MemberController .signUp()
  * @see com.dj.server.api.member.controller.MemberControllerAdvice
- *
+ * <p>
  * # @Valid, @Validated 애너테이션을 사용하지 않아도 사용이 가능합니다.
  * 이때 customFieldErrors는 사용되지 않으므로, ErrorResponseDTO.builder() ".errors()" 를 사용할 수 없습니다.
  * # @Valid 를 사용하지 않는 경우의 예제가 아래 클래스에서 사용되었습니다.
- *
  * @see com.dj.server.api.common.controller.MainControllerAdvice
- *
- * @author informix
  * @since 0.0.1
  */
 @Getter
@@ -43,6 +41,7 @@ public class ErrorResponseDTO {
     @JsonProperty("timestamp")
     private LocalDateTime now;
     private final String message;
+    @JsonProperty("code")
     private final Integer errorCode;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("status")
@@ -75,7 +74,8 @@ public class ErrorResponseDTO {
         private HttpStatus httpStatus;
         private List<CustomFieldError> customFieldErrors;
 
-        private ErrorResponseDTOBuilder() {}
+        private ErrorResponseDTOBuilder() {
+        }
 
         public ErrorResponseDTO.ErrorResponseDTOBuilder errorCode(Integer code) {
             this.errorCode = code;
@@ -112,9 +112,9 @@ public class ErrorResponseDTO {
 
             for (FieldError fieldError : fieldErrors) {
                 customFieldErrors.add(new CustomFieldError(
-                                        Objects.requireNonNull(fieldError.getCodes())[0],
-                                        fieldError.getRejectedValue(),
-                                        fieldError.getDefaultMessage()));
+                        Objects.requireNonNull(fieldError.getCodes())[0],
+                        fieldError.getRejectedValue(),
+                        fieldError.getDefaultMessage()));
             }
         }
 
@@ -128,7 +128,9 @@ public class ErrorResponseDTO {
             return this;
         }
 
-        public ErrorResponseDTO build() { return new ErrorResponseDTO(this); }
+        public ErrorResponseDTO build() {
+            return new ErrorResponseDTO(this);
+        }
     }
 
     /**

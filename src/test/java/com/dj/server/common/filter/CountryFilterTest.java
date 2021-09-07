@@ -1,18 +1,22 @@
 package com.dj.server.common.filter;
 
-import com.dj.server.common.exception.common.BizException;
-
+import com.dj.server.api.common.controller.MainController;
+import com.dj.server.api.common.controller.MainControllerAdvice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.*;
-
+import org.springframework.mock.web.MockFilterChain;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import javax.servlet.ServletException;
@@ -21,7 +25,12 @@ import java.util.Locale;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * 국가제한 필터 테스트
@@ -132,15 +141,44 @@ class CountryFilterTest {
 
     @Test
     @DisplayName("중국에서 요청이 올 경우")
-    public void user_from_zh_CN() {
-        request.addPreferredLocale(Locale.CHINA);
-        assertThrows(BizException.class, () -> countryFilter.doFilter(request, response, filterChain));
+    public void user_from_zh_CN() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(mainController)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .addFilter(new CountryFilter())
+                .setControllerAdvice(new MainControllerAdvice())
+                .build();
+
+        this.mockMvc.perform(get("/")
+                        .locale(Locale.JAPAN))
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.errorCode")
+                        .value(403))
+                .andExpect(jsonPath("$.message")
+                        .value("허용되지 않는 국가에서 사용자의 요청이 왔습니다."));
     }
+
+    public MockMvc mockMvc;
+
+    @InjectMocks
+    private MainController mainController;
 
     @Test
     @DisplayName("일본에서 요청이 올 경우")
-    public void user_from_ja_JP() {
-        request.addPreferredLocale(Locale.JAPAN);
-        assertThrows(BizException.class, () -> countryFilter.doFilter(request, response, filterChain));
+    public void user_from_ja_JP() throws Exception {
+        mockMvc = MockMvcBuilders.standaloneSetup(mainController)
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .addFilter(new CountryFilter())
+                .setControllerAdvice(new MainControllerAdvice())
+                .build();
+
+        this.mockMvc.perform(get("/")
+                        .locale(Locale.JAPAN))
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.errorCode")
+                        .value(403))
+                .andExpect(jsonPath("$.message")
+                        .value("허용되지 않는 국가에서 사용자의 요청이 왔습니다."));
     }
 }
