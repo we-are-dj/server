@@ -24,10 +24,13 @@ public class StaticResourceConfig implements WebMvcConfigurer {
      */
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addRedirectViewController("/static/api/swagger-resources/configuration/ui", "/swagger-resources/configuration/ui");
-        registry.addRedirectViewController("/static/api/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
-        registry.addRedirectViewController("/static/api/swagger-resources", "/swagger-resources");
+//        registry.addRedirectViewController("/static/api/swagger-resources/configuration/ui", "/swagger-resources/configuration/ui");
+//        registry.addRedirectViewController("/static/api/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
+//        registry.addRedirectViewController("/static/api/swagger-resources", "/swagger-resources");
     }
+
+
+
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
             "classpath:/static/",
@@ -46,5 +49,7 @@ public class StaticResourceConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations(CLASSPATH_RESOURCE_LOCATIONS).setCachePeriod(60 * 60);
+        registry.addResourceHandler("/swagger-ui.html") .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**") .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 }
