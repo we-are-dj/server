@@ -32,13 +32,13 @@ public class GeneralControllerAdvice {
      */
     public static ResponseEntity<ErrorResponseDTO> handleGeneralException(HttpStatus httpStatus, Exception ...e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                .errorCode(httpStatus.value())
-                .httpStatus(httpStatus)
-                .message(Arrays.stream(e)
-                        .filter(Objects::nonNull).findFirst()
-                        .map(Exception::getMessage)
-                        .orElse(httpStatus.toString()))
-                .build();
+                                                    .errorCode(httpStatus.value())
+                                                    .httpStatus(httpStatus)
+                                                    .message(Arrays.stream(e)
+                                                            .filter(Objects::nonNull).findFirst()
+                                                            .map(Exception::getMessage)
+                                                            .orElse(httpStatus.toString()))
+                                                    .build();
         log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);
     }
@@ -53,18 +53,18 @@ public class GeneralControllerAdvice {
      */
     public static ResponseEntity<ErrorResponseDTO> handleValidParamemterException(HttpStatus httpStatus, ValidParameterException ...e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
-                .errorCode(httpStatus.value())
-                .httpStatus(httpStatus)
-                .message(Arrays.stream(e)
-                        .filter(Objects::nonNull).findFirst()
-                        .map(Exception::getMessage)
-                        .orElse(httpStatus.toString()))
-                .errors(Arrays.stream(e)
-                              .filter(Objects::nonNull)
-                              .findFirst()
-                              .orElseThrow(() -> new BizException(MemberPermitErrorCode.INVALID_MEMBER))
-                              .getErrors())
-                .build();
+                                                    .errorCode(httpStatus.value())
+                                                    .httpStatus(httpStatus)
+                                                    .message(Arrays.stream(e)
+                                                            .filter(Objects::nonNull).findFirst()
+                                                            .map(Exception::getMessage)
+                                                            .orElse(httpStatus.toString()))
+                                                    .errors(Arrays.stream(e)
+                                                                  .filter(Objects::nonNull)
+                                                                  .findFirst()
+                                                                  .orElseThrow(() -> new BizException(MemberPermitErrorCode.INVALID_MEMBER))
+                                                                  .getErrors())
+                                                    .build();
         log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);
     }

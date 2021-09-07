@@ -2,6 +2,7 @@ package com.dj.server.api.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,10 +39,11 @@ import java.util.Objects;
  */
 @Getter
 public class ErrorResponseDTO {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("timestamp")
     private LocalDateTime now;
-    private String message;
-    private Integer errorCode;
+    private final String message;
+    private final Integer errorCode;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("status")
     private HttpStatus httpStatus;
@@ -53,14 +55,12 @@ public class ErrorResponseDTO {
     @JsonProperty("errors")
     private List<CustomFieldError> customFieldErrors;
 
-    private ErrorResponseDTO() {}
-
-    private ErrorResponseDTO(String message, Integer errorCode, HttpStatus httpStatus, List<CustomFieldError> customFieldErrors) {
-        this.now = LocalDateTime.now();
-        this.message = message;
-        this.errorCode = errorCode;
-        this.httpStatus = httpStatus;
-        this.customFieldErrors = customFieldErrors;
+    private ErrorResponseDTO(ErrorResponseDTO.ErrorResponseDTOBuilder builder) {
+        if (builder.displayNow) this.now = LocalDateTime.now();
+        this.message = builder.message;
+        this.errorCode = builder.errorCode;
+        this.httpStatus = builder.httpStatus;
+        this.customFieldErrors = builder.customFieldErrors;
     }
 
     public static ErrorResponseDTO.ErrorResponseDTOBuilder builder() {
@@ -69,6 +69,7 @@ public class ErrorResponseDTO {
 
     // builder pattern
     public static class ErrorResponseDTOBuilder {
+        private boolean displayNow = true;
         private String message;
         private Integer errorCode;
         private HttpStatus httpStatus;
@@ -117,7 +118,17 @@ public class ErrorResponseDTO {
             }
         }
 
-        public ErrorResponseDTO build() { return new ErrorResponseDTO(this.message, this.errorCode, this.httpStatus, this.customFieldErrors); }
+        /**
+         * now (timestamp) 출력을 비활성화합니다.
+         *
+         * @return now (timestamp) false
+         */
+        public ErrorResponseDTO.ErrorResponseDTOBuilder offDisplayNow() {
+            this.displayNow = false;
+            return this;
+        }
+
+        public ErrorResponseDTO build() { return new ErrorResponseDTO(this); }
     }
 
     /**
@@ -129,5 +140,10 @@ public class ErrorResponseDTO {
         private final String field;
         private final Object value;
         private final String reason;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

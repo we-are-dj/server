@@ -40,8 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
         FilterRegistrationBean<CountryFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new CountryFilter());
         registrationBean.setOrder(0);
-        registrationBean.addUrlPatterns("/");
-        registrationBean.addUrlPatterns("/**");
 
         return registrationBean;
     }
