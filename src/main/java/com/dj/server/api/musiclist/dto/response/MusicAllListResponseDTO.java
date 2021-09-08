@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
  * @created 2021-08-17
  * @since 0.0.1
  */
-
 @Getter
 @Builder
 @RequiredArgsConstructor

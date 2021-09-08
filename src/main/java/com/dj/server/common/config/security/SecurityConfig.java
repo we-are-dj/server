@@ -25,14 +25,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
-     * cors().configurationSource(corsConfigurationSource())
-     * CORS 옵션에 대한 설정으로 corsConfigurationSource()를 사용함을 명시
+     * # 이 설정은 필요에 따라 추가 삭제될 예정입니다.
+     *   cors().configurationSource(corsConfigurationSource())
+     *   CORS 옵션에 대한 설정으로 corsConfigurationSource()를 사용함을 명시
      *
      * csrf().disable()
      * csrf 비활성화됨
      *
      * authorizeRequest().requestMachers(CorsUtils:isPreFilghtRequest).permitAll()
-     * 특정 —하위에 기술된 CorsConfigration에서 허용하도록 추가된— http 사전 요청에 대하여 cors 승인되도록 설정됨
+     * —하위에 기술된 CorsConfigration에서 허용하도록 추가된— 특정 http 사전 요청에 대하여 cors 승인되도록 설정됨 (401 에러를 발생시키지 않는다.)
      *
      * anyRequest().permitAll()
      * 모든 요청에 대하여 (인증된 사용자인지 검사하지 않고) 요청 데이터 등을 반환하도록 설정됨
@@ -43,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * formLogin().disable()
      * form based login 비활성화됨
      * (Spring Security auth login 화면 비활성화)
+     *
+     * logout().permitAll()
+     * 로그아웃에 대한 모든 요청을 승인합니다.
      *
      * @since 0.0.1
      */
@@ -56,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .formLogin()
-                .disable();
+                .disable()
+                .logout().permitAll();
     }
 
     /**
@@ -90,4 +95,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
 }

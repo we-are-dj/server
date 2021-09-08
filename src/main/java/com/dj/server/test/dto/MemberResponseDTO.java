@@ -2,14 +2,12 @@ package com.dj.server.test.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 public class MemberResponseDTO {
 
-    private String nickName;
-    private String memberSnsId;
+    private final String nickName;
+    private final String memberSnsId;
 
 
     @Builder

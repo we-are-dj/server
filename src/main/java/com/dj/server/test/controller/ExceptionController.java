@@ -1,8 +1,8 @@
 package com.dj.server.test.controller;
 
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

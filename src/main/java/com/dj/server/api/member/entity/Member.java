@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
  * @created 2021-08-04
  * @since 0.0.1
  */
-
 @Getter
 @NoArgsConstructor
 @DynamicUpdate

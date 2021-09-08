@@ -2,7 +2,6 @@ package com.dj.server.api.playlist.model.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  *

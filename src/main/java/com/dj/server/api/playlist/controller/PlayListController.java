@@ -6,7 +6,6 @@ import com.dj.server.api.playlist.model.dto.request.PlayListSaveRequestDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayAllListResponseDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayListModifyResponseDTO;
 import com.dj.server.api.playlist.model.dto.response.PlayListSaveResponseDTO;
-import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.api.playlist.service.PlayListService;
 import com.dj.server.common.jwt.JwtUtil;
 import io.swagger.annotations.ApiOperation;

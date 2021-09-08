@@ -8,12 +8,13 @@ import lombok.Setter;
 public class ChatMessageDTO {
 
     public enum MessageType {
-        ENTER, TALK, JOIN
+        ENTER, TALK, JOIN, QUIT
     }
 
     private MessageType type;
     private String roomId;
     private String sender;
     private String message;
+    private long userCount;
 
 }

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 각종 테스트를 위한 테스트 컨트롤러
  *
- * @author Informix, JaeHyun
+ * @author Informix
+ * @author JaeHyun
  * @created 2021-08-03
  * @update 2021-08-06
  * @since 0.0.1
