@@ -40,7 +40,7 @@ public class RoomController {
     @ApiOperation(value = "CreateMusicRoom", notes = "MusicRoom 생성")
     @ApiResponses({
             @ApiResponse(code = 200, message = "SUCCESS"),
-            @ApiResponse(code = 400, message = "생성할수 있는 MusicRoom 을 초과 하였습니다.")
+            @ApiResponse(code = 422, message = "생성할수 있는 MusicRoom 을 초과 하였습니다.")
     })
     @PostMapping("/room")
     public ResponseDTO<MusicRoomSaveResponseDTO> createRoom(MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {

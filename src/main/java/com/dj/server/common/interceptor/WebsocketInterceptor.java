@@ -25,12 +25,16 @@ public class WebsocketInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String accessToken = accessor.getFirstNativeHeader("access_token");
 
-        if (StompCommand.CONNECT == accessor.getCommand()) {
+        if (StompCommand.CONNECT == accessor.getCommand()) { // 연결
 //            validateWebSocketToken(accessToken);
-        } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
+            log.info("연결");
+        } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 입장
 
-        } else if (StompCommand.SEND == accessor.getCommand()) {
+        } else if (StompCommand.SEND == accessor.getCommand()) { //보내기
 //            validateWebSocketToken(accessToken);
+
+        } else if(StompCommand.DISCONNECT == accessor.getCommand()) {
+            log.info("연결해제");
         }
         return message;
     }

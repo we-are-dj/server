@@ -12,7 +12,10 @@ import javax.validation.constraints.NotNull;
 
 
 /**
- * 스트리밍 방에 대한 Entity
+ * 음악방에 대한 Entity
+ *
+ * 음악방에 대항 정보를 담고 있습니다
+ * @see Member
  *
  * @author JaeHyun
  * @created 2021-08-04
@@ -37,9 +40,14 @@ public class MusicRoom {
     @JoinColumn
     private Member roomMaster;
 
+    @NotNull
+    @Column
+    private Integer roomUserCount;
+
     @Builder
-    public MusicRoom(String roomName, Member roomMaster) {
+    public MusicRoom(String roomName, Member roomMaster, Integer roomUserCount) {
         this.roomName = roomName;
         this.roomMaster = roomMaster;
+        this.roomUserCount = roomUserCount;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum RoomCrudErrorCode implements ErrorCode {
 
-    BAD_REQUEST(HttpStatus.BAD_REQUEST, 400, "생성할수 있는 MusicRoom 을 초과 하였습니다."),
+    Unprocessable_Entity(HttpStatus.UNPROCESSABLE_ENTITY, 422, "생성할수 있는 MusicRoom 을 초과 하였습니다."),
     NOT_FOUND(HttpStatus.NOT_FOUND, 404, "해당 방을 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;

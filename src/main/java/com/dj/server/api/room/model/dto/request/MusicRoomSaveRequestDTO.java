@@ -21,6 +21,7 @@ public class MusicRoomSaveRequestDTO {
         return MusicRoom.builder()
                 .roomName(roomName)
                 .roomMaster(member)
+                .roomUserCount(0)
                 .build();
     }
 
