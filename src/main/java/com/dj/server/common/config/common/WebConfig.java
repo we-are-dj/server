@@ -1,8 +1,11 @@
-package com.dj.server.common.config.jwt;
+package com.dj.server.common.config.common;
 
+import com.dj.server.common.filter.CountryFilter;
 import com.dj.server.common.interceptor.JwtAuthInterceptor;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,15 +20,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @RequiredArgsConstructor
-public class JwtConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer {
 
     private final JwtUtil jwtUtil;
 
     private final String[] INTERCEPTOR_WHITE_LIST = {
-            "/",
             "/v1/login/oauth2/kakao",
-            "/error",
-            "/test/**",
     };
 
     @Override
@@ -33,5 +33,14 @@ public class JwtConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
                 .addPathPatterns("/v1/**")
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
+    }
+
+    @Bean
+    public FilterRegistrationBean<CountryFilter> addCountryFilter() {
+        FilterRegistrationBean<CountryFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new CountryFilter());
+        registrationBean.setOrder(0);
+
+        return registrationBean;
     }
 }

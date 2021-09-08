@@ -2,13 +2,10 @@ package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
 import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
 import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.service.MusicListService;
-import com.dj.server.common.jwt.JwtUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

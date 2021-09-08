@@ -19,6 +19,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * 스프링 시큐리티 CORS 테스트
+ *
+ * @author informix
+ * @see SecurityConfig
+ * @since 0.0.1
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @ContextConfiguration(classes = WeAreDjApplication.class)

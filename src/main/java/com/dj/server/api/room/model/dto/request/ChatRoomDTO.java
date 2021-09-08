@@ -1,14 +1,9 @@
 package com.dj.server.api.room.model.dto.request;
 
-import com.dj.server.api.room.service.RoomService;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 /**

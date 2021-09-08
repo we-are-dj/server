@@ -4,13 +4,11 @@ package com.dj.server.api.musiclist.repository;
 import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
 import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.musiclist.entity.QMusicList;
-import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.entity.QPlayList;
 import com.querydsl.core.types.Projections;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
-import java.util.Optional;
 
 public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport implements MusicListQueryDSLRepository {
 

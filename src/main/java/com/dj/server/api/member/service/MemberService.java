@@ -8,7 +8,7 @@ import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.model.vo.kakao.KakaoToken;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

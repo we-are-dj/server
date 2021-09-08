@@ -1,11 +1,28 @@
 server:
   port: 8080
+  error:
+    include-exception: false  # 오류 응답에 exception 내용을 포함하시겠습니까?
+    include-stacktrace: never # 오류 응답에 stacktrace 내용을 포함하시겠습니까?
+    path: "com/dj/server/api/common/controller/MainControllerAdvice.java" # 오류 응답을 처리할 핸들러 (ErrorController)의 path
+    whitelabel:
+      enabled: true # 브라우저 요청에 대해 서버 오류시 기본으로 노출할 페이지를 사용하시겠습니까?
 
 spring:
   profiles:
     include:
       - db # db 설정
       - oauth2 # oauth2 설정
+  mvc:
+    # enable NoHandlerFoundException
+    throw-exception-if-no-handler-found: true
+    dispatch-options-request: false
+    dispatch-trace-request: false
+  web:
+    resources:
+      # disable spring's default resources/static directory path setting
+      # disabled for use NoHandlerFoundException
+      add-mappings: false
+
 
 #QueryLoggin
 logging:
