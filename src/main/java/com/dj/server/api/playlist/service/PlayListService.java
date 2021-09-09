@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,16 +57,6 @@ public class PlayListService {
 
         //토큰에 있는 회원 ID로 유저 조회
         Member member = fetchMember(memberId);
-
-//        List<PlayList> playList = playListRepository.findByMember(member);
-//
-//        List<MemberPlayListResponseDTO> playListResponseDTOList = new ArrayList<>();
-//
-//        for(PlayList play : playList) {
-//            playListResponseDTOList.add(MemberPlayListResponseDTO.builder()
-//                    .playListName(play.getPlayListName())
-//                    .use(play.getUse()).build());
-//        }
 
         return playListRepository.findByMemberAllPlayList(member.getMemberId());
     }

@@ -1,8 +1,10 @@
 package com.dj.server.api.room.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
+import com.dj.server.api.room.model.dto.request.MusicRoomSearchRequestDTO;
 import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomSearchResponseDTO;
 import com.dj.server.api.room.service.MusicRoomService;
 import com.dj.server.common.jwt.JwtUtil;
 import io.swagger.annotations.Api;
@@ -32,8 +34,8 @@ public class RoomController {
 
 
     @GetMapping("/rooms")
-    public List<MusicRoomSaveResponseDTO> findByAllRoom() {
-        return musicRoomService.findAllRoom();
+    public ResponseDTO<List<MusicRoomSearchResponseDTO>> findByAllRoom(MusicRoomSearchRequestDTO musicRoomSearchRequestDTO) {
+        return new ResponseDTO<>(musicRoomService.findAllRoom(musicRoomSearchRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
 

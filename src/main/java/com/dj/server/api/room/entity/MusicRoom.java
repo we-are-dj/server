@@ -37,17 +37,17 @@ public class MusicRoom {
     private String roomName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private Member roomMaster;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @NotNull
     @Column
     private Integer roomUserCount;
 
     @Builder
-    public MusicRoom(String roomName, Member roomMaster, Integer roomUserCount) {
+    public MusicRoom(String roomName, Member member, Integer roomUserCount) {
         this.roomName = roomName;
-        this.roomMaster = roomMaster;
+        this.member = member;
         this.roomUserCount = roomUserCount;
     }
 }

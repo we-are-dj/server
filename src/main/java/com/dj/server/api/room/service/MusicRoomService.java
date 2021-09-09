@@ -4,7 +4,9 @@ package com.dj.server.api.room.service;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.room.entity.MusicRoom;
-import com.dj.server.api.room.repository.MusicRoomRepository;
+import com.dj.server.api.room.model.dto.request.MusicRoomSearchRequestDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomSearchResponseDTO;
+import com.dj.server.api.room.repository.room.MusicRoomRepository;
 import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.common.exception.common.BizException;
@@ -65,8 +67,8 @@ public class MusicRoomService {
      *
      * @return
      */
-    public List<MusicRoomSaveResponseDTO> findAllRoom() {
-        return operations.values(CHAT_ROOMS);
+    public List<MusicRoomSearchResponseDTO> findAllRoom(MusicRoomSearchRequestDTO musicRoomSearchRequestDTO) {
+        return musicRoomRepository.findByMusicRoomSearchList(musicRoomSearchRequestDTO);
     }
 
 
@@ -99,10 +101,10 @@ public class MusicRoomService {
         //회원 조회
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
 
-        if(musicRoomRepository.countByRoomMaster(member) >= CHAT_ROOM_LIMIT) throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422
+        if(musicRoomRepository.countByMember(member) >= CHAT_ROOM_LIMIT) throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422
 
         //방 정보 rdb 에 저장
-        MusicRoom musicRoom = musicRoomSaveRequestDTO.toEntity(member);
+        MusicRoom musicRoom = musicRoomRepository.save(musicRoomSaveRequestDTO.toEntity(member));
 
         MusicRoomSaveResponseDTO musicRoomSaveResponseDTO = MusicRoomSaveResponseDTO.builder().roomId(musicRoom.getRoomId()).roomName(musicRoom.getRoomName()).build();
         operations.put(CHAT_ROOMS, musicRoomSaveResponseDTO.getRoomId(), musicRoomSaveResponseDTO);

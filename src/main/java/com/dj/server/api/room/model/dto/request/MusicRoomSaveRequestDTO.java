@@ -20,7 +20,7 @@ public class MusicRoomSaveRequestDTO {
     public MusicRoom toEntity(Member member) {
         return MusicRoom.builder()
                 .roomName(roomName)
-                .roomMaster(member)
+                .member(member)
                 .roomUserCount(0)
                 .build();
     }

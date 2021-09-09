@@ -7,7 +7,7 @@ spring:
       - db # db 설정
       - oauth2 # oauth2 설정
 
-#QueryLoggin
+
 logging:
   level:
     io:
@@ -15,6 +15,7 @@ logging:
         models:
           parameters:
             AbstractSerializableParameter: error
+#QueryLoggin
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type: trace
 
