@@ -155,7 +155,7 @@ class CountryFilterTest {
                 .andExpect(jsonPath("$.errorCode")
                         .value(403))
                 .andExpect(jsonPath("$.message")
-                        .value("허용되지 않는 국가에서 사용자의 요청이 왔습니다."));
+                        .value("해당 사이트는 한국과 미국에서만 서비스되고 있습니다."));
     }
 
     public MockMvc mockMvc;
@@ -179,6 +179,6 @@ class CountryFilterTest {
                 .andExpect(jsonPath("$.errorCode")
                         .value(403))
                 .andExpect(jsonPath("$.message")
-                        .value("허용되지 않는 국가에서 사용자의 요청이 왔습니다."));
+                        .value("해당 사이트는 한국과 미국에서만 서비스되고 있습니다."));
     }
 }
