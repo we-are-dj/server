@@ -62,12 +62,9 @@ public class MusicListController {
             @ApiResponse(code = 200, message = "OK")
     })
     @PatchMapping("/musicList")
-    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicListPlayOrder(@Valid @RequestBody MusicListModifyRequestDTO musicListModifyRequestDTO, BindingResult result) {
-        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
-
+    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicListPlayOrder(MusicListModifyRequestDTO musicListModifyRequestDTO) {
         return new ResponseDTO<>(musicListService.modifyMusicListPlayOrder(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
     }
-
 
     @ApiOperation(value = "deleteMusicList",
             notes = "음악목록을 삭제합니다")

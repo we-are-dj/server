@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 음악목록에 대한 전반적인 비즈니스 로직을 담당합니다.
@@ -88,17 +89,20 @@ public class MusicListService {
         Long playListId = musicListModifyRequestDTO.getPlayListId();
         PlayList playList = fetchPlayList(playListId);
 
-        // select * from musiclist where playlist = ?
-        MusicList musicList = musicListRepository
-                                        .findByPlayList(playList)
+        // select * from musiclist where music_id = ? and playlist = ?
+        // update musiclist set music_play_order = i where music_id = ? and playlist = ?
+        List<Long> musicIdList = musicListModifyRequestDTO.getMusicIdList();
+        long musicIdListSize = musicIdList.size();
+        for (int i = 0; i < musicIdListSize; i++) {
+            musicListRepository.findByMusicIdAndPlayList(musicIdList.get(i), playList)
+                               .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND))
+                               .updateMusicPlayOrder(i);
+        }
+
+        MusicList musicList = musicListRepository.findByPlayList(playList)
                                         .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
 
-        List<Integer> musicIdList = musicListModifyRequestDTO.getMusicIdList();
-
-        // select musicId, musicPlayOrder, musicUrl from musiclist where playlist = ?
-        List<MusicAllListResponseDTO> list = fetchAllMusicList(playListId);
-
-        musicList.updateMusicList(musicListModifyRequestDTO);
+        musicListRepository.save(musicList);
 
         return MusicListModifyResponseDTO.builder()
                 .musicId(musicList.getMusicId())
@@ -108,7 +112,7 @@ public class MusicListService {
     }
 
     /**
-     * 음악 한건 삭제.
+     * 음악 단건 및 여러 건 삭제.
      *
      * @param musicListDeleteRequestDTO 삭제해달라고 요청받은 값
      * @return 삭제 처리 메시지
@@ -116,11 +120,12 @@ public class MusicListService {
     @Transactional(rollbackFor = RuntimeException.class)
     public String deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
 
-        MusicList musicList = musicListRepository
-                .findByMusicId(musicListDeleteRequestDTO.getMusicId())
-                .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
-
-        musicListRepository.delete(musicList);
+        for (long musicId : musicListDeleteRequestDTO.getMusicIdList()) {
+            MusicList musicList = musicListRepository
+                                        .findByMusicId(musicId)
+                                        .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
+            musicListRepository.delete(musicList);
+        }
 
         return "음악목록이 삭제되었습니다.";
     }

@@ -23,11 +23,13 @@ import java.util.List;
 public class MusicListModifyRequestDTO {
 
     @ApiModelProperty(required = true, value = "플레이리스트의 고유번호")
-    @NotNull(message = "재생목록의 음악 순서를 변경하려면 재생목록 고유번호가 반드시 필요합니다.")
+    @NotNull(message = "재생목록 정보를 변경하려면 재생목록 고유번호가 반드시 필요합니다.")
+    @NotEmpty(message = "재생목록 고유번호가 비어있습니다.")
     private final Long playListId;
 
     @ApiModelProperty(value = "음악 목록의 고유 아이디")
+    @NotNull(message = "재생목록 정보을 변경하려면 음악 목록 고유아이디 정보가 반드시 필요합니다.")
     @NotEmpty(message = "음악목록 고유 아이디 정보가 비어있습니다.")
-    private final List<Integer> musicIdList = new ArrayList<>();
+    private final List<Long> musicIdList;
 
 }

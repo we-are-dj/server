@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
  */
 public enum MemberPermitErrorCode implements ErrorCode {
     NOT_GRANTED(HttpStatus.UNAUTHORIZED, 401, "해당 회원은 이 작업을 수행할 권한이 없습니다"),
+    FAIL_TO_VERIFY(HttpStatus.BAD_REQUEST, 400, "작업을 수행하기 위한 데이터를 클라이언트가 전달하지 않았으므로 해당 요청을 취소합니다."),
     INVALID_MEMBER(HttpStatus.INTERNAL_SERVER_ERROR, 500, "회원을 검증하는데 필요한 값을 클라이언트가 제대로 전달하지 못하여 검증에 실패했습니다."),
     NOT_SIGNED(HttpStatus.UNAUTHORIZED, 401, "해당 사용자는 로그인이 되어 있지 않습니다."),
     ACCESS_TOKEN_EXPIRED(HttpStatus.NOT_ACCEPTABLE, 406, "액세스 토큰이 만료되었습니다. 리프레시토큰과 함께 다시 보내주세요."),

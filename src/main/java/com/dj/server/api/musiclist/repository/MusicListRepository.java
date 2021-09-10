@@ -19,9 +19,9 @@ public interface MusicListRepository extends JpaRepository<MusicList, Long>, Mus
 
     Optional<MusicList> findByPlayList(PlayList playList);
 
-    Optional<MusicList> findByMusicIdAndMusicUrl(MusicList musicList, String musicUrl);
-
     Optional<MusicList> findByMusicId(Long musicId);
+
+    Optional<MusicList> findByMusicIdAndPlayList(Long musicId, PlayList playList);
 
     //해당 재생목록의 마지막번호를 가져오는 쿼리
 

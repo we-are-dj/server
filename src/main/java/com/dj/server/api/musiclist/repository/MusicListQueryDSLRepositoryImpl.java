@@ -30,13 +30,11 @@ public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport i
                 .fetch();
     }
 
-
     /**
-     *
      * 해당 재생목록의 마지막 번호를 리턴합니다
-     * select music_no from music m inner join playlist p on m.play_list_id = p.play_list_id
+     * select music_play_order from music m inner join playlist p on m.play_list_id = p.play_list_id
      * where p.play_list_id = ?
-     * order by b.music_no desc
+     * order by b.music_play_order desc
      *
      * @param playListId 플레이리스트 고유번호
      * @return 음악목록 마지막 번호

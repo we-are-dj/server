@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * 재생될 음악리스트를 담는 엔터티
@@ -55,14 +56,8 @@ public class MusicList {
         this.playtime = playtime;
     }
 
-    public void updateMusicList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
-
-    }
-
-
-    public MusicList updateMusicPlayOrder(Integer musicPlayOrder) {
-        this.musicPlayOrder = musicPlayOrder;
-        return this;
+    public void updateMusicPlayOrder(int i) {
+        this.musicPlayOrder = i;
     }
 
     public MusicList updateMusicUrl(String musicUrl) {
