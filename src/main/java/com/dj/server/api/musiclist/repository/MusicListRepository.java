@@ -17,11 +17,11 @@ import java.util.Optional;
 @Repository
 public interface MusicListRepository extends JpaRepository<MusicList, Long>, MusicListQueryDSLRepository {
 
-    Optional<MusicList> findByMusicIdAndMusicNo(MusicList musicList, Integer musicNo);
+    Optional<MusicList> findByPlayList(PlayList playList);
 
     Optional<MusicList> findByMusicIdAndMusicUrl(MusicList musicList, String musicUrl);
 
-    Optional<MusicList> findByMusicIdAndPlayList(Long musicId, PlayList playList);
+    Optional<MusicList> findByMusicId(Long musicId);
 
     //해당 재생목록의 마지막번호를 가져오는 쿼리
 

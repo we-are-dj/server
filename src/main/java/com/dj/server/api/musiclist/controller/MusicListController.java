@@ -2,18 +2,23 @@ package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
+import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
 import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
+import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
 import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.service.MusicListService;
+import com.dj.server.common.exception.musicList.handler.InvalidModifyMusicListParameterException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -22,7 +27,6 @@ import java.util.List;
  * @author Informix
  * @created 2021-08-17
  * @since 0.0.1
- *
  */
 @Slf4j
 @RequestMapping("/v1")
@@ -52,15 +56,17 @@ public class MusicListController {
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "modifyMusicList",
-//            notes = "음악목록을 업데이트합니다")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK")
-//    })
-//    @PatchMapping("/musicList")
-//    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicList(@RequestBody List<MusicListModifyRequestDTO> musicListModifyRequestDTOList) {
-//        return new ResponseDTO<>(musicListService.modifyMusicList(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
-//    }
+    @ApiOperation(value = "modifyMusicListPlayOrder",
+            notes = "음악목록 순서를 업데이트합니다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @PatchMapping("/musicList")
+    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicListPlayOrder(@Valid @RequestBody MusicListModifyRequestDTO musicListModifyRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
+
+        return new ResponseDTO<>(musicListService.modifyMusicListPlayOrder(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
+    }
 
 
     @ApiOperation(value = "deleteMusicList",

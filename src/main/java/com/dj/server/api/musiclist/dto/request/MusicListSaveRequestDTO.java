@@ -36,10 +36,10 @@ public class MusicListSaveRequestDTO {
     @ApiModelProperty(value = "플레이 타임")
     private final String playtime;
 
-    public MusicList toEntity(PlayList playList, Integer musicNo) {
+    public MusicList toEntity(PlayList playList, Integer musicPlayOrder) {
         return MusicList.builder()
                 .playList(playList)
-                .musicNo(musicNo + 1)
+                .musicPlayOrder(musicPlayOrder + 1)
                 .musicUrl(musicUrl)
                 .thumbnail(thumbnail)
                 .playtime(playtime)

@@ -11,7 +11,7 @@ import com.dj.server.api.musiclist.repository.MusicListRepository;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.musicList.MusicListCrudErrorCode;
+import com.dj.server.common.exception.musicList.enums.MusicListCrudErrorCode;
 import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class MusicListService {
     @Transactional(readOnly = true)
     public List<MusicAllListResponseDTO> fetchAllMusicList(Long playListId) {
         PlayList playList = fetchPlayList(playListId);
-        return musicListRepository.findByMusicList(playList.getPlayListId());
+        return musicListRepository.findMusicListByPlayListId(playList.getPlayListId());
     }
 
     /**
@@ -64,13 +64,13 @@ public class MusicListService {
         PlayList playList = fetchPlayList(musicListSaveRequestDTO.getPlayListId());
 
         //현재 재생목록의 마지막 번호를 가져옴
-        Integer musicNo = musicListRepository.findByPlayListLastMusicNo(playList.getPlayListId());
+        Integer musicPlayOrder = musicListRepository.findByPlayListLastMusicPlayOrder(playList.getPlayListId());
 
-        MusicList musicList = musicListRepository.save(musicListSaveRequestDTO.toEntity(playList, musicNo));
+        MusicList musicList = musicListRepository.save(musicListSaveRequestDTO.toEntity(playList, musicPlayOrder));
 
         return MusicListSaveResponseDTO.builder()
                 .musicId(musicList.getMusicId())
-                .musicNo(musicList.getMusicNo())
+                .musicPlayOrder(musicList.getMusicPlayOrder())
                 .musicUrl(musicList.getMusicUrl())
                 .thumbnail(musicList.getThumbnail())
                 .playtime(musicList.getPlaytime())
@@ -78,36 +78,37 @@ public class MusicListService {
     }
 
     /**
-     * 음악 목록 정보 변경
+     * 음악 목록 순서 변경
      *
      * @param musicListModifyRequestDTO 변경해달라고 요청받은 값
-     * @return 변경된 음악목록 정보
+     * @return 순서가 변경된 음악목록 정보
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public MusicListModifyResponseDTO modifyMusicList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
+    public MusicListModifyResponseDTO modifyMusicListPlayOrder(MusicListModifyRequestDTO musicListModifyRequestDTO) {
+        Long playListId = musicListModifyRequestDTO.getPlayListId();
+        PlayList playList = fetchPlayList(playListId);
 
-        PlayList playList = fetchPlayList(musicListModifyRequestDTO.getPlayListId());
-
+        // select * from musiclist where playlist = ?
         MusicList musicList = musicListRepository
-                .findByMusicIdAndPlayList(musicListModifyRequestDTO.getMusicId(), playList)
-                .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
+                                        .findByPlayList(playList)
+                                        .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
 
-        if(musicListModifyRequestDTO.getMusicNo() != null) {
-            final Integer musicNo = musicListModifyRequestDTO.getMusicNo();
-            musicListRepository.findByMusicIdAndMusicNo(musicList, musicNo).map((e) -> musicList.updateMusicNo(musicNo));
-        }
+        List<Integer> musicIdList = musicListModifyRequestDTO.getMusicIdList();
+
+        // select musicId, musicPlayOrder, musicUrl from musiclist where playlist = ?
+        List<MusicAllListResponseDTO> list = fetchAllMusicList(playListId);
 
         musicList.updateMusicList(musicListModifyRequestDTO);
 
         return MusicListModifyResponseDTO.builder()
                 .musicId(musicList.getMusicId())
-                .musicNo(musicList.getMusicNo())
+                .musicPlayOrder(musicList.getMusicPlayOrder())
                 .musicUrl(musicList.getMusicUrl())
                 .build();
     }
 
     /**
-     * 음악 목록 삭제.
+     * 음악 한건 삭제.
      *
      * @param musicListDeleteRequestDTO 삭제해달라고 요청받은 값
      * @return 삭제 처리 메시지
@@ -115,9 +116,8 @@ public class MusicListService {
     @Transactional(rollbackFor = RuntimeException.class)
     public String deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
 
-        PlayList playList = fetchPlayList(musicListDeleteRequestDTO.getPlayListId());
         MusicList musicList = musicListRepository
-                .findByMusicIdAndPlayList(musicListDeleteRequestDTO.getMusicId(), playList)
+                .findByMusicId(musicListDeleteRequestDTO.getMusicId())
                 .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
 
         musicListRepository.delete(musicList);
