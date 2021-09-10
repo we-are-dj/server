@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,11 +47,25 @@ class MusicListControllerTest {
         this.mockMvc
                 .perform(patch("/v1/musicList")
                         .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8")
-                        .param("playListId", "1")
-                        .param("musicIdList", "[{1}]")
+              //          .param("playListId", "1")
+              //          .param("musicIdList", "[{1}]")
                 )
                 .andDo(print())
                 .andExpect(status().isBadRequest());
 
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("음악 삭제 요청 테스트")
+    @ExceptionHandler(InvalidModifyMusicListParameterException.class)
+    public void deleteMusicTest() throws Exception {
+        this.mockMvc
+                .perform(delete("/v1/musicList")
+                        .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8")
+             //           .param("musicIdList", "[{1}]")
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest());
     }
 }

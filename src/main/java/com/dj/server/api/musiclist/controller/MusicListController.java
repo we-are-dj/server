@@ -62,7 +62,8 @@ public class MusicListController {
             @ApiResponse(code = 200, message = "OK")
     })
     @PatchMapping("/musicList")
-    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicListPlayOrder(MusicListModifyRequestDTO musicListModifyRequestDTO) {
+    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicListPlayOrder(@Valid @RequestBody MusicListModifyRequestDTO musicListModifyRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.modifyMusicListPlayOrder(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
@@ -72,7 +73,8 @@ public class MusicListController {
             @ApiResponse(code = 200, message = "OK")
     })
     @DeleteMapping("/musicList")
-    public ResponseDTO<String> deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
+    public ResponseDTO<String> deleteMusicList(@Valid @RequestBody MusicListDeleteRequestDTO musicListDeleteRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
