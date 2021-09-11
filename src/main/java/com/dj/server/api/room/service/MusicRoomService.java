@@ -4,11 +4,12 @@ package com.dj.server.api.room.service;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.room.entity.MusicRoom;
+import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSearchRequestDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomJoinResponseDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.response.MusicRoomSearchResponseDTO;
 import com.dj.server.api.room.repository.room.MusicRoomRepository;
-import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
-import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.MemberCrudErrorCode;
 import com.dj.server.common.exception.room.RoomCrudErrorCode;
@@ -22,7 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class MusicRoomService {
     private final static int CHAT_ROOM_LIMIT = 5;
 
 
-   // 채팅방에 발행되는 메시지를 처리할 Listner
+    // 채팅방에 발행되는 메시지를 처리할 Listner
     private final RedisMessageListenerContainer redisMessageListenerContainer;
 
     //구독 처리
@@ -41,7 +44,7 @@ public class MusicRoomService {
 
     //Redis
     private static final String CHAT_ROOMS = "CHAT_ROOM";
-    private final RedisTemplate<String , Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     //Redis Hash Description
     //Redis Hash <Key , HashKey , HashValue>
@@ -62,7 +65,6 @@ public class MusicRoomService {
     }
 
     /**
-     *
      * 모든 채팅방을 조회합니다.
      *
      * @return
@@ -73,22 +75,22 @@ public class MusicRoomService {
 
 
     /**
-     *
      * 채팅방 key + CHAT_ROOM_ID 로 하나 의 채팅방의 정보만 조회합니다.
      *
-     * @param id
+     * @param roomId
      * @return
      */
-    public MusicRoomSaveResponseDTO findByRoomId(String id) {
-        try {
-            return operations.get(CHAT_ROOMS, id);
-        } catch (NullPointerException e) { // NPE 에러 대비.
-            throw new BizException(RoomCrudErrorCode.NOT_FOUND);
-        }
+    public MusicRoomJoinResponseDTO joinMusicRoom(Long roomId) {
+
+
+        MusicRoom musicRoom = musicRoomRepository.findById(roomId).orElseThrow(() -> new BizException(RoomCrudErrorCode.NOT_FOUND));
+
+
+        return MusicRoomJoinResponseDTO.builder().roomId(musicRoom.getRoomId()).roomName(musicRoom.getRoomName()).build();
+        
     }
 
     /**
-     *
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis Hash 에 저장
      *
      * @param memberId
@@ -96,12 +98,13 @@ public class MusicRoomService {
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public MusicRoomSaveResponseDTO createChatRoom(Long memberId , MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
+    public MusicRoomSaveResponseDTO createMusicRoom(Long memberId, MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
 
         //회원 조회
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
 
-        if(musicRoomRepository.countByMember(member) >= CHAT_ROOM_LIMIT) throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422
+        if (musicRoomRepository.countByMember(member) >= CHAT_ROOM_LIMIT)
+            throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422
 
         //방 정보 rdb 에 저장
         MusicRoom musicRoom = musicRoomRepository.save(musicRoomSaveRequestDTO.toEntity(member));
@@ -112,22 +115,20 @@ public class MusicRoomService {
     }
 
     /**
-     *
      * 서버가 여러대면 각 서버별로 토픽을 저장합니다.
      *
      * @param roomId
      */
     public void enterChatRoom(String roomId) {
         ChannelTopic topic = topics.get(roomId);
-        if(topic == null) {
+        if (topic == null) {
             topic = new ChannelTopic(roomId);
-            redisMessageListenerContainer.addMessageListener(redisSubscriber,topic);
+            redisMessageListenerContainer.addMessageListener(redisSubscriber, topic);
             topics.put(roomId, topic);
         }
     }
 
     /**
-     *
      * 채널 관련 데이터를 불러옵니다.
      *
      * @param roomId

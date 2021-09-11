@@ -65,7 +65,7 @@ public class LoggingAop {
         //원래 실행해야 하는 메소드 실행
         Object object = proceedingJoinPoint.proceed();
 
-//        log.info(object.toString());
+        log.info(object.toString());
 
         return object;
     }

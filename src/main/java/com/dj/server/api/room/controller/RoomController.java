@@ -2,6 +2,7 @@ package com.dj.server.api.room.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSearchRequestDTO;
+import com.dj.server.api.room.model.dto.response.MusicRoomJoinResponseDTO;
 import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.request.MusicRoomSaveRequestDTO;
 import com.dj.server.api.room.model.dto.response.MusicRoomSearchResponseDTO;
@@ -18,21 +19,22 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- *
- * 웹소켓 정보를 얻는 컨트롤러
- * 프로토콜 : HTTP
+ * 음악방 관련 API 컨트롤러
  *
  */
 
 @RequiredArgsConstructor
-@RequestMapping("/v1")
+@RequestMapping("/v1/music/")
 @RestController
 public class RoomController {
 
     private final MusicRoomService musicRoomService;
     private final JwtUtil jwtUtil;
 
-
+    @ApiOperation(value = "SearchMusicRoom", notes = "MusicRoom 검색")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS")
+    })
     @GetMapping("/rooms")
     public ResponseDTO<List<MusicRoomSearchResponseDTO>> findByAllRoom(MusicRoomSearchRequestDTO musicRoomSearchRequestDTO) {
         return new ResponseDTO<>(musicRoomService.findAllRoom(musicRoomSearchRequestDTO), "SUCCESS", HttpStatus.OK);
@@ -46,13 +48,17 @@ public class RoomController {
     })
     @PostMapping("/room")
     public ResponseDTO<MusicRoomSaveResponseDTO> createRoom(MusicRoomSaveRequestDTO musicRoomSaveRequestDTO) {
-        return new ResponseDTO<>(musicRoomService.createChatRoom(jwtUtil.getMemberId() ,musicRoomSaveRequestDTO), "SUCCESS", HttpStatus.OK);
+        return new ResponseDTO<>(musicRoomService.createMusicRoom(jwtUtil.getMemberId() ,musicRoomSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-
+    @ApiOperation(value = "join room" , notes = "방 입장")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS"),
+            @ApiResponse(code = 400, message = "해당 방이 존재하지 않습니다.")
+    })
     @GetMapping("/room/{roomId}")
-    public MusicRoomSaveResponseDTO roomInfo(@PathVariable String roomId) {
-        return musicRoomService.findByRoomId(roomId);
+    public ResponseDTO<MusicRoomJoinResponseDTO> joinMusicRoom(@PathVariable Long roomId) {
+        return new ResponseDTO<>(musicRoomService.joinMusicRoom(roomId), "SUCCESS", HttpStatus.OK);
     }
 
 
