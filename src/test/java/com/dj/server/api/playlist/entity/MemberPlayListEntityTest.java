@@ -29,8 +29,6 @@ public class MemberPlayListEntityTest {
     private final MemberDummy memberDummy = MemberDummy.getInstance();
     private final PlayListDummy memberPlayListDummy = PlayListDummy.getInstance();
 
-    private static Member member;
-
     @BeforeEach
     public void setUp() {
         Member member = memberRepository.save(memberDummy.toEntity());
@@ -39,7 +37,7 @@ public class MemberPlayListEntityTest {
         assertThat(memberPlayList.getPlayListName()).isEqualTo(memberPlayListDummy.getPlayListName());
     }
 
-//    @Test
+/*    @Test
 //    @Order(1)
 //    @DisplayName("재생목록을 생성합니다.")
 //    public void createPlayList() {
@@ -50,7 +48,7 @@ public class MemberPlayListEntityTest {
 //        assertThat(memberPlayList.getPlayListName()).isEqualTo(memberPlayListDummy.getPlayListName());
 //
 //    }
-    
+  */
     @Test
     @Order(2)
     @DisplayName("재생목록 이름을 변경합니다.")
@@ -73,7 +71,7 @@ public class MemberPlayListEntityTest {
 
     @Test
     @Order(2)
-    @DisplayName("재생목록 삭제 테스트르 입니다.")
+    @DisplayName("재생목록 삭제 테스트입니다.")
     public void deletePlayList() {
 
         PlayList memberPlayList = memberPlayListRepository.findAll().get(0);
@@ -82,7 +80,7 @@ public class MemberPlayListEntityTest {
         memberPlayListRepository.delete(memberPlayList);
 
 
-        assertThrows(NoSuchElementException.class, () -> memberPlayListRepository.findById(memberPlayListId).get());
+        assertThrows(NoSuchElementException.class, () -> memberPlayListRepository.findById(memberPlayListId).orElseThrow(NoSuchElementException::new));
 
     }
 

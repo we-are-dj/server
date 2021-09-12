@@ -18,11 +18,9 @@ spring:
   mvc:
     dispatch-options-request: false
     dispatch-trace-request: false
-
-client-id: 0b5172b1c137d02ad1b0f8f29f34f076 # KAKAO-REST-API-KEY
-client-secret: gOZIBl6GsVm5WCMJfOsUzE1GgSOtzdUb # 클라이언트 시크릿 기능 활성화 후 사용
-redirect-uri: 'http://localhost:8080/login/oauth2/kakao'
-authorization-grant-type: authorization_code
+  profiles:
+    include:
+      - oauth2 # oauth2 설정
 
 logging:
   level:
