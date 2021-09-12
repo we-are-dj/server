@@ -1,7 +1,6 @@
 package com.dj.server.common.config.common;
 
 import com.dj.server.common.filter.CountryFilter;
-import com.dj.server.common.filter.MethodFilter;
 import com.dj.server.common.interceptor.JwtAuthInterceptor;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,15 +39,6 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<CountryFilter> countryFilter() {
         FilterRegistrationBean<CountryFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new CountryFilter());
-        registrationBean.setOrder(0);
-
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean<MethodFilter> httpMethodFilter() {
-        FilterRegistrationBean<MethodFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new MethodFilter());
         registrationBean.setOrder(0);
 
         return registrationBean;
