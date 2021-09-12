@@ -5,6 +5,7 @@ import com.dj.server.api.playlist.entity.PlayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,9 +18,9 @@ import java.util.Optional;
 @Repository
 public interface MusicListRepository extends JpaRepository<MusicList, Long>, MusicListQueryDSLRepository {
 
-    Optional<MusicList> findByMusicIdAndMusicNo(MusicList musicList, Integer musicNo);
+    List<MusicList> findByPlayList(PlayList playList);
 
-    Optional<MusicList> findByMusicIdAndMusicUrl(MusicList musicList, String musicUrl);
+    Optional<MusicList> findByMusicId(Long musicId);
 
     Optional<MusicList> findByMusicIdAndPlayList(Long musicId, PlayList playList);
 

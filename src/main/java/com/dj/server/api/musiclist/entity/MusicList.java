@@ -1,9 +1,7 @@
 package com.dj.server.api.musiclist.entity;
 
 
-import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.playlist.entity.PlayList;
-import com.dj.server.api.playlist.model.dto.request.PlayListModifyRequestDTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +33,7 @@ public class MusicList {
 
     @NotNull
     @Column
-    private Integer musicNo;
+    private Integer musicPlayOrder;
 
     @NotNull
     @Column(length = 100)
@@ -48,30 +46,15 @@ public class MusicList {
     private String playtime;
 
     @Builder
-    public MusicList(PlayList playList, Integer musicNo, String musicUrl, String thumbnail, String playtime) {
+    public MusicList(PlayList playList, Integer musicPlayOrder, String musicUrl, String thumbnail, String playtime) {
         this.playList = playList;
-        this.musicNo = musicNo;
+        this.musicPlayOrder = musicPlayOrder;
         this.musicUrl = musicUrl;
         this.thumbnail = thumbnail;
         this.playtime = playtime;
     }
 
-
-
-    public void updateMusicList(MusicListModifyRequestDTO musicListModifyRequestDTO) {
-        if(musicListModifyRequestDTO.getMusicNo() != null) {
-            this.musicNo = musicListModifyRequestDTO.getMusicNo();
-        }
-    }
-
-
-    public MusicList updateMusicNo(Integer musicNo) {
-        this.musicNo = musicNo;
-        return this;
-    }
-
-    public MusicList updateMusicUrl(String musicUrl) {
-        this.musicUrl = musicUrl;
-        return this;
+    public void updateMusicPlayOrder(int i) {
+        this.musicPlayOrder = i;
     }
 }

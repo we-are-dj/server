@@ -16,6 +16,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MusicListModifyResponseDTO {
     private final Long musicId;
-    private final Integer musicNo;
+    private final Integer musicPlayOrder;
     private final String musicUrl;
 }
