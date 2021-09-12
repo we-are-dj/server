@@ -29,6 +29,8 @@ public class MemberPlayListEntityTest {
     private final MemberDummy memberDummy = MemberDummy.getInstance();
     private final PlayListDummy memberPlayListDummy = PlayListDummy.getInstance();
 
+    private static Member member;
+
     @BeforeEach
     public void setUp() {
         Member member = memberRepository.save(memberDummy.toEntity());
