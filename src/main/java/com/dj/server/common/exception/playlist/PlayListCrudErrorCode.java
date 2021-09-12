@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Playlist Entity에 대한 데이터 요청시 발생할 수 있는 에러들을 열거형으로 모아둔 클래스
  *
- * @see BizException
+ * @see com.dj.server.common.exception.common.BizException
  * @author Informix
  * @created 2021-08-03 Tue
  */
@@ -30,13 +30,10 @@ public enum PlayListCrudErrorCode implements ErrorCode {
         this.msg = msg;
     }
 
-
-
-
     public String getMsg() {
         return msg;
     }
-    public Integer httpErrorCode() { return httpErrorCode; }
+    public Integer getErrorCode() { return httpErrorCode; }
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }

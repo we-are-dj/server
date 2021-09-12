@@ -42,23 +42,23 @@ public class MainControllerAdvice {
     /**
      * 잘못된 인수가 포함된 요청이 왔을 경우 처리합니다.
      * 예시: StrangeProtocol://server.wearedj.club/...
-     * 예시2: "http://"가 없는 server.wearedj.club/ 요청
+     * 예시2: "http://"가 없는 server.wearedj.club/
      *
      * @return 400
      */
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ErrorResponseDTO> handleIllgegalURLException(IllegalArgumentException iae) {
         return handleGeneralException(HttpStatus.BAD_REQUEST, iae);
     }
 
-    @ExceptionHandler({MalformedURLException.class})
+    @ExceptionHandler(MalformedURLException.class)
     protected ResponseEntity<ErrorResponseDTO> handleMalformedURLException(MalformedURLException mue) {
         return handleGeneralException(HttpStatus.BAD_REQUEST, mue);
     }
 
     /**
      * 404 에러가 발생할 경우 기본 지정된 에러페이지로 리다이렉트시킵니다.
-     *
+     * <p>
      * 반드시 아래의 설정을 yml 또는 properties에 해두어야 정상적으로 동작합니다.
      * spring.mvc.throw-exception-if-no-handler-found: true
      * spring.web.resources.add-mappings: false

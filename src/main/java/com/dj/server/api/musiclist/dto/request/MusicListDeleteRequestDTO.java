@@ -20,5 +20,5 @@ import java.util.List;
 public class MusicListDeleteRequestDTO {
     @ApiModelProperty(required = true, value = "삭제할 음악목록 고유번호를 보내주세요.")
     @NotEmpty(message = "삭제할 음악의 고유번호가 전달되지 않았습니다.")
-    private final List<Long> musicIdList;
+    private final List<Long> musicIds;
 }

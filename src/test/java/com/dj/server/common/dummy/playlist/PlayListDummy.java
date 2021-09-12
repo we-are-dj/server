@@ -27,7 +27,7 @@ public class PlayListDummy {
     }
 
     public static PlayListDummy getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             return new PlayListDummy();
         }
 

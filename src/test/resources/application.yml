@@ -10,16 +10,14 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-
-client-id: test # KAKAO-REST-API-KEY
-client-secret: test # 클라이언트 시크릿 기능 활성화 후 사용
-redirect-uri: 'http://localhost:8080/login/oauth2/kakao'
-authorization-grant-type: test
+  mvc:
+    dispatch-options-request: false
+    dispatch-trace-request: false
 
 logging:
   level:

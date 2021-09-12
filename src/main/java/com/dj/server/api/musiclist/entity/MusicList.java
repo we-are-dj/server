@@ -1,7 +1,6 @@
 package com.dj.server.api.musiclist.entity;
 
 
-import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.playlist.entity.PlayList;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
  * 재생될 음악리스트를 담는 엔터티
@@ -58,10 +56,5 @@ public class MusicList {
 
     public void updateMusicPlayOrder(int i) {
         this.musicPlayOrder = i;
-    }
-
-    public MusicList updateMusicUrl(String musicUrl) {
-        this.musicUrl = musicUrl;
-        return this;
     }
 }

@@ -18,8 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 음악목록에 대한 전반적인 비즈니스 로직을 담당합니다.
@@ -85,30 +85,32 @@ public class MusicListService {
      * @return 순서가 변경된 음악목록 정보
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public MusicListModifyResponseDTO modifyMusicListPlayOrder(MusicListModifyRequestDTO musicListModifyRequestDTO) {
+    public List<MusicListModifyResponseDTO> modifyMusicListPlayOrder(MusicListModifyRequestDTO musicListModifyRequestDTO) {
         Long playListId = musicListModifyRequestDTO.getPlayListId();
         PlayList playList = fetchPlayList(playListId);
 
         // select * from musiclist where music_id = ? and playlist = ?
         // update musiclist set music_play_order = i where music_id = ? and playlist = ?
-        List<Long> musicIdList = musicListModifyRequestDTO.getMusicIdList();
+        List<Long> musicIdList = musicListModifyRequestDTO.getMusicIds();
         long musicIdListSize = musicIdList.size();
         for (int i = 0; i < musicIdListSize; i++) {
             musicListRepository.findByMusicIdAndPlayList(musicIdList.get(i), playList)
-                               .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND))
-                               .updateMusicPlayOrder(i);
+                    .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND))
+                    .updateMusicPlayOrder(i + 1);
         }
 
-        MusicList musicList = musicListRepository.findByPlayList(playList)
-                                        .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
+        List<MusicList> musicList = musicListRepository.findByPlayList(playList);
+        musicListRepository.saveAll(musicList);
+        List<MusicListModifyResponseDTO> result = new ArrayList<>();
+        for (MusicList music : musicList) {
+            result.add(MusicListModifyResponseDTO.builder()
+                                                .musicId(music.getMusicId())
+                                                .musicPlayOrder(music.getMusicPlayOrder())
+                                                .musicUrl(music.getMusicUrl())
+                                                .build());
+        }
 
-        musicListRepository.save(musicList);
-
-        return MusicListModifyResponseDTO.builder()
-                .musicId(musicList.getMusicId())
-                .musicPlayOrder(musicList.getMusicPlayOrder())
-                .musicUrl(musicList.getMusicUrl())
-                .build();
+        return result;
     }
 
     /**
@@ -120,10 +122,10 @@ public class MusicListService {
     @Transactional(rollbackFor = RuntimeException.class)
     public String deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
 
-        for (long musicId : musicListDeleteRequestDTO.getMusicIdList()) {
+        for (long musicId : musicListDeleteRequestDTO.getMusicIds()) {
             MusicList musicList = musicListRepository
-                                        .findByMusicId(musicId)
-                                        .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
+                    .findByMusicId(musicId)
+                    .orElseThrow(() -> new BizException(MusicListCrudErrorCode.NOT_FOUND));
             musicListRepository.delete(musicList);
         }
 
