@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 public enum MusicListCrudErrorCode implements ErrorCode {
-    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "음악 목록이 존재하지 않습니다.");
+    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "음악 리스트가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final int httpErrorCode;

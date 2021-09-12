@@ -1,5 +1,6 @@
 package com.dj.server.api.musiclist.controller;
 
+import com.dj.server.api.common.controller.MainControllerAdvice;
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.musiclist.repository.MusicListRepository;
@@ -78,12 +79,11 @@ class MusicListControllerTest {
 
         mockMvc = MockMvcBuilders.standaloneSetup(musicListController)
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
-                .setControllerAdvice(new MusicListControllerAdvice())
+                .setControllerAdvice(new MusicListControllerAdvice(), new MainControllerAdvice())
                 .build();
     }
 
     @Test
-    @Order(1)
     @DisplayName("음악 재생 순서 변경 요청이 왔으나 요청에 파라매터가 하나도 없는 경우")
     @Transactional
     public void modifyMusicListPlayOrderDoesNotHaveAllParameters() throws Exception {
@@ -100,7 +100,6 @@ class MusicListControllerTest {
     }
 
     @Test
-    @Order(2)
     @DisplayName("음악 재생 순서 변경 요청이 왔으나 요청에 파라매터가 부족한 경우")
     public void modifyMusicListPlayOrderDoesNotHaveSomeParameter() throws Exception {
 
@@ -126,7 +125,6 @@ class MusicListControllerTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("음악 재생 순서 변경 요청 테스트")
     @Transactional
     public void modifyMusicListPlayOrderTest() throws Exception {
@@ -144,7 +142,6 @@ class MusicListControllerTest {
     }
 
     @Test
-    @Order(4)
     @DisplayName("음악 삭제 요청이 왔으나 요청에 파라매터가 없는 경우")
     public void deleteMusicTest() throws Exception {
         this.mockMvc
@@ -157,7 +154,6 @@ class MusicListControllerTest {
     }
 
     @Test
-    @Order(5)
     @DisplayName("음악 단건 삭제 요청 테스트")
     public void deleteOneMusicTest() throws Exception {
         // before delete
@@ -179,7 +175,6 @@ class MusicListControllerTest {
     }
 
     @Test
-    @Order(6)
     @DisplayName("음악 여러 건 삭제 요청 테스트")
     public void deleteSeveralMusicTest() throws Exception {
 
