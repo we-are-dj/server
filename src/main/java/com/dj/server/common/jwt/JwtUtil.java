@@ -5,11 +5,12 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -139,7 +140,7 @@ public class JwtUtil {
      *                     액세스 토큰이 만료상태가 아니라면 null이 되어야 함.
      */
     public String verifyToken(String accessToken, String refreshToken) {
-        setTokenIngredient(decodePayload(accessToken));
+        if (accessToken == null) throw new BizException(MemberPermitErrorCode.NOT_SIGNED);
 
         if (!(isValidAccessToken(accessToken))) {
             return verifyRefreshToken(refreshToken);
@@ -161,7 +162,6 @@ public class JwtUtil {
      * else if (검증이 성공했으나 액세스 토큰의 유효기간이 지남)
      *    return false || 유저로부터 refresh token을 전달받지 못했다면 예외 발생
      *
-     *
      * else if (검증이 성공하고 액세스 토큰 유효기간도 만료되지 않음)
      *    return true
      *
@@ -181,7 +181,6 @@ public class JwtUtil {
             verifier.verify(accessToken);
         } catch (TokenExpiredException expired) {
             return false;
-            //else throw new MemberException(MemberPermitErrorCode.ACCESS_TOKEN_EXPIRED);
         } catch (JWTVerificationException failedVerification) {
             log.error("액세스 토큰 검증에 실패했습니다. 유효하지 않은 액세스 토큰입니다.");
             log.error("failedVerification: " + failedVerification.getMessage());
@@ -238,4 +237,5 @@ public class JwtUtil {
             throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
     }
+
 }

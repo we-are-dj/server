@@ -49,8 +49,5 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant(pathUri))
                 .build()
                 .apiInfo(apiInfo());
-
     }
-
-
 }

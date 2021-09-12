@@ -5,17 +5,15 @@ import com.dj.server.api.member.model.dto.request.MemberSaveRequestDTO;
 import com.dj.server.api.member.model.vo.kakao.KakaoProfile;
 import com.dj.server.api.member.model.dto.response.ResponseTokenDTO;
 import com.dj.server.api.member.service.MemberService;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.handler.InvalidMemberParameterException;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +27,6 @@ import java.util.Map;
  * @since 0.0.1
  *
  */
-
 @Slf4j
 @RequestMapping("/v1")
 @RequiredArgsConstructor
@@ -46,7 +43,9 @@ public class MemberController {
     @ApiImplicitParams({ // 파라미터 설명
     })
     @PostMapping("/login/oauth2/kakao")
-    public ResponseDTO<ResponseTokenDTO> signUp(MemberSaveRequestDTO memberSaveRequestDTO) {
+    public ResponseDTO<ResponseTokenDTO> signUp(@Valid MemberSaveRequestDTO memberSaveRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidMemberParameterException(result);
+
         KakaoProfile kakaoProfile = memberService.getKakaoProfile(memberSaveRequestDTO);
         return new ResponseDTO<>(memberService.getGeneratedTokens(kakaoProfile), "SUCCESS", HttpStatus.OK);
     }

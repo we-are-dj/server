@@ -11,7 +11,7 @@ import com.dj.server.api.room.model.dto.response.MusicRoomSaveResponseDTO;
 import com.dj.server.api.room.model.dto.response.MusicRoomSearchResponseDTO;
 import com.dj.server.api.room.repository.room.MusicRoomRepository;
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberCrudErrorCode;
+import com.dj.server.common.exception.member.enums.MemberCrudErrorCode;
 import com.dj.server.common.exception.room.RoomCrudErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +67,7 @@ public class MusicRoomService {
     /**
      * 모든 채팅방을 조회합니다.
      *
-     * @return
+     * @return redis에서 조회
      */
     public List<MusicRoomSearchResponseDTO> findAllRoom(MusicRoomSearchRequestDTO musicRoomSearchRequestDTO) {
         return musicRoomRepository.findByMusicRoomSearchList(musicRoomSearchRequestDTO);
@@ -87,7 +87,7 @@ public class MusicRoomService {
 
 
         return MusicRoomJoinResponseDTO.builder().roomId(musicRoom.getRoomId()).roomName(musicRoom.getRoomName()).build();
-        
+
     }
 
     /**
@@ -117,7 +117,7 @@ public class MusicRoomService {
     /**
      * 서버가 여러대면 각 서버별로 토픽을 저장합니다.
      *
-     * @param roomId
+     * @param roomId 특정 방의 고유 id
      */
     public void enterChatRoom(String roomId) {
         ChannelTopic topic = topics.get(roomId);
@@ -131,8 +131,8 @@ public class MusicRoomService {
     /**
      * 채널 관련 데이터를 불러옵니다.
      *
-     * @param roomId
-     * @return
+     * @param roomId 특정 방의 고유 id
+     * @return 채널 정보
      */
     public ChannelTopic getTopic(String roomId) {
         return topics.get(roomId);

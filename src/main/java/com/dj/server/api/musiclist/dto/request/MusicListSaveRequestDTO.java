@@ -2,7 +2,6 @@ package com.dj.server.api.musiclist.dto.request;
 
 import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.playlist.entity.PlayList;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;

@@ -7,15 +7,13 @@ import org.springframework.http.HttpStatus;
 public class BizException extends RuntimeException {
 
     private final String message;
-    private final Integer code;
+    private final Integer errorCode;
     private final HttpStatus httpStatus;
 
-
-    public BizException(ErrorCode errorCode) {
-        super(errorCode.getMsg(), new Throwable(errorCode.getHttpStatus().toString()));
-        this.message = errorCode.getMsg();
-        this.code = errorCode.httpErrorCode();
-        this.httpStatus = errorCode.getHttpStatus();
+    public BizException(ErrorCode code) {
+        this.message = code.getMsg();
+        this.errorCode = code.httpErrorCode();
+        this.httpStatus = code.getHttpStatus();
     }
 
 }

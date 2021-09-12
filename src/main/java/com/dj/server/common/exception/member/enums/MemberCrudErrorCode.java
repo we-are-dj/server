@@ -1,4 +1,4 @@
-package com.dj.server.common.exception.member;
+package com.dj.server.common.exception.member.enums;
 
 import com.dj.server.common.exception.common.ErrorCode;
 import org.springframework.http.HttpStatus;

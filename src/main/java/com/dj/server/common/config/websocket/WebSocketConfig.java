@@ -32,7 +32,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      *
      * setApplicationDestinationPrefixes : 해당 prefix 로 요청이 들어오면 MessageMapping 과 매핑을 시켜줍니다.
      *
-     * @param config
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -46,7 +45,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      *
      * withSockJS : stomp 환경으로 변경합니다.
      *
-     * @param registry
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -57,7 +55,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      *
      * 소켓 컨트롤러 인터셉터
      *
-     * @param registration
      */
 
     @Override

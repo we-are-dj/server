@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
  * @created 2021-08-17
  * @since 0.0.1
  */
-
 @Getter
 @RequiredArgsConstructor
 public class MusicListDeleteRequestDTO {

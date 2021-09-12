@@ -4,7 +4,8 @@ package com.dj.server.common.interceptor;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 import com.dj.server.common.exception.common.BizException;
-import com.dj.server.common.exception.member.MemberPermitErrorCode;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
+import com.dj.server.common.filter.CountryFilter;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * 클라이언트가 전달하는 json web token이 유효한지 검증하는 클래스.
+ *
+ * @author informix
+ * @created 2021-08-07
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthInterceptor implements HandlerInterceptor {
@@ -27,12 +34,12 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     private final JwtUtil jwtUtil;
 
     @Override
-    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
 
         if (!doesHeaderhaveToken(request)) {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
-            return false;
+            log.error("catch ip: " + CountryFilter.getClientIp(request));
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
         try {
@@ -42,8 +49,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             response.addHeader(ACCESS_TOKEN_KEY, newAccessToken);
         } catch (InternalAuthenticationServiceException | JWTVerificationException | BizException jwte) {
             log.error(jwte.getMessage());
-            response.sendError(MemberPermitErrorCode.TOKEN_INVALID.httpErrorCode());
-            return false;
+            throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
         }
 
         return true;
@@ -52,5 +58,6 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     private boolean doesHeaderhaveToken(HttpServletRequest request) {
         return request.getHeader(ACCESS_TOKEN_KEY) != null || request.getHeader(REFRESH_TOKEN_KEY) != null;
     }
+
 
 }
