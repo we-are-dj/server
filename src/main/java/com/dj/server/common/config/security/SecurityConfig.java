@@ -61,7 +61,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .disable()
-                .logout().permitAll();
+                .logout().permitAll()
+                .and()
+                .cors();
     }
 
     /**
@@ -84,7 +86,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return configuration가 적용된 특정 URL 정보
      * @since 0.0.1
      */
-    // 당분간 사용중이지 않습니다.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
