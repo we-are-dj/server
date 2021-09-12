@@ -20,35 +20,33 @@ public class MusicListQueryDSLRepositoryImpl extends QuerydslRepositorySupport i
     }
 
     @Override
-    public List<MusicAllListResponseDTO> findByMusicList(Long playListId) {
+    public List<MusicAllListResponseDTO> findMusicListByPlayListId(Long playListId) {
 
         return from(musicList)
                 .innerJoin(playList).on(musicList.playList.eq(playList))
                 .where(playList.playListId.eq(playListId))
                 .select(Projections.constructor(MusicAllListResponseDTO.class,
-                        musicList.musicId, musicList.musicNo, musicList.musicUrl ))
+                        musicList.musicId, musicList.musicPlayOrder, musicList.musicUrl ))
                 .fetch();
     }
 
-
     /**
-     *
      * 해당 재생목록의 마지막 번호를 리턴합니다
-     * select music_no from music m inner join playlist p on m.play_list_id = p.play_list_id
+     * select music_play_order from music m inner join playlist p on m.play_list_id = p.play_list_id
      * where p.play_list_id = ?
-     * order by b.music_no desc
+     * order by b.music_play_order desc
      *
-     * @param playListId
-     * @return Integer
+     * @param playListId 플레이리스트 고유번호
+     * @return 음악목록 마지막 번호
      */
     @Override
-    public Integer findByPlayListLastMusicNo(Long playListId) {
+    public Integer findByPlayListLastMusicPlayOrder(Long playListId) {
         try {  // NPE 떠서 추가.
             return from(musicList)
                     .innerJoin(playList).on(musicList.playList.eq(playList))
                     .where(playList.playListId.eq(playListId))
-                    .orderBy(musicList.musicNo.desc())
-                    .fetchFirst().getMusicNo();
+                    .orderBy(musicList.musicPlayOrder.desc())
+                    .fetchFirst().getMusicPlayOrder();
         } catch (NullPointerException e) {
             return 0;
         }

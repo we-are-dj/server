@@ -10,7 +10,7 @@ public abstract class ValidParameterException extends BizException {
     private final Errors errors;
 
     public ValidParameterException(Errors errors) {
-        super(MemberPermitErrorCode.INVALID_MEMBER);
+        super(MemberPermitErrorCode.FAIL_TO_VERIFY);
         this.errors = errors;
     }
 }

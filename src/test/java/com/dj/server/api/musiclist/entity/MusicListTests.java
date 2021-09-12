@@ -42,7 +42,7 @@ public class MusicListTests {
 //
 //        for(int i=0; i<10; i++) {
 //            musicListRepository.save(MusicList.builder()
-//                    .musicNo(i + 1)
+//                    .musicPlayOrder(i + 1)
 //                    .musicUrl("youtube/" + i)
 //                    .build());
 //        }
@@ -61,7 +61,7 @@ public class MusicListTests {
 
         for(int i=0; i<10; i++) {
             MusicList musicList = musicListRepository.save(MusicList.builder()
-                    .musicNo(i + 1)
+                    .musicPlayOrder(i + 1)
                     .musicUrl("youtube/" + i)
                     .build());
 

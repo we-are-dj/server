@@ -36,7 +36,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public FilterRegistrationBean<CountryFilter> addCountryFilter() {
+    public FilterRegistrationBean<CountryFilter> countryFilter() {
         FilterRegistrationBean<CountryFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new CountryFilter());
         registrationBean.setOrder(0);

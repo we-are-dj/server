@@ -11,8 +11,9 @@ public class BizException extends RuntimeException {
     private final HttpStatus httpStatus;
 
     public BizException(ErrorCode code) {
+        super(code.getMsg(), new Throwable(code.getHttpStatus().getReasonPhrase()));
         this.message = code.getMsg();
-        this.errorCode = code.httpErrorCode();
+        this.errorCode = code.getErrorCode();
         this.httpStatus = code.getHttpStatus();
     }
 

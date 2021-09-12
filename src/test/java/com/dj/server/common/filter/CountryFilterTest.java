@@ -2,6 +2,7 @@ package com.dj.server.common.filter;
 
 import com.dj.server.api.common.controller.MainController;
 import com.dj.server.api.common.controller.MainControllerAdvice;
+import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -179,6 +180,6 @@ class CountryFilterTest {
                 .andExpect(jsonPath("$.errorCode")
                         .value(403))
                 .andExpect(jsonPath("$.message")
-                        .value("해당 사이트는 한국과 미국에서만 서비스되고 있습니다."));
+                        .value(MemberPermitErrorCode.NO_PERMIT_COUNTRY.getMsg()));
     }
 }
