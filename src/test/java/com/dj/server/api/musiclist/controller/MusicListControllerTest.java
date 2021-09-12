@@ -10,16 +10,14 @@ import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.musiclist.MusicListDummy;
 import com.dj.server.common.dummy.playlist.PlayListDummy;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,22 +32,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DataJpaTest(showSql = false)
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class MusicListControllerTest {
 
     private static MockMvc mockMvc;
 
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    MusicListRepository musicListRepository;
+
+    @Autowired
+    PlayListRepository playListRepository;
+
+    //더미 클래스
+    final MemberDummy memberDummy = MemberDummy.getInstance();
+    final PlayListDummy playListDummy = PlayListDummy.getInstance();
+    final MusicListDummy musicListDummy = MusicListDummy.getInstance();
+
+
     @InjectMocks
-    private static MusicListController musicListController;
+    private MusicListController musicListController;
 
-    @BeforeAll
-    public static void setup(@Autowired MemberRepository memberRepository,
-                             @Autowired MusicListRepository musicListRepository,
-                             @Autowired PlayListRepository playListRepository) {
-        //더미 클래스
-        final MemberDummy memberDummy = MemberDummy.getInstance();
-        final PlayListDummy playListDummy = PlayListDummy.getInstance();
-        final MusicListDummy musicListDummy = MusicListDummy.getInstance();
-
+    @BeforeEach
+    public void setup() {
         MusicListService musicListService = new MusicListService(musicListRepository, playListRepository);
         musicListController = new MusicListController(musicListService);
 
@@ -70,8 +77,6 @@ class MusicListControllerTest {
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .setControllerAdvice(new MusicListControllerAdvice(), new MainControllerAdvice())
                 .build();
-
-
     }
 
     @Test
@@ -125,7 +130,10 @@ class MusicListControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data[0].musicUrl").value("UbOCUMy4QqE"));
-     }
+        memberRepository.deleteAll();
+        playListRepository.deleteAll();
+        musicListRepository.deleteAll();
+    }
 
     @Test
     @Order(4)
