@@ -22,6 +22,11 @@ spring:
     include:
       - oauth2 # oauth2 설정
 
+client-id: test
+client-secret: test
+redirect-uri: 'http://localhost:8080/login/oauth2/kakao'
+authorization-grant-type: authorization_code
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
