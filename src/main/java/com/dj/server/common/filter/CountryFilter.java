@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 /**
  * 국가제한 필터
@@ -27,9 +28,10 @@ import java.time.format.DateTimeFormatter;
 public class CountryFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (!isAcceptableCountry(request.getLocale().toString())) {
+        HttpServletRequest req = (HttpServletRequest) request;
+        if (!isAcceptableCountry(request.getLocale())) {
             log.info("한국 또는 미국 외의 다른 국가에서 접속을 시도했습니다.");
-            log.info("ip:     " + getClientIp((HttpServletRequest) request));
+            log.info("ip:     " + getClientIp(req));
             LocalDateTime time = LocalDateTime.now();
             log.info("time:   " + time.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             log.info("locale: " + request.getLocale().toString());
@@ -56,9 +58,18 @@ public class CountryFilter implements Filter {
 
     /**
      * 허용할 국가 목록을 설정합니다.
+     * 브라우저의 기본 설정에 따라 locale 정보가 language 기반으로 전달되기 때문에 country 값이 아닌 language로 처리합니다.
+     * (edge version 93.0.961.47 의 경우 ko_KR가 아닌 ko로 전달됨)
      */
-    private boolean isAcceptableCountry(String locale) {
-        return locale.equals("ko_KR") || locale.equals("ko") || locale.equals("en_US") || locale.equals("en");
+    private boolean isAcceptableCountry(Locale locale) {
+        String language = locale.getLanguage().toLowerCase();
+        switch (language) {
+            case "ko":
+            case "en":
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**
