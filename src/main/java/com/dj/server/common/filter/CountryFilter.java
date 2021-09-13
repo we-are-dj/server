@@ -58,7 +58,7 @@ public class CountryFilter implements Filter {
      * 허용할 국가 목록을 설정합니다.
      */
     private boolean isAcceptableCountry(String locale) {
-        return locale.equals("ko_KR") || locale.equals("en_US")  || locale.equals("en");
+        return locale.equals("ko_KR") || locale.equals("ko") || locale.equals("en_US") || locale.equals("en");
     }
 
     /**
