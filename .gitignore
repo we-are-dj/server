@@ -226,3 +226,6 @@ src/main/generated
 .classpath
 .project
 .metadata
+
+### keyStore ###
+keyStore.*

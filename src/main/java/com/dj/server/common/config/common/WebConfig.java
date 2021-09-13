@@ -11,11 +11,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Jwt 인증을 감시하는 인터셉터의 설정 및
- * Jwt 인증을 지속적으로 확인
+ * <p>1. Jwt 인증을 감시하는 인터셉터 등록</p>
+ * <p>2. 접근 국가제한 필터 등록</p>
  *
  * @author Informix
  * @created 2021-08-04
+ * @updated 2021-09-13
  * @since 0.0.1
  */
 @Configuration

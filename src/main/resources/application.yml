@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 443
   error:
     include-exception: false  # 오류 응답에 exception 내용을 포함하시겠습니까?
     include-stacktrace: never # 오류 응답에 stacktrace 내용을 포함하시겠습니까?
@@ -21,7 +21,6 @@ spring:
       # disabled for use NoHandlerFoundException
       add-mappings: false
 
-
 #QueryLoggin
 logging:
   level:
@@ -32,4 +31,3 @@ logging:
             AbstractSerializableParameter: error
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type: trace
-
