@@ -3,8 +3,10 @@ package com.dj.server.common.interceptor;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import com.dj.server.api.properties.service.PropertyService;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.member.enums.MemberPermitErrorCode;
+import com.dj.server.common.exception.property.PropertyErrorCode;
 import com.dj.server.common.filter.CountryFilter;
 import com.dj.server.common.jwt.JwtUtil;
 import lombok.NonNull;
@@ -32,6 +34,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
     private final String ACCESS_TOKEN_KEY = "access_token";
     private final String REFRESH_TOKEN_KEY = "refresh_token";
     private final JwtUtil jwtUtil;
+    private final PropertyService propertyService;
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
@@ -40,6 +43,14 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
             log.error("로그인 중이지 않은 유저에게서 비정상적 요청이 들어왔습니다.");
             log.error("catch ip: " + CountryFilter.getClientIp(request));
             throw new BizException(MemberPermitErrorCode.TOKEN_INVALID);
+        }
+
+        if (doesHeaderhaveProp(request)) {
+            if (propertyService.doesPropertyExist(request.getHeader("prop_value"))) {
+                return true;
+            } else {
+                throw new BizException(PropertyErrorCode.INVALID_PROP);
+            }
         }
 
         try {
@@ -59,5 +70,8 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         return request.getHeader(ACCESS_TOKEN_KEY) != null || request.getHeader(REFRESH_TOKEN_KEY) != null;
     }
 
+    private boolean doesHeaderhaveProp(HttpServletRequest request) {
+        return request.getHeader("prop_value") != null;
+    }
 
 }
