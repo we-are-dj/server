@@ -22,12 +22,12 @@ public class PropertyService {
     private final PropertyRepository propertyRepository;
 
     @Transactional(rollbackFor = RuntimeException.class)
-    Property fetchProperty(String propValue) {
+    public Property fetchProperty(String propValue) {
         return propertyRepository.findByPropValue(propValue)
                 .orElseThrow(() -> new BizException(PropertyErrorCode.NOT_FOUND));
     }
 
-    public boolean doesPropertyExist(String propValue) {
+    public boolean doesPropValExist(String propValue) {
         return fetchProperty(propValue).getPropKey() != null;
     }
 }

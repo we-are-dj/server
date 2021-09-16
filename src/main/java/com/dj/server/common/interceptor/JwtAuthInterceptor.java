@@ -46,11 +46,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
         }
 
         if (doesHeaderhaveProp(request)) {
-            if (propertyService.doesPropertyExist(request.getHeader("prop_value"))) {
-                return true;
-            } else {
-                throw new BizException(PropertyErrorCode.INVALID_PROP);
-            }
+            return propertyService.doesPropValExist(request.getHeader("prop_value"));
         }
 
         try {

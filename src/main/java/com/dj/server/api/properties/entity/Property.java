@@ -24,4 +24,9 @@ public class Property {
     @Column(length = 70)
     private String propContent;
 
+    public Property(Integer propKey, String propValue, String propContent) {
+        this.propKey = propKey;
+        this.propValue = propValue;
+        this.propContent = propContent;
+    }
 }
