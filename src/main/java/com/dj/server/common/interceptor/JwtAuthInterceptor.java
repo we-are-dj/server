@@ -33,9 +33,8 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
-
-        if (doesHeaderhaveProp(request)) {
-            if (propertyService.doesPropValExist(request.getHeader("prop_value"))) {
+         if (doesHeaderhaveProp(request)) {
+             if (propertyService.doesPropValExist(request.getHeader("prop_value"))) {
                 jwtUtil.setTokenIngredient(request.getHeader("memberId"));
                 return true;
             }

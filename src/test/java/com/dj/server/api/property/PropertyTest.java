@@ -9,15 +9,19 @@ import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.api.properties.entity.Property;
 import com.dj.server.api.properties.repository.PropertyRepository;
+import com.dj.server.api.properties.service.PropertyService;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.musiclist.MusicListDummy;
 import com.dj.server.common.dummy.playlist.PlayListDummy;
 import com.dj.server.common.interceptor.JwtAuthInterceptor;
+import com.dj.server.common.jwt.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -55,8 +59,11 @@ public class PropertyTest {
     @InjectMocks
     private MusicListController musicListController;
 
-    @InjectMocks
-    private JwtAuthInterceptor jwtAuthInterceptor;
+    @Mock
+    private JwtUtil jwtUtil;
+
+    @Mock
+    private PropertyService propertyService;
 
     private final MemberDummy memberDummy = MemberDummy.getInstance();
     private final PlayListDummy playListDummy = PlayListDummy.getInstance();
@@ -66,12 +73,12 @@ public class PropertyTest {
     public void setup() {
         Member member = memberRepository.save(memberDummy.toEntity());
         PlayList playList = playListRepository.save(playListDummy.toEntity(member));
-        musicListRepository.save(musicListDummy.toEntity(playList, 1, "MusicURL__31"));
+        musicListRepository.save(musicListDummy.toEntity(playList, 1, "MusicURL__TEST_31"));
         propertyRepository.save(new Property(1L, "pwd123", "인터셉터 우회"));
 
         mockMvc = MockMvcBuilders.standaloneSetup(musicListController)
-                .addInterceptors(jwtAuthInterceptor)
-                .setControllerAdvice(new MainControllerAdvice())
+                .addInterceptors(new JwtAuthInterceptor(jwtUtil, propertyService))
+                .setControllerAdvice(new MainControllerAdvice(), new MainControllerAdvice())
                 .build();
     }
 
@@ -82,8 +89,7 @@ public class PropertyTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
                         //.header("prop_value", "pwd123")
                         //.header("memberId", "30")
-                        .content("\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\""))
-
+                        .content("{\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\"}"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -95,8 +101,7 @@ public class PropertyTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
                         //.header("prop_value", "pwd123")
                         .header("memberId", "30")
-                        .content("\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\""))
-
+                        .content("{\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\"}"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -108,7 +113,7 @@ public class PropertyTest {
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
                         .header("prop_value", "pwd123")
                         //.header("memberId", "30")
-                        .content("\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\""))
+                        .content("{\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\"}"))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
@@ -116,10 +121,6 @@ public class PropertyTest {
     @Test
     @DisplayName("헤더에 prop val도 있고 memberId도 있는 경우")
     public void headerHavePropVal() throws Exception {
-        System.out.println("prop.key : " + Objects.requireNonNull(propertyRepository.findByPropValue("pwd123").orElse(null)).getPropValue());
-        System.out.println("playlist.id : " + Objects.requireNonNull(playListRepository.findById(1L).orElse(null)).getPlayListId());
-        System.out.println("member.id : " + Objects.requireNonNull(memberRepository.findById(1L).orElse(null)).getMemberId());
-
         this.mockMvc.perform(post("/v1/musicList")
                         .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
                         .header("prop_value", "pwd123")

@@ -13,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,18 +21,16 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.util.UUID;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("뮤직리스트 컨트롤러 테스트")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
 public class MusicControllerTest {
 
     final String url = "/v1/musicList";
-
-    @LocalServerPort
-    private int port;
 
     @Autowired
     private WebApplicationContext context;
@@ -57,7 +54,7 @@ public class MusicControllerTest {
     public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .addFilters(new CharacterEncodingFilter("UTF-8",true))
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
@@ -91,14 +88,12 @@ public class MusicControllerTest {
                 .param("thumbnail", musicListSaveRequestDTO.getThumbnail())
                 .param("playtime", musicListSaveRequestDTO.getPlaytime()));
 
-
         actions
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.musicUrl").value(musicListSaveRequestDTO.getMusicUrl()))
                 .andExpect(jsonPath("$.data.thumbnail").value(musicListSaveRequestDTO.getThumbnail()))
                 .andExpect(jsonPath("$.data.playtime").value(musicListSaveRequestDTO.getPlaytime()));
-
 
 
     }

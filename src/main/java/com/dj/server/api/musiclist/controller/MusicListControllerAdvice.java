@@ -1,7 +1,7 @@
 package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ErrorResponseDTO;
-import com.dj.server.common.exception.musicList.handler.InvalidModifyMusicListParameterException;
+import com.dj.server.common.exception.musicList.handler.InvalidMusicListParameterException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,8 +12,8 @@ import static com.dj.server.api.common.controller.GeneralControllerAdvice.handle
 @RestControllerAdvice
 public class MusicListControllerAdvice {
 
-    @ExceptionHandler(InvalidModifyMusicListParameterException.class)
-    protected ResponseEntity<ErrorResponseDTO> handleInvalidModifyMusicListParameterException(InvalidModifyMusicListParameterException e) {
+    @ExceptionHandler(InvalidMusicListParameterException.class)
+    protected ResponseEntity<ErrorResponseDTO> handleInvalidModifyMusicListParameterException(InvalidMusicListParameterException e) {
         return handleValidParamemterException(HttpStatus.BAD_REQUEST, e);
     }
 }

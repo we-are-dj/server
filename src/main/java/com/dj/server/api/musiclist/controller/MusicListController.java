@@ -8,7 +8,7 @@ import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
 import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
 import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.service.MusicListService;
-import com.dj.server.common.exception.musicList.handler.InvalidModifyMusicListParameterException;
+import com.dj.server.common.exception.musicList.handler.InvalidMusicListParameterException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -52,7 +52,7 @@ public class MusicListController {
             @ApiResponse(code = 200, message = "OK")
     })
     @PostMapping("/musicList")
-    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(@RequestBody MusicListSaveRequestDTO musicListSaveRequestDTO) {
+    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(@Valid @RequestBody MusicListSaveRequestDTO musicListSaveRequestDTO, BindingResult result) {
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
@@ -63,7 +63,7 @@ public class MusicListController {
     })
     @PatchMapping("/musicList")
     public ResponseDTO<List<MusicListModifyResponseDTO>> modifyMusicListPlayOrder(@Valid MusicListModifyRequestDTO musicListModifyRequestDTO, BindingResult result) {
-        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
+        if (result.hasErrors()) throw new InvalidMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.modifyMusicListPlayOrder(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
@@ -74,7 +74,7 @@ public class MusicListController {
     })
     @DeleteMapping("/musicList")
     public ResponseDTO<String> deleteMusicList(@Valid MusicListDeleteRequestDTO musicListDeleteRequestDTO, BindingResult result) {
-        if (result.hasErrors()) throw new InvalidModifyMusicListParameterException(result);
+        if (result.hasErrors()) throw new InvalidMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
