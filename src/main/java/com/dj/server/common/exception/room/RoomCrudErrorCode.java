@@ -18,7 +18,7 @@ public enum RoomCrudErrorCode implements ErrorCode {
         return msg;
     }
 
-    public Integer httpErrorCode() {
+    public Integer getErrorCode() {
         return httpErrorCode;
     }
 
