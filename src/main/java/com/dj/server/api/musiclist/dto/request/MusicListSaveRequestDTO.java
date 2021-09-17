@@ -3,9 +3,7 @@ package com.dj.server.api.musiclist.dto.request;
 import com.dj.server.api.musiclist.entity.MusicList;
 import com.dj.server.api.playlist.entity.PlayList;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -17,29 +15,31 @@ import javax.validation.constraints.NotNull;
  * @since 0.0.1
  */
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@RequiredArgsConstructor
 public class MusicListSaveRequestDTO {
 
     @ApiModelProperty(required = true, value = "재생목록의 고유아이디")
     @NotNull
-    private final Long playListId;
+    private Long playListId;
 
     @ApiModelProperty(required = true, value = "유튜브 노래 링크 주소")
     @NotNull
-    private final String musicUrl;
+    private String musicUrl;
 
     @ApiModelProperty(required = true, value = "유튜브 노래 썸네일")
     @NotNull
-    private final String thumbnail;
+    private String thumbnail;
 
     @ApiModelProperty(value = "플레이 타임")
-    private final String playtime;
+    @NotNull
+    private String playtime;
 
-    public MusicList toEntity(PlayList playList, Integer musicNo) {
+    public MusicList toEntity(PlayList playList, Integer musicPlayOrder) {
         return MusicList.builder()
                 .playList(playList)
-                .musicNo(musicNo + 1)
+                .musicPlayOrder(musicPlayOrder + 1)
                 .musicUrl(musicUrl)
                 .thumbnail(thumbnail)
                 .playtime(playtime)

@@ -1,4 +1,4 @@
-package com.dj.server.common.exception.musicList;
+package com.dj.server.common.exception.musicList.enums;
 
 import com.dj.server.common.exception.common.ErrorCode;
 import lombok.Getter;
@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus;
 /**
  * Playlist Entity에 대한 데이터 요청시 발생할 수 있는 에러들을 열거형으로 모아둔 클래스
  *
- * @see BizException
+ * @see com.dj.server.common.exception.common.BizException
  * @author Informix
  * @created 2021-08-17 Tue
  */
 @Getter
 public enum MusicListCrudErrorCode implements ErrorCode {
-    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "음악 목록이 존재하지 않습니다.");
+    NOT_FOUND(HttpStatus.NOT_FOUND, 404, "음악 리스트가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final int httpErrorCode;
@@ -33,7 +33,7 @@ public enum MusicListCrudErrorCode implements ErrorCode {
     public String getMsg() {
         return msg;
     }
-    public Integer httpErrorCode() { return httpErrorCode; }
+    public Integer getErrorCode() { return httpErrorCode; }
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }

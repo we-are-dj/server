@@ -27,7 +27,7 @@ public enum MemberCrudErrorCode implements ErrorCode {
     public String getMsg() {
         return msg;
     }
-    public Integer httpErrorCode() { return httpErrorCode; }
+    public Integer getErrorCode() { return httpErrorCode; }
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }

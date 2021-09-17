@@ -2,18 +2,23 @@ package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
+import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
 import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
 import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
+import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
 import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.service.MusicListService;
+import com.dj.server.common.exception.musicList.handler.InvalidMusicListParameterException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -22,7 +27,6 @@ import java.util.List;
  * @author Informix
  * @created 2021-08-17
  * @since 0.0.1
- *
  */
 @Slf4j
 @RequestMapping("/v1")
@@ -33,7 +37,7 @@ public class MusicListController {
     private final MusicListService musicListService;
 
     @ApiOperation(value = "fetchAllMusicList",
-            notes = "재생목록에 포함된 전체 음악목록을 반환합니다. 재생목록 번호를 보내주세요.")
+            notes = "특정 회원의 재생목록에 포함된 전체 음악목록을 반환합니다. 재생목록 번호를 전송해 주세요.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
@@ -43,33 +47,34 @@ public class MusicListController {
     }
 
     @ApiOperation(value = "saveMusicList",
-            notes = "음악목록을 생성합니다")
+            notes = "회원의 음악목록을 생성합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
     @PostMapping("/musicList")
-    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(MusicListSaveRequestDTO musicListSaveRequestDTO) {
+    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(@Valid @RequestBody MusicListSaveRequestDTO musicListSaveRequestDTO, BindingResult result) {
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
-//    @ApiOperation(value = "modifyMusicList",
-//            notes = "음악목록을 업데이트합니다")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK")
-//    })
-//    @PatchMapping("/musicList")
-//    public ResponseDTO<MusicListModifyResponseDTO> modifyMusicList(@RequestBody List<MusicListModifyRequestDTO> musicListModifyRequestDTOList) {
-//        return new ResponseDTO<>(musicListService.modifyMusicList(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
-//    }
-
+    @ApiOperation(value = "modifyMusicListPlayOrder",
+            notes = "회원의 음악목록 순서를 업데이트합니다")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @PatchMapping("/musicList")
+    public ResponseDTO<List<MusicListModifyResponseDTO>> modifyMusicListPlayOrder(@Valid MusicListModifyRequestDTO musicListModifyRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidMusicListParameterException(result);
+        return new ResponseDTO<>(musicListService.modifyMusicListPlayOrder(musicListModifyRequestDTO), "SUCCESS", HttpStatus.OK);
+    }
 
     @ApiOperation(value = "deleteMusicList",
-            notes = "음악목록을 삭제합니다")
+            notes = "회원의 음악목록을 삭제합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
     @DeleteMapping("/musicList")
-    public ResponseDTO<String> deleteMusicList(MusicListDeleteRequestDTO musicListDeleteRequestDTO) {
+    public ResponseDTO<String> deleteMusicList(@Valid MusicListDeleteRequestDTO musicListDeleteRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 

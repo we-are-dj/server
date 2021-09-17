@@ -7,15 +7,12 @@ import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.playlist.PlayListDummy;
 import com.dj.server.common.jwt.JwtUtil;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,8 +22,9 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("재생목록 컨트롤러 테스트")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -61,7 +59,7 @@ public class PlayListControllerTest {
     public void setUp() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
-                .addFilters(new CharacterEncodingFilter("UTF-8",true))
+                .addFilters(new CharacterEncodingFilter("UTF-8", true))
                 .build();
     }
 
@@ -73,7 +71,7 @@ public class PlayListControllerTest {
         final UUID nickName = UUID.randomUUID();
 
         Member member = memberRepository.save(memberDummy.customNameToEntity(nickName.toString()));
-        for(String playListName : playArr) {
+        for (String playListName : playArr) {
             playListRepository.save(playListDummy.toEntityList(member, playListName));
         }
 
@@ -168,11 +166,6 @@ public class PlayListControllerTest {
                 .andExpect(jsonPath("$.data.playListId").value(playList.getPlayListId()));
 
     }
-
-
-
-
-
 
 
 }

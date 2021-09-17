@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class MemberControllerTest {
 
-    public MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @InjectMocks
     private MemberController memberController;
@@ -30,8 +29,8 @@ public class MemberControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(memberController)
-                                 .setControllerAdvice(new MemberControllerAdvice())
-                                 .build();
+                .setControllerAdvice(new MemberControllerAdvice())
+                .build();
     }
 
     @Test
@@ -41,7 +40,7 @@ public class MemberControllerTest {
     public void headerDoesNotHaveKakaoAuthCode() throws Exception {
         this.mockMvc
                 .perform(post("/v1/login/oauth2/kakao")
-                        .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8"))
+                        .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -54,7 +53,7 @@ public class MemberControllerTest {
         this.mockMvc
                 .perform(post("/v1/login/oauth2/kakao")
                         .header("code", "")
-                        .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8"))
+                        .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -67,7 +66,7 @@ public class MemberControllerTest {
         this.mockMvc
                 .perform(post("/v1/login/oauth2/kakao")
                         .header("code", "카카오인가코드")
-                        .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8"))
+                        .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
@@ -81,7 +80,7 @@ public class MemberControllerTest {
                 .perform(post("/v1/login/oauth2/kakao")
                         .header("code", "카카오인가코드")
                         .header("redirectUri", "")
-                        .header("Content-Type", MediaType.APPLICATION_JSON +";charset=UTF-8"))
+                        .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8"))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

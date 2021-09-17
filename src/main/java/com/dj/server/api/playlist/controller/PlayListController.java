@@ -23,7 +23,7 @@ import java.util.List;
  * 회원의 재생목록 도메인을 관리하는 컨트롤러 입니다.
  *
  * @author JaeHyun
- * @create 2021-08-15
+ * @created 2021-08-15
  * @since 0.0.1
  *
  */
@@ -39,7 +39,7 @@ public class PlayListController {
 
 
     @ApiOperation(value = "fetchMemberAllPlayList",
-            notes = "회원의 모든 재생목록을 조회합니다 토큰만 전송해주세요")
+            notes = "회원의 모든 재생목록을 조회합니다. 회원의 액세스 토큰을 헤더에 담아 전송해주세요")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
@@ -49,7 +49,7 @@ public class PlayListController {
     }
 
     @ApiOperation(value = "playListSave",
-            notes = "재생목록을 생성합니다")
+            notes = "회원의 재생목록을 생성합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
@@ -59,7 +59,7 @@ public class PlayListController {
     }
 
     @ApiOperation(value = "modifyPlayList",
-            notes = "재생목록을 업데이트 합니다")
+            notes = "회원의 재생목록을 업데이트 합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
