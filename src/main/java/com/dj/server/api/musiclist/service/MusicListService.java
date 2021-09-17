@@ -61,6 +61,7 @@ public class MusicListService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public MusicListSaveResponseDTO saveMusicList(MusicListSaveRequestDTO musicListSaveRequestDTO) {
+        System.out.println("MusicListService.saveMusicList.musicListSaveRequestDTO: " + musicListSaveRequestDTO.getMusicUrl());
         //재생목록이 존재하는지 확인
         PlayList playList = fetchPlayList(musicListSaveRequestDTO.getPlayListId());
         //현재 재생목록의 마지막 번호를 가져옴
@@ -71,9 +72,9 @@ public class MusicListService {
         return MusicListSaveResponseDTO.builder()
                 .musicId(musicList.getMusicId())
                 .musicPlayOrder(musicList.getMusicPlayOrder())
-                .musicUrl(musicList.getMusicUrl())
-                .thumbnail(musicList.getThumbnail())
-                .playtime(musicList.getPlaytime())
+                .musicUrl(musicListSaveRequestDTO.getMusicUrl())
+                .thumbnail(musicListSaveRequestDTO.getThumbnail())
+                .playtime(musicListSaveRequestDTO.getPlaytime())
                 .build();
     }
 
