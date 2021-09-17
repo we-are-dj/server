@@ -74,7 +74,7 @@ public class PropertyTest {
         Member member = memberRepository.save(memberDummy.toEntity());
         PlayList playList = playListRepository.save(playListDummy.toEntity(member));
         musicListRepository.save(musicListDummy.toEntity(playList, 1, "MusicURL__TEST_31"));
-        propertyRepository.save(new Property(1L, "pwd123", "인터셉터 우회"));
+        propertyRepository.save(new Property("pk1", "pwd123", "prop 설명"));
 
         mockMvc = MockMvcBuilders.standaloneSetup(musicListController)
                 .addInterceptors(new JwtAuthInterceptor(jwtUtil, propertyService))

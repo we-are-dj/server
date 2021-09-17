@@ -16,7 +16,7 @@ public class Property {
 
     @Id
     @Column
-    private Long propKey;
+    private String propKey;
 
     @Column(length = 100)
     private String propValue;
@@ -24,7 +24,7 @@ public class Property {
     @Column(length = 70)
     private String propContent;
 
-    public Property(Long propKey, String propValue, String propContent) {
+    public Property(String propKey, String propValue, String propContent) {
         this.propKey = propKey;
         this.propValue = propValue;
         this.propContent = propContent;

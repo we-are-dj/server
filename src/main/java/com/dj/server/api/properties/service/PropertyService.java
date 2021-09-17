@@ -20,14 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class PropertyService {
 
     private final PropertyRepository propertyRepository;
+    private final String INTERCEPTOR_PASS = "INTERCEPTOR_PASS";
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public Property fetchProperty(String propValue) {
-        return propertyRepository.findByPropValue(propValue)
+    public Property fetchProperty() {
+        return propertyRepository.findByPropKey(INTERCEPTOR_PASS)
                 .orElseThrow(() -> new BizException(PropertyErrorCode.NOT_FOUND));
     }
 
-    public boolean doesPropValExist(String propValue) {
-        return fetchProperty(propValue).getPropKey() != null;
+    public boolean validatePropVal(String propValue) {
+        return (fetchProperty().getPropValue()).equals(propValue);
+
     }
 }

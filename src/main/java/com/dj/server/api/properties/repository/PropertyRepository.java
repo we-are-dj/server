@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<Property, Long> {
-    Optional<Property> findByPropValue(String propValue);
+    Optional<Property> findByPropKey(String propKey);
 }

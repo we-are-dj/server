@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -64,7 +65,7 @@ public class MusicControllerTest {
 
         //given
         final String playListName = "발라드";
-        final String musicUrl = "watch?v=6RQ-bBdASvk";
+        final String musicUrl = "6RQ-bBdASvk";
         final String thumbnail = "thumbnail123";
         final String playtime = "22:08";
         final UUID nickName = UUID.randomUUID();
@@ -83,10 +84,12 @@ public class MusicControllerTest {
         final ResultActions actions = this.mockMvc.perform(post(url)
                 .header("access_token", accessToken)
                 .header("refresh_token", refreshToken)
-                .param("playListId", String.valueOf(musicListSaveRequestDTO.getPlayListId()))
-                .param("musicUrl", musicListSaveRequestDTO.getMusicUrl())
-                .param("thumbnail", musicListSaveRequestDTO.getThumbnail())
-                .param("playtime", musicListSaveRequestDTO.getPlaytime()));
+                .header("Content-Type", MediaType.APPLICATION_JSON + ";charset=UTF-8")
+                .content("{\"playListId\":" + musicListSaveRequestDTO.getPlayListId() + ", " +
+                        "\"musicUrl\":\"" +  musicListSaveRequestDTO.getMusicUrl() + "\", " +
+                        "\"thumbnail\":\"" + musicListSaveRequestDTO.getThumbnail() + "\", " +
+                        "\"playtime\":\"" + musicListSaveRequestDTO.getPlaytime() +"\"}"));
+
 
         actions
                 .andDo(print())
