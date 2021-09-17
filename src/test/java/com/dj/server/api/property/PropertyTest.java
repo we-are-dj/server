@@ -127,7 +127,6 @@ public class PropertyTest {
                         .header("memberId", "1")
                         .content("{\"playListId\":\"1\", \"musicUrl\":\"Dt-WNXvN2Zs\", \"thumbnail\":\"/rain.png\", \"playtime\":\"02:40\"}"))
                 .andDo(print())
-                //TODO: make this test pass with status().isOk()
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isOk());
     }
 }

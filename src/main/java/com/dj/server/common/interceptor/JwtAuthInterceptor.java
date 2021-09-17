@@ -37,7 +37,7 @@ public class JwtAuthInterceptor implements HandlerInterceptor {
              if (propertyService.doesPropValExist(request.getHeader("prop_value"))) {
                 jwtUtil.setTokenIngredient(request.getHeader("memberId"));
                 return true;
-            }
+            } else return false;
         }
 
         if (!doesHeaderhaveToken(request)) {
