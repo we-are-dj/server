@@ -37,7 +37,7 @@ public class MusicListController {
     private final MusicListService musicListService;
 
     @ApiOperation(value = "fetchAllMusicList",
-            notes = "재생목록에 포함된 전체 음악목록을 반환합니다. 재생목록 번호를 보내주세요.")
+            notes = "특정 회원의 재생목록에 포함된 전체 음악목록을 반환합니다. 재생목록 번호를 전송해 주세요.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
@@ -47,17 +47,17 @@ public class MusicListController {
     }
 
     @ApiOperation(value = "saveMusicList",
-            notes = "음악목록을 생성합니다")
+            notes = "회원의 음악목록을 생성합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
     @PostMapping("/musicList")
-    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(MusicListSaveRequestDTO musicListSaveRequestDTO) {
+    public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(@RequestBody MusicListSaveRequestDTO musicListSaveRequestDTO) {
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
     @ApiOperation(value = "modifyMusicListPlayOrder",
-            notes = "음악목록 순서를 업데이트합니다")
+            notes = "회원의 음악목록 순서를 업데이트합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })
@@ -68,7 +68,7 @@ public class MusicListController {
     }
 
     @ApiOperation(value = "deleteMusicList",
-            notes = "음악목록을 삭제합니다")
+            notes = "회원의 음악목록을 삭제합니다")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK")
     })

@@ -33,11 +33,10 @@ public class GeneralControllerAdvice {
     public static ResponseEntity<ErrorResponseDTO> handleGeneralException(HttpStatus httpStatus, Exception ...e) {
         ErrorResponseDTO response = ErrorResponseDTO.builder()
                                                     .errorCode(httpStatus.value())
-                                                    .httpStatus(httpStatus)
                                                     .message(Arrays.stream(e)
                                                             .filter(Objects::nonNull).findFirst()
                                                             .map(Exception::getMessage)
-                                                            .orElse(httpStatus.toString()))
+                                                            .orElse(httpStatus.getReasonPhrase()))
                                                     .build();
         log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);

@@ -34,6 +34,7 @@ public class MusicListSaveRequestDTO {
     private final String thumbnail;
 
     @ApiModelProperty(value = "플레이 타임")
+    @NotNull
     private final String playtime;
 
     public MusicList toEntity(PlayList playList, Integer musicPlayOrder) {
