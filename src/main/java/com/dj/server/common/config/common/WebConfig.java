@@ -1,5 +1,6 @@
 package com.dj.server.common.config.common;
 
+import com.dj.server.api.properties.service.PropertyService;
 import com.dj.server.common.filter.CountryFilter;
 import com.dj.server.common.interceptor.JwtAuthInterceptor;
 import com.dj.server.common.jwt.JwtUtil;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final JwtUtil jwtUtil;
+    private final PropertyService propertyService;
 
     private final String[] INTERCEPTOR_WHITE_LIST = {
             "/v1/login/oauth2/kakao",
@@ -30,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JwtAuthInterceptor(jwtUtil))
+        registry.addInterceptor(new JwtAuthInterceptor(jwtUtil, propertyService))
                 .addPathPatterns("/v1/**")
                 .excludePathPatterns(INTERCEPTOR_WHITE_LIST);
     }
