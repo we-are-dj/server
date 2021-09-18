@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * 재생목록을 저장할때 파라미터로 들어오는 값들을 저장할 DTO 입니다.
  *
  * @author JaeHyun
- * @create 2021-08-15
+ * @created 2021-08-15
  * @since 0.0.1
  */
 

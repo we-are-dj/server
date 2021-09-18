@@ -1,5 +1,6 @@
-package com.dj.server.api.room.entity;
+package com.dj.server.api.room.repository;
 
+import com.dj.server.api.room.entity.MusicRoomRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

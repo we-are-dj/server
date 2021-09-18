@@ -22,7 +22,7 @@ spring:
       add-mappings: false
 
 
-#QueryLoggin
+
 logging:
   level:
     io:
@@ -30,6 +30,7 @@ logging:
         models:
           parameters:
             AbstractSerializableParameter: error
+#QueryLoggin
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type: trace
 

@@ -26,7 +26,7 @@ public class PlayListQueryDSLRepositoryImpl extends QuerydslRepositorySupport im
      * querydsl repository Support 는
      * from 절이 먼저시작됩니다.
      *
-     * @param member
+     * @param memberId
      * @return
      */
     @Override

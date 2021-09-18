@@ -2,6 +2,7 @@ package com.dj.server.api.room.entity;
 
 
 import com.dj.server.api.member.entity.Member;
+import com.dj.server.api.room.entity.enums.RoomRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

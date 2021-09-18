@@ -37,7 +37,7 @@ public class GeneralControllerAdvice {
                                                     .message(Arrays.stream(e)
                                                             .filter(Objects::nonNull).findFirst()
                                                             .map(Exception::getMessage)
-                                                            .orElse(httpStatus.toString()))
+                                                            .orElse(httpStatus.getReasonPhrase()))
                                                     .build();
         log.error(response.getMessage());
         return new ResponseEntity<>(response, getHttpHeader(), httpStatus);
