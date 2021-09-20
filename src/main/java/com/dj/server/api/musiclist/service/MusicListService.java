@@ -1,18 +1,21 @@
 package com.dj.server.api.musiclist.service;
 
-import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
-import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListDeleteRequestDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListModifyRequestDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListSaveRequestDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicAllListResponseDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicListModifyResponseDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.entity.MusicList;
+import com.dj.server.api.musiclist.model.vo.youtube.YoutubeData;
 import com.dj.server.api.musiclist.repository.MusicListRepository;
+import com.dj.server.api.musiclist.service.youtube.request.YoutubeMusicRequest;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.exception.common.BizException;
 import com.dj.server.common.exception.musicList.enums.MusicListCrudErrorCode;
 import com.dj.server.common.exception.playlist.PlayListCrudErrorCode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,7 @@ public class MusicListService {
 
     private final MusicListRepository musicListRepository;
     private final PlayListRepository playListRepository;
+    private final YoutubeMusicRequest youtubeMusicRequest;
 
     private PlayList fetchPlayList(Long playListId) {
         return playListRepository.findById(playListId)
@@ -129,5 +133,9 @@ public class MusicListService {
         }
 
         return "음악목록이 삭제되었습니다.";
+    }
+
+    public List<?> searchYTMusic(String keyword) throws JsonProcessingException {
+        return youtubeMusicRequest.search(keyword).getItems();
     }
 }

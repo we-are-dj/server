@@ -1,4 +1,4 @@
-package com.dj.server.api.musiclist.dto.response;
+package com.dj.server.api.musiclist.model.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

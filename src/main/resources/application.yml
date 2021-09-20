@@ -21,8 +21,6 @@ spring:
       # disabled for use NoHandlerFoundException
       add-mappings: false
 
-
-
 logging:
   level:
     io:

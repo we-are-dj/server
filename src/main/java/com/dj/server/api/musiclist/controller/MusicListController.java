@@ -1,14 +1,15 @@
 package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.common.response.ResponseDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListDeleteRequestDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListModifyRequestDTO;
-import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
-import com.dj.server.api.musiclist.dto.response.MusicAllListResponseDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListModifyResponseDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListDeleteRequestDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListModifyRequestDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListSaveRequestDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicAllListResponseDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicListModifyResponseDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.service.MusicListService;
 import com.dj.server.common.exception.musicList.handler.InvalidMusicListParameterException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -53,6 +54,7 @@ public class MusicListController {
     })
     @PostMapping("/musicList")
     public ResponseDTO<MusicListSaveResponseDTO> saveMusicList(@Valid @RequestBody MusicListSaveRequestDTO musicListSaveRequestDTO, BindingResult result) {
+        if (result.hasErrors()) throw new InvalidMusicListParameterException(result);
         return new ResponseDTO<>(musicListService.saveMusicList(musicListSaveRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
@@ -78,4 +80,13 @@ public class MusicListController {
         return new ResponseDTO<>(musicListService.deleteMusicList(musicListDeleteRequestDTO), "SUCCESS", HttpStatus.OK);
     }
 
+    @ApiOperation(value = "search youtube music",
+            notes = "유튜브 정보를 기반으로 검색한 결과를 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK")
+    })
+    @GetMapping("/youtube")
+    public ResponseDTO<List<?>> searchYoutubeMusicData(@RequestParam("keyword") String keyword) throws JsonProcessingException {
+        return new ResponseDTO<>(musicListService.searchYTMusic(keyword), "SUCCESS", HttpStatus.OK);
+    }
 }

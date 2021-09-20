@@ -1,11 +1,10 @@
-package com.dj.server.api.musiclist.dto.request;
+package com.dj.server.api.musiclist.model.dto.request;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**

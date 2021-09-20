@@ -2,7 +2,7 @@ package com.dj.server.api.musiclist.controller;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
-import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
+import com.dj.server.api.musiclist.model.dto.request.MusicListSaveRequestDTO;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;

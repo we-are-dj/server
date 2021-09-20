@@ -5,12 +5,16 @@ import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
 import com.dj.server.api.musiclist.repository.MusicListRepository;
 import com.dj.server.api.musiclist.service.MusicListService;
+import com.dj.server.api.musiclist.service.youtube.request.YoutubeMusicRequest;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.musiclist.MusicListDummy;
 import com.dj.server.common.dummy.playlist.PlayListDummy;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,7 +32,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @DataJpaTest(showSql = false)
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
@@ -51,13 +54,14 @@ class MusicListControllerTest {
     final PlayListDummy playListDummy = PlayListDummy.getInstance();
     final MusicListDummy musicListDummy = MusicListDummy.getInstance();
 
-
     @InjectMocks
     private MusicListController musicListController;
 
+    MusicListService musicListService;
+
     @BeforeEach
     public void setup() {
-        MusicListService musicListService = new MusicListService(musicListRepository, playListRepository);
+        MusicListService musicListService = new MusicListService(musicListRepository, playListRepository, new YoutubeMusicRequest());
         musicListController = new MusicListController(musicListService);
 
         Long memberId = memberRepository.save(memberDummy.toEntity()).getMemberId();
@@ -172,4 +176,5 @@ class MusicListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data").value("음악목록이 삭제되었습니다."));
     }
+
 }

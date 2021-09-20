@@ -2,13 +2,12 @@ package com.dj.server.api.musiclist.service;
 
 import com.dj.server.api.member.entity.Member;
 import com.dj.server.api.member.repository.MemberRepository;
-import com.dj.server.api.musiclist.dto.request.MusicListSaveRequestDTO;
-import com.dj.server.api.musiclist.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.entity.MusicList;
+import com.dj.server.api.musiclist.model.dto.request.MusicListSaveRequestDTO;
+import com.dj.server.api.musiclist.model.dto.response.MusicListSaveResponseDTO;
 import com.dj.server.api.musiclist.repository.MusicListRepository;
 import com.dj.server.api.playlist.entity.PlayList;
 import com.dj.server.api.playlist.repository.PlayListRepository;
-import com.dj.server.api.playlist.service.PlayListService;
 import com.dj.server.common.dummy.member.MemberDummy;
 import com.dj.server.common.dummy.playlist.PlayListDummy;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("음악목록 서비스 테스트 클래스")
 @SpringBootTest
