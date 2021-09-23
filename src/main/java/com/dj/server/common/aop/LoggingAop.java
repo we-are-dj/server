@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 public class LoggingAop {
 
 
-    private final LoggingSupport<Object> loggingSupport;
 
     /**
      * Around 는 target 메서드를 감싸는 Advice 입니다.
@@ -42,11 +41,12 @@ public class LoggingAop {
     public Object loggingParameters(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         // StringBuilder logBuilder = new StringBuilder();
+        LoggingSupport<Object> loggingSupport = new LoggingSupport<>();
 
         String className = proceedingJoinPoint.getTarget().getClass().getName();
         String methodName = proceedingJoinPoint.getSignature().getName();
 
-        setUserIP();
+        setUserIP(loggingSupport);
         loggingSupport.setClassName(className);
         loggingSupport.setMethodName(methodName);
 
@@ -64,7 +64,7 @@ public class LoggingAop {
         return object;
     }
 
-    private void setUserIP() {
+    private void setUserIP(LoggingSupport<Object> loggingSupport) {
         HttpServletRequest request =  ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         loggingSupport.setUserIp(CountryFilter.getClientIp(request));
     }
