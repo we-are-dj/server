@@ -130,8 +130,7 @@ public class MemberService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public String updateNickName(String wantToChange) {
-       int count = memberRepository.countByMemberNickName(wantToChange);
-       if (count > 0) throw new BizException(MemberCrudErrorCode.DUPLICATED_NICKNAME);
+       if (memberRepository.existsByMemberNickName(wantToChange)) throw new BizException(MemberCrudErrorCode.DUPLICATED_NICKNAME);
        Member member = memberRepository.findById(getMemberId()).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER)).updateNickName(wantToChange);
        return member.getMemberNickName();
     }
