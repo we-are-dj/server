@@ -36,8 +36,6 @@ public class ResponseDTOTests {
     @Autowired
     private KakaoRequest kakaoRequest;
 
-
-
     @BeforeEach
     public void setup() {
 //        this.mockMvc = MockMvcBuilders.standaloneSetup(new KakaoOauth2Controller(memberService, kakaoRequest)).addFilter(new CharacterEncodingFilter("UTF-8", true)).build();

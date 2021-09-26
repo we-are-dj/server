@@ -1,6 +1,7 @@
 package com.dj.server.api.common.response;
 
 import com.google.gson.Gson;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
  */
 @Getter
 @RequiredArgsConstructor
+@EqualsAndHashCode
 public class ResponseDTO<T> {
 
     private final T data;
