@@ -18,7 +18,6 @@ import java.util.List;
  */
 @Setter
 @Getter
-@Component
 public class LoggingSupport<T> {
 
     private final List<T> data = new ArrayList<>();
