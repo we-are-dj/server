@@ -104,7 +104,7 @@ public class MusicRoomService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new BizException(MemberCrudErrorCode.NOT_FOUND_MEMBER));
 
         if (musicRoomRepository.countByMember(member) >= CHAT_ROOM_LIMIT)
-            throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422
+            throw new BizException(RoomCrudErrorCode.Unprocessable_Entity); // 422 생성할수 있는 MusicRoom 을 초과 하였습니다.
 
         //방 정보 rdb 에 저장
         MusicRoom musicRoom = musicRoomRepository.save(musicRoomSaveRequestDTO.toEntity(member));
