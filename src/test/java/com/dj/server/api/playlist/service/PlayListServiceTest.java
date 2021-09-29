@@ -44,7 +44,7 @@ public class PlayListServiceTest {
     @Test
     public void fetchMemberPlayListTests() {
 
-        Member member = memberRepository.save(memberDummy.toEntity());
+        Member member = memberRepository.save(memberDummy.customNameToEntity("PlayListTest"));
 
         for(String playListName : playArr) {
             playListRepository.save(playListDummy.toEntityList(member, playListName));
